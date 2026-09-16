@@ -21,12 +21,12 @@
             color: #f3f4f6;
             overflow-x: hidden;
         }
-        /* Recorte perfeito em formato de Coração */
-        .heart-shape-mask {
-            clip-path: path('M250,440 L220,412 C98,300 20,229 20,135 C20,58 78,0 155,0 C197,0 237,20 250,52 C263,20 303,0 345,0 C422,0 480,58 480,135 C480,229 402,300 280,412 Z');
+        /* Máscara de Coração Geométrica e Simétrica Perfeita */
+        .heart-mask {
+            clip-path: polygon(50% 90%, 15% 55%, 0% 35%, 0% 20%, 10% 8%, 25% 2%, 40% 5%, 50% 20%, 60% 5%, 75% 2%, 90% 8%, 100% 20%, 100% 35%, 85% 55%);
         }
         .neon-glow {
-            filter: drop-shadow(0 0 20px rgba(255, 31, 61, 0.6));
+            filter: drop-shadow(0 0 25px rgba(255, 31, 61, 0.7));
         }
         .neon-text {
             text-shadow: 0 0 12px rgba(255, 31, 61, 0.6);
@@ -56,9 +56,9 @@
     </header>
 
     <!-- HERO / SEÇÃO PRINCIPAL -->
-    <main class="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-12 px-4 overflow-hidden">
+    <main class="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-12 px-4 overflow-hidden" id="inicio">
         
-        <!-- Fundo com efeito atmosférico escuro e rosas borradas -->
+        <!-- Fundo com efeito atmosférico escuro -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,10,25,0.25)_0%,transparent_75%)] pointer-events-none"></div>
 
         <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10 gap-6">
@@ -76,14 +76,14 @@
                 <i class="fa-solid fa-heart text-red-500 mt-2 text-sm"></i>
             </div>
 
-            <!-- CORAÇÃO CENTRAL COM MÁSCARA EXATA -->
-            <div class="relative w-[340px] h-[340px] md:w-[480px] md:h-[450px] flex items-center justify-center my-4 neon-glow">
+            <!-- CORAÇÃO CENTRAL CORRIGIDO E ALINHADO -->
+            <div class="relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex items-center justify-center my-4 neon-glow">
                 
-                <!-- Borda Neon Externa em formato de Coração -->
-                <div class="absolute inset-0 bg-red-600 heart-shape-mask blur-sm opacity-70"></div>
+                <!-- Fundo Brilho Coração -->
+                <div class="absolute inset-0 bg-red-600 heart-mask blur-md opacity-60"></div>
 
-                <!-- Conteúdo Interno com as Fotos em formato de Coração -->
-                <div class="absolute inset-2 bg-black heart-shape-mask overflow-hidden grid grid-cols-3 gap-1.5 p-2 border-2 border-red-500">
+                <!-- Grade de Fotos com a Máscara Perfeita -->
+                <div class="absolute inset-2 bg-black heart-mask overflow-hidden grid grid-cols-3 gap-1 p-2 border-2 border-red-500">
                     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                     <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                     <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
@@ -95,8 +95,8 @@
                     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                 </div>
 
-                <!-- Card Central "Eu te amo" flutuando por cima -->
-                <div class="relative z-20 bg-[#0c080a]/95 backdrop-blur-xl border border-red-500/60 p-6 rounded-full w-48 h-48 md:w-56 md:h-56 flex flex-col items-center justify-center text-center shadow-[0_0_30px_rgba(255,31,61,0.4)]">
+                <!-- Card Central "Eu te amo" Perfeitamente Centralizado -->
+                <div class="relative z-20 bg-[#0c080a]/95 backdrop-blur-xl border border-red-500/60 p-6 rounded-full w-48 h-48 md:w-56 md:h-56 flex flex-col items-center justify-center text-center shadow-[0_0_30px_rgba(255,31,61,0.5)]">
                     <h1 class="font-handwriting text-3xl md:text-4xl text-red-300 neon-text mb-1">Eu te amo</h1>
                     <i class="fa-solid fa-heart text-red-500 text-xs my-1 animate-pulse"></i>
                     <p class="text-[9px] md:text-[10px] text-neutral-300 tracking-wider uppercase leading-tight font-light px-2">
@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <!-- BANNER INFERIOR "OBRIGADO POR FAZER PARTE" -->
+        <!-- BANNER INFERIOR -->
         <div class="w-full max-w-5xl mx-auto mt-8 px-4 relative z-10">
             <div class="bg-[#0c080a]/80 backdrop-blur-xl border border-red-900/40 p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
                 <div class="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800')"></div>
