@@ -21,9 +21,9 @@
             color: #f3f4f6;
             overflow-x: hidden;
         }
-        /* Máscara de Coração Geométrica e Simétrica Perfeita */
-        .heart-mask {
-            clip-path: polygon(50% 90%, 15% 55%, 0% 35%, 0% 20%, 10% 8%, 25% 2%, 40% 5%, 50% 20%, 60% 5%, 75% 2%, 90% 8%, 100% 20%, 100% 35%, 85% 55%);
+        /* Curva de Coração Perfeita e Simétrica (SVG Path) */
+        .heart-path-mask {
+            clip-path: path('M 250 450 C 250 450 420 310 420 180 C 420 90 350 30 280 30 C 235 30 250 80 250 80 C 250 80 265 30 220 30 C 150 30 80 90 80 180 C 80 310 250 450 250 450 Z');
         }
         .neon-glow {
             filter: drop-shadow(0 0 25px rgba(255, 31, 61, 0.7));
@@ -76,14 +76,14 @@
                 <i class="fa-solid fa-heart text-red-500 mt-2 text-sm"></i>
             </div>
 
-            <!-- CORAÇÃO CENTRAL CORRIGIDO E ALINHADO -->
-            <div class="relative w-[360px] h-[360px] md:w-[460px] md:h-[460px] flex items-center justify-center my-4 neon-glow">
+            <!-- CORAÇÃO CENTRAL COM CURVAS PERFEITAS -->
+            <div class="relative w-[360px] h-[360px] md:w-[480px] md:h-[480px] flex items-center justify-center my-4 neon-glow">
                 
-                <!-- Fundo Brilho Coração -->
-                <div class="absolute inset-0 bg-red-600 heart-mask blur-md opacity-60"></div>
+                <!-- Borda Neon Externa em formato de Coração Real -->
+                <div class="absolute inset-0 bg-red-600 heart-path-mask blur-md opacity-70"></div>
 
-                <!-- Grade de Fotos com a Máscara Perfeita -->
-                <div class="absolute inset-2 bg-black heart-mask overflow-hidden grid grid-cols-3 gap-1 p-2 border-2 border-red-500">
+                <!-- Grade de Fotos com o Recorte Certo -->
+                <div class="absolute inset-2 bg-black heart-path-mask overflow-hidden grid grid-cols-3 gap-1 p-2 border-2 border-red-500">
                     <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                     <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                     <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
