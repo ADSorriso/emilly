@@ -1,180 +1,959 @@
-<!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para o meu amor ❤️</title>
-    <!-- Tailwind CSS v4 CDN -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <!-- FontAwesome para Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Great Vibes (Manuscrita) e Plus Jakarta Sans -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        .font-handwriting {
-            font-family: 'Great Vibes', cursive;
-        }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #050505;
-            color: #f3f4f6;
-            overflow-x: hidden;
-        }
-        /* Recorte perfeito e simétrico em formato de Coração */
-        .heart-shape-mask {
-            clip-path: path('M 250 440 C 250 440 430 290 430 160 C 430 70 360 20 285 20 C 255 20 250 50 250 50 C 250 50 245 20 215 20 C 140 20 70 70 70 160 C 70 290 250 440 250 440 Z');
-        }
-        .neon-glow {
-            filter: drop-shadow(0 0 20px rgba(255, 31, 61, 0.6));
-        }
-        .neon-text {
-            text-shadow: 0 0 12px rgba(255, 31, 61, 0.6);
-        }
-    </style>
-</head>
-<body class="bg-[#050505] text-slate-100 min-h-screen">
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&display=swap');
 
-    <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-red-950/30 px-6 py-4 flex items-center justify-between">
-        <div class="font-handwriting text-2xl text-red-200 flex items-center gap-2">
-            Para o meu amor <i class="fa-solid fa-heart text-red-500 text-sm"></i>
-        </div>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        <nav class="hidden md:flex items-center gap-8 text-sm text-neutral-300 font-medium">
-            <a href="#inicio" class="text-red-500 border-b border-red-500 pb-0.5">Início</a>
-            <a href="#motivos" class="hover:text-red-400 transition-colors">Motivos</a>
-            <a href="#fotos" class="hover:text-red-400 transition-colors">Nossas Fotos</a>
-            <a href="#mensagens" class="hover:text-red-400 transition-colors">Mensagens</a>
-            <a href="#surpresa" class="hover:text-red-400 transition-colors">Surpresa</a>
-        </nav>
+html {
+  scroll-behavior: smooth;
+}
 
-        <div class="flex items-center gap-2 bg-gradient-to-r from-red-950/80 to-red-900/40 border border-red-500/40 px-5 py-2 rounded-full shadow-lg shadow-red-950/50">
-            <i class="fa-solid fa-heart text-red-500 animate-pulse"></i>
-            <span class="text-xs font-semibold tracking-wide text-red-200">Eu te amo</span>
-        </div>
-    </header>
+body {
+  background: #050505;
+  color: #fff;
+  font-family: "DM Sans", sans-serif;
+  overflow-x: hidden;
+}
 
-    <!-- HERO / SEÇÃO PRINCIPAL -->
-    <main class="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-12 px-4 overflow-hidden">
-        
-        <!-- Fundo com efeito atmosférico escuro e rosas borradas -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,10,25,0.25)_0%,transparent_75%)] pointer-events-none"></div>
+button,
+a {
+  font-family: inherit;
+}
 
-        <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10 gap-6">
-            
-            <!-- Frase Lateral Esquerda -->
-            <div class="hidden xl:flex flex-col text-xs font-semibold tracking-[0.25em] text-neutral-400 space-y-2 uppercase text-left">
-                <span>Você</span>
-                <span>faz</span>
-                <span>tudo</span>
-                <span>mais</span>
-                <span>bonito</span>
-                <span>na</span>
-                <span>minha</span>
-                <span>vida</span>
-                <i class="fa-solid fa-heart text-red-500 mt-2 text-sm"></i>
-            </div>
+button {
+  border: 0;
+}
 
-            <!-- CORAÇÃO CENTRAL COM MÁSCARA EXATA E SIMÉTRICA -->
-            <div class="relative w-[340px] h-[340px] md:w-[480px] md:h-[450px] flex items-center justify-center my-4 neon-glow">
-                
-                <!-- Borda Neon Externa em formato de Coração -->
-                <div class="absolute inset-0 bg-red-600 heart-shape-mask blur-sm opacity-70"></div>
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-                <!-- Conteúdo Interno com as Fotos em formato de Coração -->
-                <div class="absolute inset-2 bg-black heart-shape-mask overflow-hidden grid grid-cols-3 gap-1.5 p-2 border-2 border-red-500">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
-                </div>
+/* =========================
+   BASE
+========================= */
 
-                <!-- Card Central "Eu te amo" flutuando por cima -->
-                <div class="relative z-20 bg-[#0c080a]/95 backdrop-blur-xl border border-red-500/60 p-6 rounded-full w-48 h-48 md:w-56 md:h-56 flex flex-col items-center justify-center text-center shadow-[0_0_30px_rgba(255,31,61,0.4)]">
-                    <h1 class="font-handwriting text-3xl md:text-4xl text-red-300 neon-text mb-1">Eu te amo</h1>
-                    <i class="fa-solid fa-heart text-red-500 text-xs my-1 animate-pulse"></i>
-                    <p class="text-[9px] md:text-[10px] text-neutral-300 tracking-wider uppercase leading-tight font-light px-2">
-                        Em cada detalhe, em todos os dias, sempre.
-                    </p>
-                </div>
+.site {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(160, 0, 40, .16), transparent 30%),
+    #050505;
+}
 
-            </div>
+.site::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: radial-gradient(
+    circle at center,
+    transparent 35%,
+    rgba(0,0,0,.55)
+  );
+}
 
-            <!-- Frase Lateral Direita -->
-            <div class="hidden xl:flex flex-col text-xs font-semibold tracking-[0.25em] text-neutral-400 space-y-2 uppercase text-right">
-                <span>Ao</span>
-                <span>seu</span>
-                <span>lado</span>
-                <span>tudo</span>
-                <span>faz</span>
-                <span>mais</span>
-                <span>sentido</span>
-                <i class="fa-solid fa-heart text-red-500 mt-2 text-sm self-end"></i>
-            </div>
+/* =========================
+   PARTICULAS
+========================= */
 
-        </div>
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
 
-        <!-- 4 CARDS DE NAVEGAÇÃO RÁPIDA -->
-        <div id="motivos" class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 px-4 relative z-10">
-            <div class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
-                <i class="fa-solid fa-heart text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
-                <h3 class="text-white font-medium text-base mb-1">Motivos</h3>
-                <p class="text-xs text-neutral-400">100 motivos para te amar</p>
-            </div>
-            <div id="fotos" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
-                <i class="fa-solid fa-image text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
-                <h3 class="text-white font-medium text-base mb-1">Nossas Fotos</h3>
-                <p class="text-xs text-neutral-400">Os melhores momentos</p>
-            </div>
-            <div id="mensagens" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
-                <i class="fa-solid fa-comment-dots text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
-                <h3 class="text-white font-medium text-base mb-1">Mensagens</h3>
-                <p class="text-xs text-neutral-400">Palavras do meu coração</p>
-            </div>
-            <div id="surpresa" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
-                <i class="fa-solid fa-gift text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
-                <h3 class="text-white font-medium text-base mb-1">Surpresa</h3>
-                <p class="text-xs text-neutral-400">Tem mais por aqui...</p>
-            </div>
-        </div>
+.particles span {
+  position: absolute;
+  color: rgba(255, 40, 80, .15);
+  font-size: 18px;
+  animation: floatHeart 10s linear infinite;
+}
 
-        <!-- BANNER INFERIOR "OBRIGADO POR FAZER PARTE" -->
-        <div class="w-full max-w-5xl mx-auto mt-8 px-4 relative z-10">
-            <div class="bg-[#0c080a]/80 backdrop-blur-xl border border-red-900/40 p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
-                <div class="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800')"></div>
-                
-                <div class="relative z-10 text-center md:text-left">
-                    <h2 class="font-handwriting text-3xl md:text-4xl text-red-300">
-                        Obrigado por fazer parte da minha história
-                    </h2>
-                    <i class="fa-solid fa-heart text-red-500 text-xs mt-2"></i>
-                </div>
+.particles span:nth-child(1) { left: 5%; animation-delay: 1s; }
+.particles span:nth-child(2) { left: 12%; animation-delay: 5s; }
+.particles span:nth-child(3) { left: 20%; animation-delay: 2s; }
+.particles span:nth-child(4) { left: 30%; animation-delay: 7s; }
+.particles span:nth-child(5) { left: 40%; animation-delay: 3s; }
+.particles span:nth-child(6) { left: 50%; animation-delay: 8s; }
+.particles span:nth-child(7) { left: 60%; animation-delay: 2s; }
+.particles span:nth-child(8) { left: 70%; animation-delay: 6s; }
+.particles span:nth-child(9) { left: 80%; animation-delay: 4s; }
+.particles span:nth-child(10) { left: 90%; animation-delay: 1s; }
 
-                <div class="relative z-10 text-xs md:text-sm text-neutral-300 space-y-1 text-center md:text-right font-light">
-                    <p>• Você é o meu hoje,</p>
-                    <p>• o meu amanhã</p>
-                    <p>• e todos os meus sempre.</p>
-                    <div class="font-handwriting text-2xl text-red-400 mt-2 flex items-center justify-end gap-1.5">
-                        Eu te amo <i class="fa-solid fa-heart text-xs text-red-500"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+@keyframes floatHeart {
+  0% {
+    transform: translateY(110vh) scale(.5);
+    opacity: 0;
+  }
 
-        <!-- INDICADOR DE ROLAGEM -->
-        <div class="mt-12 flex flex-col items-center text-neutral-500 text-xs tracking-widest uppercase">
-            <i class="fa-regular fa-mouse text-base mb-1 text-red-500 animate-bounce"></i>
-            <span>Role para explorar</span>
-            <i class="fa-solid fa-chevron-down text-[10px] mt-1 animate-pulse"></i>
-        </div>
+  20% {
+    opacity: 1;
+  }
 
-    </main>
+  100% {
+    transform: translateY(-10vh) scale(1.4) rotate(25deg);
+    opacity: 0;
+  }
+}
 
-</body>
-</html>
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  background: rgba(5,5,5,.7);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  z-index: 100;
+}
+
+.logo {
+  font-family: "Great Vibes", cursive;
+  font-size: 27px;
+  color: #fff;
+}
+
+.logo span {
+  color: #ff3158;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.nav-links a {
+  transition: .3s;
+}
+
+.nav-links a:hover {
+  color: #ff3158;
+}
+
+.love-button {
+  border: 1px solid rgba(255,50,90,.6);
+  padding: 12px 20px;
+  border-radius: 30px;
+  color: #ff5272;
+  font-size: 13px;
+  box-shadow: 0 0 25px rgba(255,30,70,.15);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px;
+  background:
+    linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.8)),
+    radial-gradient(circle at center, #35000d, #050505 65%);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: #d9003f;
+  filter: blur(180px);
+  opacity: .18;
+  border-radius: 50%;
+}
+
+.hero-content {
+  position: relative;
+  max-width: 800px;
+  z-index: 2;
+}
+
+.small-title,
+.section-title span,
+.reasons-section .reason-label,
+.future-content > span,
+.surprise-section > span {
+  letter-spacing: 5px;
+  color: #ff4769;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.hero h1 {
+  margin: 20px 0;
+  font-size: clamp(60px, 10vw, 120px);
+  line-height: .9;
+  letter-spacing: -5px;
+}
+
+.hero h1 span {
+  display: block;
+  font-family: "Great Vibes", cursive;
+  color: #ff3158;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.hero-text {
+  max-width: 520px;
+  margin: 30px auto 40px;
+  color: #aaa;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.main-button,
+.surprise-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 26px;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #ff3158, #9e002d);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 15px 45px rgba(255,20,60,.2);
+  transition: .3s;
+}
+
+.main-button:hover,
+.surprise-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(255,20,60,.35);
+}
+
+.scroll {
+  position: absolute;
+  bottom: 30px;
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.scroll span {
+  display: block;
+  width: 1px;
+  height: 35px;
+  background: #ff3158;
+  margin: 0 auto 10px;
+}
+
+/* =========================
+   SEÇÕES
+========================= */
+
+.section {
+  max-width: 1200px;
+  margin: auto;
+  padding: 130px 30px;
+}
+
+.section-title {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 70px;
+}
+
+.section-title h2 {
+  font-size: clamp(35px, 5vw, 65px);
+  margin: 18px 0;
+  line-height: 1;
+}
+
+.section-title h2 em {
+  font-family: "Great Vibes", cursive;
+  color: #ff3158;
+  font-weight: 400;
+  font-size: 1.25em;
+}
+
+.section-title p {
+  color: #777;
+  line-height: 1.7;
+}
+
+/* =========================
+   TIMELINE
+========================= */
+
+.timeline {
+  max-width: 850px;
+  margin: auto;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 70px 1px 1fr;
+  gap: 25px;
+  min-height: 150px;
+}
+
+.timeline-number {
+  font-size: 13px;
+  color: #ff3158;
+  padding-top: 5px;
+}
+
+.timeline-line {
+  width: 1px;
+  background: linear-gradient(#ff3158, rgba(255,49,88,0));
+}
+
+.timeline-content {
+  padding-bottom: 50px;
+}
+
+.timeline-content h3 {
+  font-size: 25px;
+  margin-bottom: 12px;
+}
+
+.timeline-content p {
+  color: #777;
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+/* =========================
+   CORAÇÃO
+========================= */
+
+.heart-section {
+  padding: 120px 20px;
+  text-align: center;
+  background:
+    radial-gradient(circle, rgba(180,0,45,.16), transparent 50%),
+    #080808;
+}
+
+.heart-gallery {
+  position: relative;
+  width: 620px;
+  height: 570px;
+  max-width: 90vw;
+  margin: 30px auto 0;
+}
+
+.heart-photo {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  padding: 5px;
+  background: #111;
+  border: 1px solid rgba(255,50,90,.5);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(255,30,70,.15);
+  transition: .4s;
+}
+
+.heart-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heart-photo:hover {
+  transform: scale(1.1) !important;
+  z-index: 10;
+  box-shadow: 0 0 45px rgba(255,30,70,.4);
+}
+
+.heart-1 { left: 125px; top: 20px; transform: rotate(-8deg); }
+.heart-2 { left: 275px; top: 20px; transform: rotate(8deg); }
+.heart-3 { left: 65px; top: 130px; transform: rotate(-12deg); }
+.heart-4 { left: 220px; top: 125px; transform: rotate(3deg); }
+.heart-5 { left: 375px; top: 130px; transform: rotate(12deg); }
+.heart-6 { left: 125px; top: 280px; transform: rotate(-5deg); }
+.heart-7 { left: 275px; top: 275px; transform: rotate(5deg); }
+.heart-8 { left: 205px; top: 410px; transform: rotate(-4deg); }
+.heart-9 { left: 345px; top: 405px; transform: rotate(8deg); }
+
+.heart-center {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(40,0,12,.85);
+  border: 1px solid rgba(255,60,90,.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  box-shadow: 0 0 60px rgba(255,30,70,.25);
+}
+
+.heart-center span {
+  font-family: "Great Vibes", cursive;
+  font-size: 36px;
+  color: #ff5473;
+}
+
+.heart-center small {
+  color: #888;
+  margin-top: 5px;
+}
+
+.heart-center b {
+  color: #ff3158;
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+/* =========================
+   GALERIA
+========================= */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.photo-card {
+  position: relative;
+  height: 330px;
+  overflow: hidden;
+  background: #111;
+  cursor: pointer;
+  padding: 0;
+}
+
+.photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: .6s;
+}
+
+.photo-card:hover img {
+  transform: scale(1.08);
+}
+
+.photo-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.25);
+  opacity: 0;
+  transition: .3s;
+}
+
+.photo-overlay span {
+  color: #fff;
+  font-size: 35px;
+}
+
+.photo-card:hover .photo-overlay {
+  opacity: 1;
+}
+
+/* =========================
+   MOTIVOS
+========================= */
+
+.reasons-section {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 20px;
+  background:
+    radial-gradient(circle, rgba(180,0,50,.2), transparent 50%),
+    #070707;
+}
+
+.reason-number {
+  font-size: 110px;
+  font-weight: 700;
+  line-height: .8;
+  color: rgba(255,255,255,.04);
+}
+
+.reasons-section h2 {
+  font-size: clamp(35px, 5vw, 60px);
+  margin: 15px 0 30px;
+}
+
+.reason-card {
+  max-width: 700px;
+  min-height: 150px;
+  width: 100%;
+  padding: 40px;
+  border: 1px solid rgba(255,50,90,.25);
+  background: rgba(255,255,255,.025);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.reason-card span {
+  color: #ff3158;
+  font-size: 24px;
+}
+
+.reason-card p {
+  font-family: "Great Vibes", cursive;
+  font-size: 38px;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.reason-counter {
+  color: #555;
+  font-size: 11px;
+  margin-top: 18px;
+}
+
+/* =========================
+   CARTA
+========================= */
+
+.letter-section {
+  min-height: 800px;
+  padding: 130px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.envelope {
+  position: relative;
+  width: min(600px, 90vw);
+  min-height: 350px;
+  background: linear-gradient(145deg, #35000d, #120005);
+  border: 1px solid rgba(255,50,90,.4);
+  border-radius: 15px;
+  cursor: pointer;
+  box-shadow: 0 30px 100px rgba(0,0,0,.6);
+  transition: .5s;
+  overflow: hidden;
+}
+
+.envelope:not(.opened):hover {
+  transform: translateY(-10px);
+}
+
+.envelope-flap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50%;
+  background: #500014;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.envelope-heart {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  color: #ff3158;
+  font-size: 60px;
+  z-index: 2;
+  filter: drop-shadow(0 0 20px #ff3158);
+}
+
+.envelope p {
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  width: 100%;
+  color: #aaa;
+}
+
+.letter-paper {
+  background: #f2e7dd;
+  color: #321d20;
+  padding: 55px;
+  min-height: 500px;
+  text-align: left;
+}
+
+.letter-top {
+  color: #9e3048;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.letter-paper h3 {
+  font-family: "Great Vibes", cursive;
+  font-size: 55px;
+  color: #9e3048;
+  margin: 25px 0;
+}
+
+.letter-paper p {
+  line-height: 1.9;
+  margin-bottom: 18px;
+}
+
+.letter-paper .signature {
+  font-family: "Great Vibes", cursive;
+  font-size: 27px;
+  color: #9e3048;
+  margin-top: 35px;
+}
+
+/* =========================
+   FUTURO
+========================= */
+
+.future-section {
+  min-height: 750px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, #17001e, #020204 70%);
+}
+
+.future-section::before,
+.future-section::after {
+  content: "✦";
+  position: absolute;
+  color: rgba(255,255,255,.5);
+  font-size: 15px;
+  box-shadow:
+    200px 50px white,
+    -300px 100px white,
+    400px -100px white,
+    -450px -150px white,
+    100px -250px white;
+}
+
+.future-content {
+  position: relative;
+  z-index: 2;
+}
+
+.future-content h2 {
+  font-size: clamp(40px, 6vw, 75px);
+  margin: 25px 0 60px;
+}
+
+.future-content h2 em {
+  display: block;
+  font-family: "Great Vibes", cursive;
+  color: #ff3158;
+  font-weight: 400;
+}
+
+.future-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 650px;
+}
+
+.future-grid div {
+  padding: 15px 22px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50px;
+  color: #aaa;
+  background: rgba(255,255,255,.025);
+}
+
+/* =========================
+   SURPRESA
+========================= */
+
+.surprise-section {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 100px 20px;
+  background:
+    radial-gradient(circle, rgba(255,0,60,.2), transparent 40%),
+    #030303;
+}
+
+.surprise-section h2 {
+  font-size: clamp(40px, 7vw, 90px);
+  margin: 25px 0 50px;
+  line-height: .95;
+}
+
+.surprise-section h2 em {
+  font-family: "Great Vibes", cursive;
+  color: #ff3158;
+  font-weight: 400;
+}
+
+.final-message {
+  animation: reveal .8s ease;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: scale(.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.big-heart {
+  font-size: 130px;
+  color: #ff3158;
+  animation: heartbeat 1.3s infinite;
+  filter: drop-shadow(0 0 35px rgba(255,30,70,.7));
+}
+
+@keyframes heartbeat {
+  0%,100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.final-message p {
+  letter-spacing: 7px;
+  color: #777;
+  font-size: 11px;
+}
+
+.final-message h2 {
+  margin: 25px 0;
+}
+
+.final-message span {
+  color: #aaa;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.photo-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.92);
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.photo-modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 100px rgba(255,30,70,.2);
+}
+
+.close-modal {
+  position: fixed;
+  top: 25px;
+  right: 30px;
+  background: transparent;
+  color: #fff;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  text-align: center;
+  padding: 60px 20px;
+  border-top: 1px solid rgba(255,255,255,.05);
+  color: #777;
+}
+
+footer div {
+  font-family: "Great Vibes", cursive;
+  color: #ff3158;
+  font-size: 30px;
+}
+
+footer p {
+  font-size: 11px;
+  margin-top: 10px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+  .navbar {
+    height: 65px;
+    padding: 0 20px;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .love-button {
+    padding: 9px 14px;
+    font-size: 11px;
+  }
+
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero h1 {
+    font-size: 65px;
+  }
+
+  .hero-text {
+    font-size: 14px;
+  }
+
+  .section {
+    padding: 90px 20px;
+  }
+
+  .section-title {
+    margin-bottom: 50px;
+  }
+
+  .section-title h2 {
+    font-size: 40px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 45px 1px 1fr;
+    gap: 15px;
+  }
+
+  .timeline-content h3 {
+    font-size: 20px;
+  }
+
+  /* coração mobile */
+
+  .heart-gallery {
+    width: 340px;
+    height: 440px;
+    max-width: 100%;
+  }
+
+  .heart-photo {
+    width: 95px;
+    height: 95px;
+  }
+
+  .heart-1 { left: 70px; top: 15px; }
+  .heart-2 { left: 175px; top: 15px; }
+  .heart-3 { left: 30px; top: 100px; }
+  .heart-4 { left: 125px; top: 95px; }
+  .heart-5 { left: 220px; top: 100px; }
+  .heart-6 { left: 70px; top: 190px; }
+  .heart-7 { left: 175px; top: 190px; }
+  .heart-8 { left: 115px; top: 280px; }
+  .heart-9 { left: 205px; top: 280px; }
+
+  .heart-center {
+    width: 105px;
+    height: 105px;
+    top: 43%;
+  }
+
+  .heart-center span {
+    font-size: 23px;
+  }
+
+  .heart-center small {
+    font-size: 8px;
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .photo-card {
+    height: 230px;
+  }
+
+  .reason-number {
+    font-size: 80px;
+  }
+
+  .reason-card {
+    padding: 30px 20px;
+  }
+
+  .reason-card p {
+    font-size: 30px;
+  }
+
+  .letter-paper {
+    padding: 35px 25px;
+  }
+
+  .letter-paper h3 {
+    font-size: 45px;
+  }
+
+  .future-section {
+    min-height: 650px;
+  }
+
+  .surprise-section {
+    min-height: 700px;
+  }
+
+  .big-heart {
+    font-size: 90px;
+  }
+
+}
