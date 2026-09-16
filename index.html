@@ -21,9 +21,12 @@
             color: #f3f4f6;
             overflow-x: hidden;
         }
-        /* Custom Neon Glow */
-        .neon-border {
-            box-shadow: 0 0 25px rgba(255, 31, 61, 0.4), inset 0 0 15px rgba(255, 31, 61, 0.2);
+        /* Recorte perfeito em formato de Coração */
+        .heart-shape-mask {
+            clip-path: path('M250,440 L220,412 C98,300 20,229 20,135 C20,58 78,0 155,0 C197,0 237,20 250,52 C263,20 303,0 345,0 C422,0 480,58 480,135 C480,229 402,300 280,412 Z');
+        }
+        .neon-glow {
+            filter: drop-shadow(0 0 20px rgba(255, 31, 61, 0.6));
         }
         .neon-text {
             text-shadow: 0 0 12px rgba(255, 31, 61, 0.6);
@@ -73,29 +76,34 @@
                 <i class="fa-solid fa-heart text-red-500 mt-2 text-sm"></i>
             </div>
 
-            <!-- CORAÇÃO CENTRAL DE FOTOS -->
-            <div class="relative w-full max-w-lg aspect-square flex items-center justify-center my-6">
-                <!-- Moldura de Coração Luminosa com Fotos em Grid -->
-                <div class="absolute inset-0 rounded-[3rem] neon-border border-2 border-red-500/60 overflow-hidden bg-black/60 p-3 grid grid-cols-4 gap-2 shadow-[0_0_50px_rgba(255,31,61,0.3)]">
-                    <!-- Fotos do casal simulando a colagem da imagem -->
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+            <!-- CORAÇÃO CENTRAL COM MÁSCARA EXATA -->
+            <div class="relative w-[340px] h-[340px] md:w-[480px] md:h-[450px] flex items-center justify-center my-4 neon-glow">
+                
+                <!-- Borda Neon Externa em formato de Coração -->
+                <div class="absolute inset-0 bg-red-600 heart-shape-mask blur-sm opacity-70"></div>
+
+                <!-- Conteúdo Interno com as Fotos em formato de Coração -->
+                <div class="absolute inset-2 bg-black heart-shape-mask overflow-hidden grid grid-cols-3 gap-1.5 p-2 border-2 border-red-500">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover opacity-90 hover:scale-110 transition-transform duration-500">
                 </div>
 
-                <!-- Card Central "Eu te amo" -->
-                <div class="relative z-20 bg-[#0c080a]/90 backdrop-blur-xl border border-red-500/50 p-6 md:p-8 rounded-full w-64 h-64 md:w-72 md:h-72 flex flex-col items-center justify-center text-center shadow-2xl">
-                    <h1 class="font-handwriting text-4xl md:text-5xl text-red-300 neon-text mb-1">Eu te amo</h1>
+                <!-- Card Central "Eu te amo" flutuando por cima -->
+                <div class="relative z-20 bg-[#0c080a]/95 backdrop-blur-xl border border-red-500/60 p-6 rounded-full w-48 h-48 md:w-56 md:h-56 flex flex-col items-center justify-center text-center shadow-[0_0_30px_rgba(255,31,61,0.4)]">
+                    <h1 class="font-handwriting text-3xl md:text-4xl text-red-300 neon-text mb-1">Eu te amo</h1>
                     <i class="fa-solid fa-heart text-red-500 text-xs my-1 animate-pulse"></i>
-                    <p class="text-[10px] md:text-xs text-neutral-300 tracking-wider uppercase leading-relaxed font-light px-4">
+                    <p class="text-[9px] md:text-[10px] text-neutral-300 tracking-wider uppercase leading-tight font-light px-2">
                         Em cada detalhe, em todos os dias, sempre.
                     </p>
                 </div>
+
             </div>
 
             <!-- Frase Lateral Direita -->
