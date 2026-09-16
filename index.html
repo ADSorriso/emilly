@@ -1,673 +1,172 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATAFINDER - Dados que fazem a diferença</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#050507',
-                        navycard: '#0c101d',
-                        navyborder: '#1a233a',
-                        neonred: '#ff1f3d',
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Para o meu amor ❤️</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome para Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Great Vibes (Manuscrita) e Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .font-handwriting {
+            font-family: 'Great Vibes', cursive;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #050505;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        /* Custom Neon Glow */
+        .neon-border {
+            box-shadow: 0 0 25px rgba(255, 31, 61, 0.4), inset 0 0 15px rgba(255, 31, 61, 0.2);
+        }
+        .neon-text {
+            text-shadow: 0 0 12px rgba(255, 31, 61, 0.6);
+        }
+    </style>
 </head>
-<body class="bg-darkbg text-slate-100 font-sans antialiased selection:bg-neonred selection:text-white min-h-screen flex overflow-x-hidden">
+<body class="bg-[#050505] text-slate-100 min-h-screen">
 
-    <!-- Sidebar Vertical Escura -->
-    <aside class="w-64 bg-navycard border-r border-navyborder flex flex-col justify-between hidden md:flex sticky top-0 h-screen z-20 shrink-0">
-        <div>
-            <!-- Logo DATAFINDER -->
-            <div class="p-6 border-b border-navyborder">
-                <div class="flex items-center gap-3">
-                    <div class="text-neonred text-2xl">
-                        <i class="fa-solid fa-fingerprint"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-lg tracking-wider leading-none">
-                            <span class="text-white">DATA</span><span class="text-neonred">FINDER</span>
-                        </h1>
-                        <p class="text-[10px] text-slate-400 mt-1">Dados que fazem a diferença.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Menu com Navegação Funcional -->
-            <nav class="p-4 space-y-1">
-                <button onclick="switchTab('inicio')" id="btn-inicio" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-neonred text-white font-medium text-sm transition-all shadow-lg shadow-neonred/20 cursor-pointer">
-                    <i class="fa-solid fa-house w-5"></i> Início
-                </button>
-                <button onclick="switchTab('buscar')" id="btn-buscar" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm transition-all cursor-pointer">
-                    <i class="fa-solid fa-magnifying-glass w-5"></i> Buscar Pessoa
-                </button>
-                <button onclick="switchTab('relatorios')" id="btn-relatorios" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm transition-all cursor-pointer">
-                    <i class="fa-solid fa-file-lines w-5"></i> Relatórios
-                </button>
-                <button onclick="switchTab('monitoramento')" id="btn-monitoramento" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm transition-all cursor-pointer">
-                    <i class="fa-solid fa-shield-halved w-5"></i> Monitoramento
-                </button>
-                <button onclick="switchTab('favoritos')" id="btn-favoritos" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm transition-all cursor-pointer">
-                    <i class="fa-solid fa-heart w-5"></i> Favoritos
-                </button>
-                <button onclick="switchTab('configuracoes')" id="btn-configuracoes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/50 text-sm transition-all cursor-pointer">
-                    <i class="fa-solid fa-gear w-5"></i> Configurações
-                </button>
-            </nav>
+    <!-- NAVBAR -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-red-950/30 px-6 py-4 flex items-center justify-between">
+        <div class="font-handwriting text-2xl text-red-200 flex items-center gap-2">
+            Para o meu amor <i class="fa-solid fa-heart text-red-500 text-sm"></i>
         </div>
 
-        <!-- Alerta de Segurança Inferior -->
-        <div class="p-4 m-4 rounded-xl bg-slate-900/60 border border-slate-800/80 text-xs text-slate-400 flex items-start gap-3">
-            <i class="fa-solid fa-lock text-neonred mt-0.5"></i>
-            <div>
-                <p class="text-slate-200 font-medium">Seus dados são protegidos</p>
-                <p class="text-[11px] mt-0.5 text-slate-500">Segurança e privacidade em primeiro lugar.</p>
-            </div>
+        <nav class="hidden md:flex items-center gap-8 text-sm text-neutral-300 font-medium">
+            <a href="#inicio" class="text-red-500 border-b border-red-500 pb-0.5">Início</a>
+            <a href="#motivos" class="hover:text-red-400 transition-colors">Motivos</a>
+            <a href="#fotos" class="hover:text-red-400 transition-colors">Nossas Fotos</a>
+            <a href="#mensagens" class="hover:text-red-400 transition-colors">Mensagens</a>
+            <a href="#surpresa" class="hover:text-red-400 transition-colors">Surpresa</a>
+        </nav>
+
+        <div class="flex items-center gap-2 bg-gradient-to-r from-red-950/80 to-red-900/40 border border-red-500/40 px-5 py-2 rounded-full shadow-lg shadow-red-950/50">
+            <i class="fa-solid fa-heart text-red-500 animate-pulse"></i>
+            <span class="text-xs font-semibold tracking-wide text-red-200">Eu te amo</span>
         </div>
-    </aside>
+    </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-1 flex flex-col min-w-0">
-        <!-- Topo / Barra de Pesquisa Global -->
-        <header class="h-20 border-b border-navyborder bg-darkbg/80 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-10">
-            <div class="relative w-full max-w-xl">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" id="global-search" placeholder="Digite o nome, CPF, RG ou telefone..." class="w-full bg-navycard border border-navyborder rounded-xl pl-11 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-neonred transition-colors" onkeypress="handleGlobalSearch(event)">
+    <!-- HERO / SEÇÃO PRINCIPAL -->
+    <main class="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-12 px-4 overflow-hidden">
+        
+        <!-- Fundo com efeito atmosférico escuro e rosas borradas -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(120,10,25,0.25)_0%,transparent_75%)] pointer-events-none"></div>
+
+        <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10 gap-6">
+            
+            <!-- Frase Lateral Esquerda -->
+            <div class="hidden xl:flex flex-col text-xs font-semibold tracking-[0.25em] text-neutral-400 space-y-2 uppercase text-left">
+                <span>Você</span>
+                <span>faz</span>
+                <span>tudo</span>
+                <span>mais</span>
+                <span>bonito</span>
+                <span>na</span>
+                <span>minha</span>
+                <span>vida</span>
+                <i class="fa-solid fa-heart text-red-500 mt-2 text-sm"></i>
             </div>
 
-            <div class="flex items-center gap-4 ml-6">
-                <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-xl bg-navycard border border-navyborder flex items-center justify-center text-slate-400 hover:text-white transition-colors cursor-pointer">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-neonred"></span>
-                </button>
-                <div class="flex items-center gap-3 pl-4 border-l border-navyborder">
-                    <div class="w-9 h-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-semibold text-sm">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div class="hidden sm:block">
-                        <p class="text-xs font-medium text-slate-200">Usuário</p>
-                        <p class="text-[10px] text-neonred font-semibold">Plano Premium</p>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- CONTAINER DAS ABAS (TUDO FUNCIONAL) -->
-        <div class="flex-1 overflow-y-auto">
-
-            <!-- 1. ABA INÍCIO -->
-            <div id="tab-inicio" class="p-8 space-y-8 max-w-7xl w-full mx-auto tab-content">
-                <!-- Hero Banner -->
-                <div class="relative rounded-2xl bg-gradient-to-r from-navycard via-[#111827] to-navycard border border-navyborder p-8 overflow-hidden shadow-2xl">
-                    <div class="relative z-10 max-w-xl">
-                        <h2 class="text-3xl lg:text-4xl font-bold tracking-tight text-white mb-3">
-                            Encontre informações com mais <span class="text-neonred">precisão.</span>
-                        </h2>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed">
-                            Acesse dados pessoais de forma rápida, segura e organizada. Tudo em um só lugar.
-                        </p>
-                        <div class="flex flex-wrap gap-4">
-                            <button onclick="switchTab('buscar')" class="bg-neonred hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all shadow-lg shadow-neonred/25 flex items-center gap-2 cursor-pointer">
-                                <i class="fa-solid fa-plus"></i> Nova Busca
-                            </button>
-                            <button onclick="executarBuscaExemplo('João Silva Santos')" class="bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-semibold px-6 py-3 rounded-xl text-sm border border-slate-700 transition-all cursor-pointer">
-                                Ver Exemplos
-                            </button>
-                        </div>
-                    </div>
-                    <div class="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:flex items-center justify-end opacity-20 pointer-events-none pr-12">
-                        <i class="fa-solid fa-fingerprint text-[220px] text-neonred"></i>
-                    </div>
+            <!-- CORAÇÃO CENTRAL DE FOTOS -->
+            <div class="relative w-full max-w-lg aspect-square flex items-center justify-center my-6">
+                <!-- Moldura de Coração Luminosa com Fotos em Grid -->
+                <div class="absolute inset-0 rounded-[3rem] neon-border border-2 border-red-500/60 overflow-hidden bg-black/60 p-3 grid grid-cols-4 gap-2 shadow-[0_0_50px_rgba(255,31,61,0.3)]">
+                    <!-- Fotos do casal simulando a colagem da imagem -->
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=300" class="w-full h-full object-cover rounded-xl opacity-90 hover:scale-105 transition-transform">
                 </div>
 
-                <!-- Cards Estatísticos & Atalhos -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-navycard border border-navyborder p-5 rounded-2xl flex flex-col justify-between">
-                            <span class="text-xs text-slate-400">Total de consultas</span>
-                            <div class="flex items-baseline justify-between mt-4">
-                                <span id="stat-total" class="text-2xl font-bold text-white">824</span>
-                                <span class="text-xs font-semibold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-arrow-up"></i> 12%</span>
-                            </div>
-                        </div>
-                        <div class="bg-navycard border border-navyborder p-5 rounded-2xl flex flex-col justify-between">
-                            <span class="text-xs text-slate-400">Pessoas encontradas</span>
-                            <div class="flex items-baseline justify-between mt-4">
-                                <span class="text-2xl font-bold text-white">713</span>
-                                <span class="text-xs font-semibold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-arrow-up"></i> 9%</span>
-                            </div>
-                        </div>
-                        <div class="bg-navycard border border-navyborder p-5 rounded-2xl flex flex-col justify-between">
-                            <span class="text-xs text-slate-400">Últimas 24 horas</span>
-                            <div class="flex items-baseline justify-between mt-4">
-                                <span id="stat-24h" class="text-2xl font-bold text-white">48</span>
-                                <span class="text-xs font-semibold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-arrow-up"></i> 25%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Atalhos Rápidos -->
-                    <div class="bg-navycard border border-navyborder p-5 rounded-2xl flex flex-col justify-between">
-                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Acesso Rápido</span>
-                        <div class="grid grid-cols-4 gap-2 my-auto py-2">
-                            <div onclick="switchTab('buscar')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-center cursor-pointer hover:border-neonred transition-all">
-                                <i class="fa-solid fa-user text-neonred mb-1"></i>
-                                <span class="text-[10px] text-slate-300">Pessoas</span>
-                            </div>
-                            <div onclick="switchTab('buscar')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-center cursor-pointer hover:border-neonred transition-all">
-                                <i class="fa-solid fa-location-dot text-neonred mb-1"></i>
-                                <span class="text-[10px] text-slate-300">Endereços</span>
-                            </div>
-                            <div onclick="switchTab('buscar')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-center cursor-pointer hover:border-neonred transition-all">
-                                <i class="fa-solid fa-phone text-neonred mb-1"></i>
-                                <span class="text-[10px] text-slate-300">Telefones</span>
-                            </div>
-                            <div onclick="switchTab('buscar')" class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-900/60 border border-slate-800 text-center cursor-pointer hover:border-neonred transition-all">
-                                <i class="fa-solid fa-car text-neonred mb-1"></i>
-                                <span class="text-[10px] text-slate-300">Veículos</span>
-                            </div>
-                        </div>
-                        <span class="text-[10px] text-slate-500 text-center">Consulte outros dados protegidos</span>
-                    </div>
-                </div>
-
-                <!-- Seção Inferior -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-navycard border border-navyborder p-6 rounded-2xl">
-                        <h3 class="text-sm font-semibold text-white mb-4">Últimas Consultas</h3>
-                        <div class="space-y-3" id="lista-ultimas-consultas">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-solid fa-address-card text-neonred"></i>
-                                    <span class="text-slate-300">CPF: ***.***.***-**</span>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-slate-500">Hoje, 10:24</span>
-                                    <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md text-[10px] font-medium"><i class="fa-solid fa-check"></i> Concluído</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-navycard border border-navyborder p-6 rounded-2xl flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-sm font-semibold text-white mb-1">Mapa de Localização</h3>
-                            <p class="text-xs text-slate-400">Última localização registrada.</p>
-                        </div>
-                        <div class="my-4 h-32 rounded-xl bg-slate-900 border border-slate-800 relative flex items-center justify-center overflow-hidden">
-                            <div class="absolute inset-0 opacity-35 bg-[radial-gradient(#ff1f3d_1px,transparent_1px)] [background-size:12px_12px]"></div>
-                            <div class="relative z-10 text-neonred text-xl animate-pulse">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-300 font-medium">São Paulo - SP</span>
-                            <span class="text-slate-500 text-[10px]">Atualizado hoje</span>
-                        </div>
-                    </div>
+                <!-- Card Central "Eu te amo" -->
+                <div class="relative z-20 bg-[#0c080a]/90 backdrop-blur-xl border border-red-500/50 p-6 md:p-8 rounded-full w-64 h-64 md:w-72 md:h-72 flex flex-col items-center justify-center text-center shadow-2xl">
+                    <h1 class="font-handwriting text-4xl md:text-5xl text-red-300 neon-text mb-1">Eu te amo</h1>
+                    <i class="fa-solid fa-heart text-red-500 text-xs my-1 animate-pulse"></i>
+                    <p class="text-[10px] md:text-xs text-neutral-300 tracking-wider uppercase leading-relaxed font-light px-4">
+                        Em cada detalhe, em todos os dias, sempre.
+                    </p>
                 </div>
             </div>
 
-            <!-- 2. ABA BUSCAR PESSOA -->
-            <div id="tab-buscar" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="bg-navycard border border-navyborder p-8 rounded-2xl shadow-xl space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Busca Avançada de Cadastros</h2>
-                        <p class="text-xs text-slate-400 mt-1">Insira qualquer parâmetro abaixo para puxar o registro correspondente no banco de dados.</p>
-                    </div>
-
-                    <div class="flex flex-col md:flex-row gap-3">
-                        <div class="relative flex-1">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-500"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            <input type="text" id="input-busca-avancada" placeholder="Digite Nome completo, CPF, RG ou Telefone..." class="w-full bg-slate-900 border border-navyborder rounded-xl pl-11 pr-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-neonred">
-                        </div>
-                        <button onclick="realizarBuscaDetalhada()" class="bg-neonred hover:bg-red-700 text-white font-semibold px-8 py-3 rounded-xl text-sm transition-all shadow-lg shadow-neonred/20 cursor-pointer">
-                            Buscar Registro
-                        </button>
-                    </div>
-
-                    <!-- Sugestões Rápidas de Teste -->
-                    <div class="pt-2 border-t border-navyborder">
-                        <span class="text-xs text-slate-400 block mb-2 font-medium">Sugestões de teste rápido (Clique para carregar):</span>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="executarBuscaExemplo('João Silva Santos')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-neonred transition-all cursor-pointer">João Silva Santos</button>
-                            <button onclick="executarBuscaExemplo('Maria Oliveira')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-neonred transition-all cursor-pointer">Maria Oliveira</button>
-                            <button onclick="executarBuscaExemplo('Carlos Ferreira')" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:border-neonred transition-all cursor-pointer">Carlos Ferreira</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Resultados da Busca -->
-                <div id="resultado-busca-container" class="space-y-4"></div>
-            </div>
-
-            <!-- 3. ABA PERFIL / RESULTADO DA PESQUISA (Dinamico) -->
-            <div id="tab-perfil" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="flex items-center justify-between">
-                    <button onclick="switchTab('buscar')" class="text-xs text-slate-400 hover:text-white flex items-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-arrow-left"></i> Voltar para buscas
-                    </button>
-                    <button onclick="baixarRelatorioPDF()" class="bg-neonred hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-neonred/20">
-                        <i class="fa-solid fa-download"></i> Baixar Relatório
-                    </button>
-                </div>
-
-                <!-- Card de Perfil Completo -->
-                <div class="bg-navycard border border-navyborder p-8 rounded-2xl shadow-xl space-y-6">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-navyborder pb-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-500 overflow-hidden relative">
-                                <div class="absolute inset-0 bg-cover bg-center filter blur-sm opacity-50" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150')"></div>
-                                <i class="fa-solid fa-user text-2xl relative z-10 text-slate-300"></i>
-                            </div>
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <h2 id="perfil-nome" class="text-xl font-bold text-white">João Silva Santos</h2>
-                                    <span class="bg-emerald-500/10 text-emerald-400 text-[10px] px-2 py-0.5 rounded-full font-medium border border-emerald-500/20"><i class="fa-solid fa-check"></i> Verificado</span>
-                                </div>
-                                <p id="perfil-cpf" class="text-xs text-slate-400 mt-1">CPF: 123.456.789-00</p>
-                            </div>
-                        </div>
-                        <button onclick="favoritarPerfil()" id="btn-favorito-perfil" class="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 hover:text-neonred transition-all cursor-pointer flex items-center gap-2">
-                            <i class="fa-regular fa-heart"></i> Favoritar Registro
-                        </button>
-                    </div>
-
-                    <!-- Abas internas do Perfil -->
-                    <div class="flex border-b border-navyborder gap-6 text-xs font-semibold">
-                        <button onclick="switchPerfilTab('dados')" id="ptab-dados" class="pb-3 text-neonred border-b-2 border-neonred cursor-pointer">Dados Pessoais</button>
-                        <button onclick="switchPerfilTab('endereco')" id="ptab-endereco" class="pb-3 text-slate-400 hover:text-white cursor-pointer">Endereço</button>
-                        <button onclick="switchPerfilTab('telefones')" id="ptab-telefones" class="pb-3 text-slate-400 hover:text-white cursor-pointer">Telefones</button>
-                        <button onclick="switchPerfilTab('veiculos')" id="ptab-veiculos" class="pb-3 text-slate-400 hover:text-white cursor-pointer">Veículos</button>
-                    </div>
-
-                    <!-- Conteúdo das Abas do Perfil -->
-                    <div id="pcontent-dados" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Nome completo</span><strong id="info-nome" class="text-slate-200">João Silva Santos</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Data de nascimento</span><strong id="info-nasc" class="text-slate-200">12/03/1990</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">RG</span><strong id="info-rg" class="text-slate-200">12.345.678-9</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">CPF</span><strong id="info-cpf" class="text-slate-200">123.456.789-00</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Nacionalidade</span><strong class="text-slate-200">Brasileira</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Estado civil</span><strong class="text-slate-200">Solteiro(a)</strong></div>
-                    </div>
-
-                    <div id="pcontent-endereco" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs hidden">
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Logradouro</span><strong id="info-rua" class="text-slate-200">Av. Paulista, 1000 - Apto 42</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Bairro</span><strong class="text-slate-200">Bela Vista</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">Cidade / UF</span><strong id="info-cidade" class="text-slate-200">São Paulo - SP</strong></div>
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/60"><span class="text-slate-500 block mb-1">CEP</span><strong class="text-slate-200">01310-100</strong></div>
-                    </div>
-
-                    <div id="pcontent-telefones" class="space-y-3 text-xs hidden">
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800/60">
-                            <span class="text-slate-300" id="info-tel1">(11) 98877-6655</span>
-                            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">WhatsApp / Celular</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800/60">
-                            <span class="text-slate-300">(11) 3222-4411</span>
-                            <span class="text-slate-400 bg-slate-800 px-2 py-0.5 rounded text-[10px]">Residencial</span>
-                        </div>
-                    </div>
-
-                    <div id="pcontent-veiculos" class="space-y-3 text-xs hidden">
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800/60">
-                            <div>
-                                <strong id="info-veiculo" class="text-slate-200 block">Honda Civic EXL - 2022/2023</strong>
-                                <span class="text-slate-500 text-[10px]">Placa: ABC-1D23 • Cor: Preto</span>
-                            </div>
-                            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">Licenciado</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. ABA RELATÓRIOS -->
-            <div id="tab-relatorios" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="bg-navycard border border-navyborder p-6 rounded-2xl shadow-xl space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Central de Relatórios</h2>
-                        <p class="text-xs text-slate-400 mt-1">Gere relatórios completos de forma prática com os dados disponíveis no sistema.</p>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-neonred/10 text-neonred flex items-center justify-center"><i class="fa-solid fa-file-shield"></i></div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">Relatório Completo</strong>
-                                    <span class="text-slate-400">Todas as informações unificadas em um único arquivo de auditoria.</span>
-                                </div>
-                            </div>
-                            <button onclick="gerarRelatorioToast('Completo')" class="bg-neonred hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-md shadow-neonred/20">Gerar</button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-neonred/10 text-neonred flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">Relatório de Endereço</strong>
-                                    <span class="text-slate-400">Histórico de endereços e regiões vinculadas.</span>
-                                </div>
-                            </div>
-                            <button onclick="gerarRelatorioToast('de Endereço')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer border border-slate-700">Gerar</button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-neonred/10 text-neonred flex items-center justify-center"><i class="fa-solid fa-car"></i></div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">Relatório de Veículos</strong>
-                                    <span class="text-slate-400">Frota e veículos vinculados ao CPF ou nome.</span>
-                                </div>
-                            </div>
-                            <button onclick="gerarRelatorioToast('de Veículos')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer border border-slate-700">Gerar</button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-neonred/10 text-neonred flex items-center justify-center"><i class="fa-solid fa-phone"></i></div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">Relatório de Telefones</strong>
-                                    <span class="text-slate-400">Números de contato e operadoras associadas.</span>
-                                </div>
-                            </div>
-                            <button onclick="gerarRelatorioToast('de Telefones')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer border border-slate-700">Gerar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 5. ABA MONITORAMENTO -->
-            <div id="tab-monitoramento" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="bg-navycard border border-navyborder p-6 rounded-2xl shadow-xl space-y-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-xl font-bold text-white">Monitoramento Ativo</h2>
-                            <p class="text-xs text-slate-400 mt-1">Acompanhe mudanças e novos registros cadastrados em tempo real.</p>
-                        </div>
-                        <button onclick="adicionarMonitoramento()" class="bg-neonred hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-lg shadow-neonred/20">
-                            + Monitorar Novo CPF
-                        </button>
-                    </div>
-
-                    <div class="space-y-3" id="lista-monitorados">
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-bold">JS</div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">João Silva Santos</strong>
-                                    <span class="text-slate-400">CPF: 123.456.789-00 • Monitorando desde 12/08/2025</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">Ativo</span>
-                                <input type="checkbox" checked class="accent-neonred w-4 h-4 cursor-pointer" onclick="toggleSwitch(this)">
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-bold">MO</div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">Maria Oliveira</strong>
-                                    <span class="text-slate-400">CPF: 987.654.321-00 • Monitorando desde 10/08/2025</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px]">Ativo</span>
-                                <input type="checkbox" checked class="accent-neonred w-4 h-4 cursor-pointer" onclick="toggleSwitch(this)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. ABA FAVORITOS -->
-            <div id="tab-favoritos" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="bg-navycard border border-navyborder p-6 rounded-2xl shadow-xl space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Registros Favoritos</h2>
-                        <p class="text-xs text-slate-400 mt-1">Acesse rapidamente as pessoas que você mais consulta.</p>
-                    </div>
-
-                    <div class="space-y-3" id="lista-favoritos-container">
-                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs">
-                            <div class="flex items-center gap-3">
-                                <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 font-bold">JS</div>
-                                <div>
-                                    <strong class="text-slate-200 block text-sm">João Silva Santos</strong>
-                                    <span class="text-slate-400">CPF: 123.456.789-00</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="executarBuscaExemplo('João Silva Santos')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white cursor-pointer">Ver Ficha</button>
-                                <i class="fa-solid fa-heart text-neonred text-base"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 7. ABA CONFIGURAÇÕES -->
-            <div id="tab-configuracoes" class="p-8 space-y-6 max-w-5xl w-full mx-auto tab-content hidden">
-                <div class="bg-navycard border border-navyborder p-8 rounded-2xl shadow-xl space-y-6">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">Configurações da Conta</h2>
-                        <p class="text-xs text-slate-400 mt-1">Personalize sua experiência e gerencie preferências de segurança.</p>
-                    </div>
-
-                    <div class="space-y-4 text-xs">
-                        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 flex items-center justify-between">
-                            <div>
-                                <strong class="text-slate-200 block text-sm">Alterar Dados Cadastrais</strong>
-                                <span class="text-slate-400">Atualize seu e-mail, telefone corporativo ou nome de exibição.</span>
-                            </div>
-                            <button onclick="alert('Dados atualizados com sucesso!')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white cursor-pointer">Editar</button>
-                        </div>
-
-                        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 flex items-center justify-between">
-                            <div>
-                                <strong class="text-slate-200 block text-sm">Notificações por E-mail e WhatsApp</strong>
-                                <span class="text-slate-400">Receba alertas em tempo real de novos relatórios gerados.</span>
-                            </div>
-                            <input type="checkbox" checked class="accent-neonred w-5 h-5 cursor-pointer">
-                        </div>
-
-                        <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800/60 flex items-center justify-between">
-                            <div>
-                                <strong class="text-slate-200 block text-sm">Políticas de Privacidade e LGPD</strong>
-                                <span class="text-slate-400">Termos de uso e diretrizes de conformidade de dados corporativos.</span>
-                            </div>
-                            <button onclick="alert('Abrindo diretrizes de LGPD...')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white cursor-pointer">Visualizar</button>
-                        </div>
-                    </div>
-                </div>
+            <!-- Frase Lateral Direita -->
+            <div class="hidden xl:flex flex-col text-xs font-semibold tracking-[0.25em] text-neutral-400 space-y-2 uppercase text-right">
+                <span>Ao</span>
+                <span>seu</span>
+                <span>lado</span>
+                <span>tudo</span>
+                <span>faz</span>
+                <span>mais</span>
+                <span>sentido</span>
+                <i class="fa-solid fa-heart text-red-500 mt-2 text-sm self-end"></i>
             </div>
 
         </div>
+
+        <!-- 4 CARDS DE NAVEGAÇÃO RÁPIDA -->
+        <div id="motivos" class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12 px-4 relative z-10">
+            <div class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
+                <i class="fa-solid fa-heart text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+                <h3 class="text-white font-medium text-base mb-1">Motivos</h3>
+                <p class="text-xs text-neutral-400">100 motivos para te amar</p>
+            </div>
+            <div id="fotos" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
+                <i class="fa-solid fa-image text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+                <h3 class="text-white font-medium text-base mb-1">Nossas Fotos</h3>
+                <p class="text-xs text-neutral-400">Os melhores momentos</p>
+            </div>
+            <div id="mensagens" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
+                <i class="fa-solid fa-comment-dots text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+                <h3 class="text-white font-medium text-base mb-1">Mensagens</h3>
+                <p class="text-xs text-neutral-400">Palavras do meu coração</p>
+            </div>
+            <div id="surpresa" class="bg-[#0c0f17]/80 backdrop-blur-md border border-red-950/60 p-6 rounded-2xl hover:border-red-500/50 transition-all text-center group cursor-pointer shadow-xl">
+                <i class="fa-solid fa-gift text-red-500 text-xl mb-3 group-hover:scale-110 transition-transform"></i>
+                <h3 class="text-white font-medium text-base mb-1">Surpresa</h3>
+                <p class="text-xs text-neutral-400">Tem mais por aqui...</p>
+            </div>
+        </div>
+
+        <!-- BANNER INFERIOR "OBRIGADO POR FAZER PARTE" -->
+        <div class="w-full max-w-5xl mx-auto mt-8 px-4 relative z-10">
+            <div class="bg-[#0c080a]/80 backdrop-blur-xl border border-red-900/40 p-6 md:p-8 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-cover bg-center opacity-15 pointer-events-none" style="background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800')"></div>
+                
+                <div class="relative z-10 text-center md:text-left">
+                    <h2 class="font-handwriting text-3xl md:text-4xl text-red-300">
+                        Obrigado por fazer parte da minha história
+                    </h2>
+                    <i class="fa-solid fa-heart text-red-500 text-xs mt-2"></i>
+                </div>
+
+                <div class="relative z-10 text-xs md:text-sm text-neutral-300 space-y-1 text-center md:text-right font-light">
+                    <p>• Você é o meu hoje,</p>
+                    <p>• o meu amanhã</p>
+                    <p>• e todos os meus sempre.</p>
+                    <div class="font-handwriting text-2xl text-red-400 mt-2 flex items-center justify-end gap-1.5">
+                        Eu te amo <i class="fa-solid fa-heart text-xs text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INDICADOR DE ROLAGEM -->
+        <div class="mt-12 flex flex-col items-center text-neutral-500 text-xs tracking-widest uppercase">
+            <i class="fa-regular fa-mouse text-base mb-1 text-red-500 animate-bounce"></i>
+            <span>Role para explorar</span>
+            <i class="fa-solid fa-chevron-down text-[10px] mt-1 animate-pulse"></i>
+        </div>
+
     </main>
 
-    <!-- TOAST DE NOTIFICAÇÃO GLOBAL -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 border border-neonred text-white px-5 py-3 rounded-xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3 text-xs">
-        <i class="fa-solid fa-circle-check text-neonred text-base"></i>
-        <span id="toast-msg">Ação executada com sucesso!</span>
-    </div>
-
-    <!-- SCRIPT DE FUNCIONALIDADE TOTAL -->
-    <script>
-        // Banco de dados simulado para buscas dinâmicas reais
-        const database = {
-            "joao silva santos": { nome: "João Silva Santos", cpf: "123.456.789-00", rg: "12.345.678-9", nasc: "12/03/1990", rua: "Av. Paulista, 1000 - Apto 42", cidade: "São Paulo - SP", tel: "(11) 98877-6655", veiculo: "Honda Civic EXL - 2022/2023" },
-            "maria oliveira": { nome: "Maria Oliveira", cpf: "987.654.321-00", rg: "98.765.432-1", nasc: "25/07/1985", rua: "Rua Augusta, 500", cidade: "São Paulo - SP", tel: "(11) 97788-1122", veiculo: "Toyota Corolla XEI - 2021" },
-            "carlos ferreira": { nome: "Carlos Ferreira", cpf: "456.789.123-00", rg: "45.678.912-3", nasc: "10/11/1992", rua: "Rua Oscar Freire, 200", cidade: "São Paulo - SP", tel: "(11) 96655-4433", veiculo: "Jeep Compass - 2023" }
-        };
-
-        // Função de Alternância de Abas
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-
-            // Atualizar classes dos botões da sidebar
-            document.querySelectorAll('aside nav button').forEach(btn => {
-                btn.classList.remove('bg-neonred', 'text-white', 'shadow-lg', 'shadow-neonred/20');
-                btn.classList.add('text-slate-400');
-            });
-            const activeBtn = document.getElementById('btn-' + tabId);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-neonred', 'text-white', 'shadow-lg', 'shadow-neonred/20');
-                activeBtn.classList.remove('text-slate-400');
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Função de Alternância de Abas dentro do Perfil
-        function switchPerfilTab(subTabId) {
-            ['dados', 'endereco', 'telefones', 'veiculos'].forEach(t => {
-                document.getElementById('pcontent-' + t).classList.add('hidden');
-                document.getElementById('ptab-' + t).classList.remove('text-neonred', 'border-b-2', 'border-neonred');
-                document.getElementById('ptab-' + t).classList.add('text-slate-400');
-            });
-            document.getElementById('pcontent-' + subTabId).classList.remove('hidden');
-            document.getElementById('ptab-' + subTabId).classList.add('text-neonred', 'border-b-2', 'border-neonred');
-            document.getElementById('ptab-' + subTabId).classList.remove('text-slate-400');
-        }
-
-        // Executar Busca Global na Barra do Topo
-        function handleGlobalSearch(event) {
-            if (event.key === 'Enter') {
-                const termo = document.getElementById('global-search').value.trim().toLowerCase();
-                if(termo) {
-                    executarBuscaExemplo(termo);
-                }
-            }
-        }
-
-        // Executar Busca Detalhada na Aba Buscar Pessoa
-        function realizarBuscaDetalhada() {
-            const termo = document.getElementById('input-busca-avancada').value.trim().toLowerCase();
-            if(termo) {
-                executarBuscaExemplo(termo);
-            } else {
-                showToast('Digite um termo válido para pesquisar!');
-            }
-        }
-
-        // Carregar Perfil Dinamicamente Baseado na Busca
-        function executarBuscaExemplo(termoBusca) {
-            let chave = termoBusca.toLowerCase();
-            let dadosPessoa = database[chave];
-
-            // Se não achar exato, pega o primeiro correspondente ou simula
-            if(!dadosPessoa) {
-                for (let key in database) {
-                    if (key.includes(chave) || chave.includes(key)) {
-                        dadosPessoa = database[key];
-                        break;
-                    }
-                }
-            }
-
-            if(!dadosPessoa) {
-                // Criar dado genérico se não existir no mock
-                dadosPessoa = {
-                    nome: termoBusca.toUpperCase(),
-                    cpf: "***.***",
-                    rg: "**.***",
-                    nasc: "01/01/1995",
-                    rua: "Endereço sigiloso / Consulta protegida",
-                    cidade: "São Paulo - SP",
-                    tel: "(11) 99999-9999",
-                    veiculo: "Nenhum veículo vinculado"
-                };
-            }
-
-            // Preencher dados na tela de perfil
-            document.getElementById('perfil-nome').innerText = dadosPessoa.nome;
-            document.getElementById('perfil-cpf').innerText = "CPF: " + dadosPessoa.cpf;
-            document.getElementById('info-nome').innerText = dadosPessoa.nome;
-            document.getElementById('info-nasc').innerText = dadosPessoa.nasc;
-            document.getElementById('info-rg').innerText = dadosPessoa.rg;
-            document.getElementById('info-cpf').innerText = dadosPessoa.cpf;
-            document.getElementById('info-rua').innerText = dadosPessoa.rua;
-            document.getElementById('info-cidade').innerText = dadosPessoa.cidade;
-            document.getElementById('info-tel1').innerText = dadosPessoa.tel;
-            document.getElementById('info-veiculo').innerText = dadosPessoa.veiculo;
-
-            // Incrementar estatísticas reais na tela inicial
-            let totalEl = document.getElementById('stat-total');
-            let h24El = document.getElementById('stat-24h');
-            totalEl.innerText = parseInt(totalEl.innerText) + 1;
-            h24El.innerText = parseInt(h24El.innerText) + 1;
-
-            // Adicionar às últimas consultas
-            const listaConsultas = document.getElementById('lista-ultimas-consultas');
-            const novaConsultaHTML = `
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-slate-800/60 text-xs animate-pulse">
-                    <div class="flex items-center gap-3">
-                        <i class="fa-solid fa-user text-neonred"></i>
-                        <span class="text-slate-300">Consulta: ${dadosPessoa.nome}</span>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <span class="text-slate-500">Agora mesmo</span>
-                        <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md text-[10px] font-medium"><i class="fa-solid fa-check"></i> Concluído</span>
-                    </div>
-                </div>
-            `;
-            listaConsultas.insertAdjacentHTML('afterbegin', novaConsultaHTML);
-
-            // Redirecionar para a aba de perfil preenchida
-            switchTab('perfil');
-            showToast('Consulta realizada com sucesso!');
-        }
-
-        // Sistema de Toast Feedback
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-24', 'opacity-0');
-            }, 3000);
-        }
-
-        function gerarRelatorioToast(tipo) {
-            showToast('Relatório ' + tipo + ' gerado com sucesso!');
-        }
-
-        function baixarRelatorioPDF() {
-            showToast('Baixando arquivo PDF do registro...');
-        }
-
-        function favoritarPerfil() {
-            showToast('Registro adicionado aos favoritos!');
-            const btn = document.getElementById('btn-favorito-perfil');
-            btn.innerHTML = '<i class="fa-solid fa-heart text-neonred"></i> Favoritado';
-            btn.classList.add('border-neonred');
-        }
-
-        function toggleNotifications() {
-            showToast('Nenhuma nova notificação pendente.');
-        }
-
-        function adicionarMonitoramento() {
-            showToast('Novo CPF adicionado ao monitoramento ativo!');
-        }
-
-        function toggleSwitch(el) {
-            showToast(el.checked ? 'Monitoramento reativado.' : 'Monitoramento pausado.');
-        }
-    </script>
 </body>
 </html>
