@@ -37,8 +37,7 @@ const previewReason3 = document.getElementById("previewReason3");
 
 const heroPreview = document.getElementById("heroPreview");
 
-const planButtons =
-  document.querySelectorAll("[data-plan]");
+const planButtons = document.querySelectorAll("[data-plan]");
 
 const checkoutButton =
   document.getElementById("checkoutButton");
@@ -52,6 +51,7 @@ let photoData = "";
 // ==========================================
 
 function escapeHtml(value) {
+
   return String(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -101,7 +101,9 @@ function updatePreview() {
   // ========================================
 
   if (previewName) {
+
     previewName.textContent = name;
+
   }
 
 
@@ -110,7 +112,9 @@ function updatePreview() {
   // ========================================
 
   if (previewMessage) {
+
     previewMessage.textContent = message;
+
   }
 
 
@@ -119,7 +123,9 @@ function updatePreview() {
   // ========================================
 
   if (previewMusic) {
+
     previewMusic.textContent = music;
+
   }
 
 
@@ -138,9 +144,11 @@ function updatePreview() {
       storyText =
         storyText.substring(0, maxStoryLength) +
         "...";
+
     }
 
     previewStory.textContent = storyText;
+
   }
 
 
@@ -149,15 +157,21 @@ function updatePreview() {
   // ========================================
 
   if (previewReason1) {
+
     previewReason1.textContent = reason1;
+
   }
 
   if (previewReason2) {
+
     previewReason2.textContent = reason2;
+
   }
 
   if (previewReason3) {
+
     previewReason3.textContent = reason3;
+
   }
 
 
@@ -191,7 +205,9 @@ function updatePreview() {
 
       previewDate.textContent =
         "✦ Nossa data especial ✦";
+
     }
+
   }
 
 
@@ -215,9 +231,13 @@ function updatePreview() {
 
         heroTitle.innerHTML =
           `Oi, <em>${escapeHtml(name)}.</em>`;
+
       }
+
     }
+
   }
+
 }
 
 
@@ -278,6 +298,7 @@ photoInput?.addEventListener(
       photoInput.value = "";
 
       return;
+
     }
 
 
@@ -293,7 +314,7 @@ photoInput?.addEventListener(
 
 
         // ==================================
-        // MOSTRAR FOTO NA PRÉVIA
+        // MOSTRAR FOTO
         // ==================================
 
         if (previewPhoto) {
@@ -303,9 +324,6 @@ photoInput?.addEventListener(
 
           previewPhoto.style.backgroundSize =
             "cover";
-
-          // Prioriza a parte superior,
-          // onde normalmente está o rosto.
 
           previewPhoto.style.backgroundPosition =
             "center 20%";
@@ -327,7 +345,9 @@ photoInput?.addEventListener(
 
             placeholder.style.display =
               "none";
+
           }
+
         }
 
 
@@ -395,11 +415,13 @@ photoInput?.addEventListener(
                 "image/jpeg",
                 0.68
               );
+
           };
 
 
         img.src =
           originalUrl;
+
       };
 
 
@@ -410,7 +432,7 @@ photoInput?.addEventListener(
 
 
 // ==========================================
-// NAVEGAÇÃO DA PRÉVIA
+// ABAS DA PRÉVIA
 // ==========================================
 
 const previewTabs =
@@ -478,57 +500,86 @@ previewTabs.forEach((tab) => {
 
 
 // ==========================================
-// GERAR PRÉVIA
+// GERAR PRÉVIA — GRATUITAMENTE
 // ==========================================
+//
+// IMPORTANTE:
+// Este botão NÃO envia formulário.
+// NÃO vai para planos.
+// NÃO vai para WhatsApp.
+// NÃO faz scroll.
+//
+// Apenas atualiza a prévia.
+//
 
-form?.addEventListener(
-  "submit",
-  (event) => {
-
-    // Impede o comportamento padrão do formulário
-    event.preventDefault();
-
-
-    // Atualiza os dados da prévia
-    updatePreview();
-
-
-    // Pega a prévia
-    const preview =
-      document.getElementById(
-        "lovePreview"
-      );
+const generatePreviewButton =
+  document.getElementById(
+    "generatePreviewButton"
+  );
 
 
-    // Apenas faz a animação.
-    // NÃO EXISTE scrollIntoView aqui.
+function generatePreview() {
 
-    if (preview) {
+  updatePreview();
+
+
+  const preview =
+    document.getElementById(
+      "lovePreview"
+    );
+
+
+  if (preview) {
+
+    preview.classList.remove(
+      "ready"
+    );
+
+
+    // Reinicia a animação
+
+    void preview.offsetWidth;
+
+
+    preview.classList.add(
+      "ready"
+    );
+
+
+    setTimeout(() => {
 
       preview.classList.remove(
         "ready"
       );
 
+    }, 900);
 
-      // Força o navegador a reiniciar
-      // a animação.
+  }
 
-      void preview.offsetWidth;
-
-
-      preview.classList.add(
-        "ready"
-      );
+}
 
 
-      setTimeout(() => {
+generatePreviewButton?.addEventListener(
+  "click",
+  generatePreview
+);
 
-        preview.classList.remove(
-          "ready"
-        );
 
-      }, 900);
-    }
+// ==========================================
+// SEGURANÇA EXTRA DO FORMULÁRIO
+// ==========================================
+//
+// Se o botão ou formulário antigo
+// tentar enviar, impedimos a navegação.
+//
+
+form?.addEventListener(
+  "submit",
+  (event) => {
+
+    event.preventDefault();
+
+    generatePreview();
 
   }
 );
@@ -551,8 +602,8 @@ planButtons.forEach((button) => {
         button.dataset.plan || "";
 
 
-      // Aqui SIM vamos para o pedido,
-      // porque a pessoa escolheu comprar.
+      // Só aqui a página vai para
+      // a área de compra.
 
       const pedido =
         document.getElementById(
@@ -563,7 +614,8 @@ planButtons.forEach((button) => {
       if (pedido) {
 
         pedido.scrollIntoView({
-          behavior: "smooth"
+          behavior: "smooth",
+          block: "center"
         });
 
       }
@@ -591,8 +643,10 @@ function updateCheckoutButton() {
     const planName =
       selectedPlan.split(" — ")[0];
 
+
     checkoutButton.textContent =
       `Continuar com ${planName} ❤️`;
+
 
     checkoutButton.classList.add(
       "selected"
@@ -603,10 +657,13 @@ function updateCheckoutButton() {
     checkoutButton.textContent =
       "Escolher meu plano ❤️";
 
+
     checkoutButton.classList.remove(
       "selected"
     );
+
   }
+
 }
 
 
@@ -628,8 +685,12 @@ checkoutButton?.addEventListener(
         });
 
       return;
+
     }
 
+
+    // Por enquanto apenas teste.
+    // Depois conectaremos ao Asaas.
 
     alert(
       `Plano selecionado: ${selectedPlan}\n\nO próximo passo será abrir o pagamento.`
