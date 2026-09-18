@@ -1,93 +1,618 @@
-from pathlib import Path
-import re
-
-base = Path("/mnt/data")
-index = base / "index.html"
-script = base / "script.js"
-
-html = index.read_text(encoding="utf-8")
-js = script.read_text(encoding="utf-8")
-
-# 1) Cache-bust the stylesheet so GitHub Pages fetches the current CSS.
-html = html.replace(
-    '<link rel="stylesheet" href="style.css">',
-    '<link rel="stylesheet" href="style.css?v=3">'
-)
-
-# 2) Turn the final CTA into a non-WhatsApp button.
-html = html.replace(
-    '''  <a
-    id="whatsapp"
-    class="btn big"
-    target="_blank"
-    rel="noopener"
-  >
-    Quero liberar meu site ❤️
-  </a>''',
-    '''  <button
-    id="checkoutButton"
-    class="btn big"
-    type="button"
-  >
-    Escolher meu plano ❤️
-  </button>'''
-)
-
-# Remove WhatsApp variables/function and replace the plan flow.
-js = re.sub(r'\nconst whatsappNumber = ".*?";\n', '\n', js, count=1)
-
-# Replace the plan handler's updateWhatsapp() call with final button update.
-js = js.replace(
-'''      updateWhatsapp();
-
-    }
-  );
-
-});''',
-'''      updateCheckoutButton();
-
-    }
-  );
-
-});''',
-1
-)
-
-# Replace the whole WhatsApp section with a local checkout-state button.
-start_marker = "// ==========================================\n// WHATSAPP\n// =========================================="
-end_marker = "// ==========================================\n// INICIALIZAÇÃO\n// =========================================="
-
-start = js.find(start_marker)
-end = js.find(end_marker)
-
-if start != -1 and end != -1:
-    replacement = '''// ==========================================
-// CHECKOUT / PLANO ESCOLHIDO
 // ==========================================
+// AMOR EM SITE ❤️
+// TESTE GRATUITO
+// ==========================================
+
+const API_URL = "https://amor-em-site-backend.vercel.app";
+
+
+// ==========================================
+// ELEMENTOS
+// ==========================================
+
+const nameInput = document.getElementById("loveName");
+const yourNameInput = document.getElementById("yourName");
+const messageInput = document.getElementById("loveMessage");
+const dateInput = document.getElementById("loveDate");
+const photoInput = document.getElementById("lovePhoto");
+const musicInput = document.getElementById("loveMusic");
+const storyInput = document.getElementById("loveStory");
+
+const reason1Input = document.getElementById("reason1");
+const reason2Input = document.getElementById("reason2");
+const reason3Input = document.getElementById("reason3");
+
+const form = document.getElementById("builderForm");
+
+const previewName = document.getElementById("previewName");
+const previewMessage = document.getElementById("previewMessage");
+const previewPhoto = document.getElementById("previewPhoto");
+const previewMusic = document.getElementById("previewMusic");
+const previewDate = document.getElementById("previewDate");
+const previewStory = document.getElementById("previewStory");
+
+const previewReason1 = document.getElementById("previewReason1");
+const previewReason2 = document.getElementById("previewReason2");
+const previewReason3 = document.getElementById("previewReason3");
+
+const heroPreview = document.getElementById("heroPreview");
+
+const planButtons =
+  document.querySelectorAll("[data-plan]");
 
 const checkoutButton =
   document.getElementById("checkoutButton");
+
+let selectedPlan = "";
+let photoData = "";
+
+
+// ==========================================
+// SEGURANÇA
+// ==========================================
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+// ==========================================
+// ATUALIZAR PRÉVIA
+// ==========================================
+
+function updatePreview() {
+
+  const name =
+    nameInput?.value.trim() ||
+    "meu amor";
+
+  const message =
+    messageInput?.value.trim() ||
+    "Crie uma mensagem especial e veja sua surpresa aparecer aqui.";
+
+  const story =
+    storyInput?.value.trim() ||
+    "Conte aqui um pedacinho da história de vocês.";
+
+  const music =
+    musicInput?.value ||
+    "Nossa música";
+
+  const reason1 =
+    reason1Input?.value.trim() ||
+    "Um motivo especial ❤️";
+
+  const reason2 =
+    reason2Input?.value.trim() ||
+    "Outro motivo especial ❤️";
+
+  const reason3 =
+    reason3Input?.value.trim() ||
+    "Mais um motivo especial ❤️";
+
+
+  // ========================================
+  // NOME
+  // ========================================
+
+  if (previewName) {
+    previewName.textContent = name;
+  }
+
+
+  // ========================================
+  // MENSAGEM
+  // ========================================
+
+  if (previewMessage) {
+    previewMessage.textContent = message;
+  }
+
+
+  // ========================================
+  // MÚSICA
+  // ========================================
+
+  if (previewMusic) {
+    previewMusic.textContent = music;
+  }
+
+
+  // ========================================
+  // HISTÓRIA
+  // ========================================
+
+  if (previewStory) {
+
+    const maxStoryLength = 190;
+
+    let storyText = story;
+
+    if (storyText.length > maxStoryLength) {
+
+      storyText =
+        storyText.substring(0, maxStoryLength) +
+        "...";
+    }
+
+    previewStory.textContent = storyText;
+  }
+
+
+  // ========================================
+  // MOTIVOS
+  // ========================================
+
+  if (previewReason1) {
+    previewReason1.textContent = reason1;
+  }
+
+  if (previewReason2) {
+    previewReason2.textContent = reason2;
+  }
+
+  if (previewReason3) {
+    previewReason3.textContent = reason3;
+  }
+
+
+  // ========================================
+  // DATA
+  // ========================================
+
+  if (previewDate) {
+
+    if (dateInput?.value) {
+
+      const date =
+        new Date(
+          `${dateInput.value}T00:00:00`
+        );
+
+      const formatted =
+        date.toLocaleDateString(
+          "pt-BR",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }
+        );
+
+      previewDate.textContent =
+        `♥ Nossa data: ${formatted}`;
+
+    } else {
+
+      previewDate.textContent =
+        "✦ Nossa data especial ✦";
+    }
+  }
+
+
+  // ========================================
+  // HERO
+  // ========================================
+
+  if (heroPreview) {
+
+    const heroTitle =
+      heroPreview.querySelector("h2");
+
+    if (heroTitle) {
+
+      if (name === "meu amor") {
+
+        heroTitle.innerHTML =
+          `Oi, meu<br><em>amor.</em>`;
+
+      } else {
+
+        heroTitle.innerHTML =
+          `Oi, <em>${escapeHtml(name)}.</em>`;
+      }
+    }
+  }
+}
+
+
+// ==========================================
+// CAMPOS EM TEMPO REAL
+// ==========================================
+
+[
+  nameInput,
+  yourNameInput,
+  messageInput,
+  dateInput,
+  musicInput,
+  storyInput,
+  reason1Input,
+  reason2Input,
+  reason3Input
+
+].forEach((element) => {
+
+  if (!element) return;
+
+  element.addEventListener(
+    "input",
+    updatePreview
+  );
+
+  element.addEventListener(
+    "change",
+    updatePreview
+  );
+
+});
+
+
+// ==========================================
+// FOTO
+// ==========================================
+
+photoInput?.addEventListener(
+  "change",
+  () => {
+
+    const file =
+      photoInput.files?.[0];
+
+    if (!file) return;
+
+
+    // Limite de 10 MB
+
+    if (file.size > 10 * 1024 * 1024) {
+
+      alert(
+        "Escolha uma imagem de até 10 MB."
+      );
+
+      photoInput.value = "";
+
+      return;
+    }
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      (event) => {
+
+        const originalUrl =
+          event.target.result;
+
+
+        // ==================================
+        // MOSTRAR FOTO NA PRÉVIA
+        // ==================================
+
+        if (previewPhoto) {
+
+          previewPhoto.style.backgroundImage =
+            `url("${originalUrl}")`;
+
+          previewPhoto.style.backgroundSize =
+            "cover";
+
+          // Prioriza a parte superior,
+          // onde normalmente está o rosto.
+
+          previewPhoto.style.backgroundPosition =
+            "center 20%";
+
+          previewPhoto.style.backgroundRepeat =
+            "no-repeat";
+
+          previewPhoto.classList.add(
+            "has-photo"
+          );
+
+
+          const placeholder =
+            previewPhoto.querySelector(
+              "span"
+            );
+
+          if (placeholder) {
+
+            placeholder.style.display =
+              "none";
+          }
+        }
+
+
+        // ==================================
+        // COMPRIMIR FOTO
+        // ==================================
+
+        const img =
+          new Image();
+
+
+        img.onload =
+          () => {
+
+            const max = 700;
+
+            const scale =
+              Math.min(
+                1,
+                max /
+                  Math.max(
+                    img.width,
+                    img.height
+                  )
+              );
+
+
+            const canvas =
+              document.createElement(
+                "canvas"
+              );
+
+
+            canvas.width =
+              Math.round(
+                img.width * scale
+              );
+
+            canvas.height =
+              Math.round(
+                img.height * scale
+              );
+
+
+            const ctx =
+              canvas.getContext(
+                "2d"
+              );
+
+
+            if (!ctx) return;
+
+
+            ctx.drawImage(
+              img,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+
+            photoData =
+              canvas.toDataURL(
+                "image/jpeg",
+                0.68
+              );
+          };
+
+
+        img.src =
+          originalUrl;
+      };
+
+
+    reader.readAsDataURL(file);
+
+  }
+);
+
+
+// ==========================================
+// NAVEGAÇÃO DA PRÉVIA
+// ==========================================
+
+const previewTabs =
+  document.querySelectorAll(
+    "[data-preview-tab]"
+  );
+
+const previewPages =
+  document.querySelectorAll(
+    "[data-preview-page]"
+  );
+
+
+previewTabs.forEach((tab) => {
+
+  tab.addEventListener(
+    "click",
+    () => {
+
+      const target =
+        tab.dataset.previewTab;
+
+
+      previewTabs.forEach((item) => {
+
+        item.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      previewPages.forEach((page) => {
+
+        page.classList.remove(
+          "active"
+        );
+
+      });
+
+
+      tab.classList.add(
+        "active"
+      );
+
+
+      const page =
+        document.querySelector(
+          `[data-preview-page="${target}"]`
+        );
+
+
+      if (page) {
+
+        page.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
+});
+
+
+// ==========================================
+// GERAR PRÉVIA
+// ==========================================
+
+form?.addEventListener(
+  "submit",
+  (event) => {
+
+    // Impede o comportamento padrão do formulário
+    event.preventDefault();
+
+
+    // Atualiza os dados da prévia
+    updatePreview();
+
+
+    // Pega a prévia
+    const preview =
+      document.getElementById(
+        "lovePreview"
+      );
+
+
+    // Apenas faz a animação.
+    // NÃO EXISTE scrollIntoView aqui.
+
+    if (preview) {
+
+      preview.classList.remove(
+        "ready"
+      );
+
+
+      // Força o navegador a reiniciar
+      // a animação.
+
+      void preview.offsetWidth;
+
+
+      preview.classList.add(
+        "ready"
+      );
+
+
+      setTimeout(() => {
+
+        preview.classList.remove(
+          "ready"
+        );
+
+      }, 900);
+    }
+
+  }
+);
+
+
+// ==========================================
+// PLANOS
+// ==========================================
+
+planButtons.forEach((button) => {
+
+  button.addEventListener(
+    "click",
+    (event) => {
+
+      event.preventDefault();
+
+
+      selectedPlan =
+        button.dataset.plan || "";
+
+
+      // Aqui SIM vamos para o pedido,
+      // porque a pessoa escolheu comprar.
+
+      const pedido =
+        document.getElementById(
+          "pedido"
+        );
+
+
+      if (pedido) {
+
+        pedido.scrollIntoView({
+          behavior: "smooth"
+        });
+
+      }
+
+
+      updateCheckoutButton();
+
+    }
+  );
+
+});
+
+
+// ==========================================
+// BOTÃO DE CHECKOUT
+// ==========================================
 
 function updateCheckoutButton() {
 
   if (!checkoutButton) return;
 
+
   if (selectedPlan) {
 
-    checkoutButton.textContent =
-      `Continuar com ${selectedPlan.split(" — ")[0]} ❤️`;
+    const planName =
+      selectedPlan.split(" — ")[0];
 
-    checkoutButton.classList.add("selected");
+    checkoutButton.textContent =
+      `Continuar com ${planName} ❤️`;
+
+    checkoutButton.classList.add(
+      "selected"
+    );
 
   } else {
 
     checkoutButton.textContent =
       "Escolher meu plano ❤️";
 
-    checkoutButton.classList.remove("selected");
+    checkoutButton.classList.remove(
+      "selected"
+    );
   }
 }
 
+
+// ==========================================
+// CLIQUE NO CHECKOUT
+// ==========================================
 
 checkoutButton?.addEventListener(
   "click",
@@ -95,80 +620,39 @@ checkoutButton?.addEventListener(
 
     if (!selectedPlan) {
 
-      document.getElementById("planos")?.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
+      document
+        .getElementById("planos")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
 
       return;
     }
 
-    // O checkout do Asaas será conectado aqui.
-    // Por enquanto, o cliente permanece no site.
+
     alert(
-      `Plano selecionado: ${selectedPlan}\\n\\nO próximo passo será abrir o pagamento.`
+      `Plano selecionado: ${selectedPlan}\n\nO próximo passo será abrir o pagamento.`
     );
+
   }
 );
 
 
-'''
-    js = js[:start] + replacement + js[end:]
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
 
-# Remove old initialization call and replace it.
-js = js.replace("updateWhatsapp();", "updateCheckoutButton();")
+updatePreview();
 
-# 3) Improve photo preview behavior. The JS sets a better position for portraits.
-old_photo_block = '''          previewPhoto.style.backgroundImage =
-            `url("${originalUrl}")`;
+updateCheckoutButton();
 
-          previewPhoto.classList.add(
-            "has-photo"
-          );'''
-new_photo_block = '''          previewPhoto.style.backgroundImage =
-            `url("${originalUrl}")`;
 
-          // Mantém o rosto mais visível em fotos verticais.
-          previewPhoto.style.backgroundSize = "cover";
-          previewPhoto.style.backgroundPosition = "center 20%";
+console.log(
+  "❤️ Amor em Site iniciado"
+);
 
-          previewPhoto.classList.add(
-            "has-photo"
-          );'''
-js = js.replace(old_photo_block, new_photo_block)
-
-# Add a small CSS class rule through JS-created style only if needed? Better:
-# append a style override into the HTML head for the preview image behavior.
-photo_css = '''
-<style>
-  .preview-photo.has-photo {
-    background-size: cover !important;
-    background-position: center 20% !important;
-    background-repeat: no-repeat !important;
-  }
-
-  #checkoutButton {
-    border: 0;
-    cursor: pointer;
-    font-family: inherit;
-  }
-
-  #checkoutButton.selected {
-    box-shadow: 0 12px 35px rgba(255, 49, 88, .35);
-  }
-</style>
-'''
-if "</head>" in html and ".preview-photo.has-photo" not in html:
-    html = html.replace("</head>", photo_css + "\n</head>")
-
-index.write_text(html, encoding="utf-8")
-script.write_text(js, encoding="utf-8")
-
-print("Pronto. Arquivos corrigidos:")
-print(index)
-print(script)
-print("\nMudanças:")
-print("- WhatsApp removido do fluxo.")
-print("- Botão final agora trabalha com o plano escolhido.")
-print("- Foto da prévia prioriza a parte superior da imagem.")
-print("- CSS ficou com ?v=3 para evitar cache.")
+console.log(
+  "Backend:",
+  API_URL
+);
