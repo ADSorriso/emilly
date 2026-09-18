@@ -1490,3 +1490,13 @@ img {
     max-height: 500px;
   }
 }
+
+
+/* =========================================================
+   CORREÇÃO — ESCONDER TEXTO ALTERNATIVO DA FOTO VAZIA
+   ========================================================= */
+
+.preview-photo img:not([src]),
+.preview-photo img[src=""] {
+  display: none !important;
+}
