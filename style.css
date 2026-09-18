@@ -1260,3 +1260,80 @@ footer p{
   }
 
 }
+
+/* =========================================================
+   CORREÇÃO FINAL — AMOR EM SITE
+   ========================================================= */
+
+html {
+  background: #070506 !important;
+}
+
+html body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100vh !important;
+  background: #070506 !important;
+  color: #fff !important;
+  font-family: "DM Sans", sans-serif !important;
+}
+
+body > * {
+  max-width: none;
+}
+
+.navbar {
+  background: rgba(7, 5, 6, .92) !important;
+  color: #fff !important;
+}
+
+.hero,
+.statement,
+.section,
+.dark,
+.cta,
+footer {
+  color: #fff;
+}
+
+.builder-form {
+  background: #fff !important;
+  color: #222 !important;
+}
+
+.builder-form label,
+.builder-form h3,
+.builder-form p {
+  color: #222 !important;
+}
+
+.builder-form input,
+.builder-form textarea,
+.builder-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #fff !important;
+  color: #222 !important;
+  border: 1px solid #ddd !important;
+}
+
+.love-preview {
+  background:
+    radial-gradient(circle at 50% 15%, #6e162c, #1b080d 48%, #080405) !important;
+  color: #fff !important;
+}
+
+.preview-content h3,
+.preview-content p,
+.preview-content small {
+  color: #fff;
+}
+
+.preview-tab {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+img {
+  max-width: 100%;
+}
