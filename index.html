@@ -12,6 +12,34 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css?v=3">
+
+<style>
+  .preview-photo.has-photo {
+    background-size: cover !important;
+    background-position: center 20% !important;
+    background-repeat: no-repeat !important;
+  }
+
+  #checkoutButton {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  #checkoutButton.selected {
+    box-shadow: 0 12px 35px rgba(255, 49, 88, .35);
+  }
+</style>
+
+<style>
+.preview-photo{position:relative;width:100%;aspect-ratio:4/5;height:auto!important;min-height:280px;max-height:430px;overflow:hidden;background:linear-gradient(135deg,#3a101b,#13070b);display:flex;align-items:center;justify-content:center}
+.preview-photo img{width:100%;height:100%;display:none;object-fit:cover;object-position:center 18%}
+.preview-photo.has-photo img{display:block}
+.preview-photo.has-photo .preview-photo-placeholder{display:none}
+.preview-photo-placeholder{font-size:55px;opacity:.9}
+#generatePreviewButton{border:0;cursor:pointer;font-family:inherit}
+@media(max-width:800px){.preview-photo{min-height:300px;max-height:390px}}
+</style>
 </head>
 
 <body>
@@ -281,7 +309,7 @@
       </label>
 
 
-      <button class="btn" type="submit">
+      <button class="btn" id="generatePreviewButton" type="button">
         ✨ Gerar minha prévia
       </button>
 
@@ -308,11 +336,9 @@
 
         <!-- FOTO -->
 
-        <div
-          class="preview-photo"
-          id="previewPhoto"
-        >
-          <span>❤️</span>
+        <div class="preview-photo" id="previewPhoto">
+          <img id="previewPhotoImage" alt="Foto principal da prévia">
+          <div class="preview-photo-placeholder" id="previewPhotoPlaceholder">❤️</div>
         </div>
 
 
