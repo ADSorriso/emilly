@@ -1,10 +1,12 @@
 // ==========================================
 // AMOR EM SITE ❤️
-// Frontend + Checkout Asaas
+// TESTE GRATUITO
 // ==========================================
 
-// URL do nosso backend no Vercel
 const API_URL = "https://amor-em-site-backend.vercel.app";
+
+const whatsappNumber = "5566974005474";
+
 
 // ==========================================
 // ELEMENTOS
@@ -15,55 +17,37 @@ const yourNameInput = document.getElementById("yourName");
 const messageInput = document.getElementById("loveMessage");
 const dateInput = document.getElementById("loveDate");
 const photoInput = document.getElementById("lovePhoto");
+const musicInput = document.getElementById("loveMusic");
+const storyInput = document.getElementById("loveStory");
+
+const reason1Input = document.getElementById("reason1");
+const reason2Input = document.getElementById("reason2");
+const reason3Input = document.getElementById("reason3");
 
 const form = document.getElementById("builderForm");
 
 const previewName = document.getElementById("previewName");
 const previewMessage = document.getElementById("previewMessage");
 const previewPhoto = document.getElementById("previewPhoto");
+const previewMusic = document.getElementById("previewMusic");
+const previewDate = document.getElementById("previewDate");
+const previewStory = document.getElementById("previewStory");
+
+const previewReason1 = document.getElementById("previewReason1");
+const previewReason2 = document.getElementById("previewReason2");
+const previewReason3 = document.getElementById("previewReason3");
+
 const heroPreview = document.getElementById("heroPreview");
 
-const planButtons = document.querySelectorAll("[data-plan]");
+const planButtons =
+  document.querySelectorAll("[data-plan]");
 
 let selectedPlan = "";
 let photoData = "";
 
 
 // ==========================================
-// ATUALIZAR PRÉVIA
-// ==========================================
-
-function updatePreview() {
-  const name = nameInput?.value.trim() || "meu amor";
-
-  const message =
-    messageInput?.value.trim() ||
-    "Crie uma mensagem especial e veja sua surpresa aparecer aqui.";
-
-  if (previewName) {
-    previewName.textContent = name;
-  }
-
-  if (previewMessage) {
-    previewMessage.textContent = message;
-  }
-
-  if (heroPreview) {
-    const heroTitle = heroPreview.querySelector("h2");
-
-    if (heroTitle) {
-      if (name === "meu amor") {
-        heroTitle.innerHTML = `Oi, meu<br><em>amor.</em>`;
-      } else {
-        heroTitle.innerHTML = `Oi, <em>${escapeHtml(name)}.</em>`;
-      }
-    }
-  }
-}
-
-
-// ==========================================
-// PROTEÇÃO CONTRA HTML INJETADO
+// SEGURANÇA
 // ==========================================
 
 function escapeHtml(value) {
@@ -77,84 +61,376 @@ function escapeHtml(value) {
 
 
 // ==========================================
+// ATUALIZAR PRÉVIA
+// ==========================================
+
+function updatePreview() {
+
+  const name =
+    nameInput?.value.trim() ||
+    "meu amor";
+
+  const message =
+    messageInput?.value.trim() ||
+    "Crie uma mensagem especial e veja sua surpresa aparecer aqui.";
+
+  const story =
+    storyInput?.value.trim() ||
+    "Conte aqui um pedacinho da história de vocês.";
+
+  const music =
+    musicInput?.value ||
+    "Nossa música";
+
+  const reason1 =
+    reason1Input?.value.trim() ||
+    "Um motivo especial ❤️";
+
+  const reason2 =
+    reason2Input?.value.trim() ||
+    "Outro motivo especial ❤️";
+
+  const reason3 =
+    reason3Input?.value.trim() ||
+    "Mais um motivo especial ❤️";
+
+
+  // Nome
+
+  if (previewName) {
+    previewName.textContent = name;
+  }
+
+
+  // Mensagem
+
+  if (previewMessage) {
+    previewMessage.textContent = message;
+  }
+
+
+  // Música
+
+  if (previewMusic) {
+    previewMusic.textContent = music;
+  }
+
+
+  // História
+
+  if (previewStory) {
+
+    const maxStoryLength = 190;
+
+    let storyText = story;
+
+    if (storyText.length > maxStoryLength) {
+      storyText =
+        storyText.substring(0, maxStoryLength) +
+        "...";
+    }
+
+    previewStory.textContent = storyText;
+  }
+
+
+  // Motivos
+
+  if (previewReason1) {
+    previewReason1.textContent = reason1;
+  }
+
+  if (previewReason2) {
+    previewReason2.textContent = reason2;
+  }
+
+  if (previewReason3) {
+    previewReason3.textContent = reason3;
+  }
+
+
+  // Data
+
+  if (previewDate) {
+
+    if (dateInput?.value) {
+
+      const date =
+        new Date(
+          `${dateInput.value}T00:00:00`
+        );
+
+      const formatted =
+        date.toLocaleDateString(
+          "pt-BR",
+          {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }
+        );
+
+      previewDate.textContent =
+        `♥ Nossa data: ${formatted}`;
+
+    } else {
+
+      previewDate.textContent =
+        "✦ Nossa data especial ✦";
+    }
+  }
+
+
+  // Hero
+
+  if (heroPreview) {
+
+    const heroTitle =
+      heroPreview.querySelector("h2");
+
+    if (heroTitle) {
+
+      if (name === "meu amor") {
+
+        heroTitle.innerHTML =
+          `Oi, meu<br><em>amor.</em>`;
+
+      } else {
+
+        heroTitle.innerHTML =
+          `Oi, <em>${escapeHtml(name)}.</em>`;
+      }
+    }
+  }
+}
+
+
+// ==========================================
 // CAMPOS EM TEMPO REAL
 // ==========================================
 
-[nameInput, yourNameInput, messageInput, dateInput].forEach((element) => {
+[
+  nameInput,
+  yourNameInput,
+  messageInput,
+  dateInput,
+  musicInput,
+  storyInput,
+  reason1Input,
+  reason2Input,
+  reason3Input
+].forEach((element) => {
+
   if (element) {
-    element.addEventListener("input", updatePreview);
+
+    element.addEventListener(
+      "input",
+      updatePreview
+    );
+
+    element.addEventListener(
+      "change",
+      updatePreview
+    );
   }
+
 });
 
 
 // ==========================================
-// FOTO DA PRÉVIA
+// FOTO
 // ==========================================
 
-photoInput?.addEventListener("change", () => {
-  const file = photoInput.files?.[0];
+photoInput?.addEventListener(
+  "change",
+  () => {
 
-  if (!file) return;
+    const file =
+      photoInput.files?.[0];
 
-  // Limite simples para evitar arquivos absurdamente grandes
-  if (file.size > 10 * 1024 * 1024) {
-    alert("Escolha uma imagem de até 10 MB.");
-    photoInput.value = "";
-    return;
-  }
+    if (!file) return;
 
-  const reader = new FileReader();
 
-  reader.onload = (event) => {
-    const originalUrl = event.target.result;
+    if (file.size > 10 * 1024 * 1024) {
 
-    // Mostrar imediatamente na prévia
-    if (previewPhoto) {
-      previewPhoto.style.backgroundImage = `url("${originalUrl}")`;
-      previewPhoto.classList.add("has-photo");
+      alert(
+        "Escolha uma imagem de até 10 MB."
+      );
 
-      const placeholder = previewPhoto.querySelector("span");
+      photoInput.value = "";
 
-      if (placeholder) {
-        placeholder.style.display = "none";
-      }
+      return;
     }
 
-    // Comprimir a imagem para gerar o link de teste
-    const img = new Image();
 
-    img.onload = () => {
-      const max = 700;
+    const reader =
+      new FileReader();
 
-      const scale = Math.min(
-        1,
-        max / Math.max(img.width, img.height)
+
+    reader.onload =
+      (event) => {
+
+        const originalUrl =
+          event.target.result;
+
+
+        // Mostrar na prévia
+
+        if (previewPhoto) {
+
+          previewPhoto.style.backgroundImage =
+            `url("${originalUrl}")`;
+
+          previewPhoto.classList.add(
+            "has-photo"
+          );
+
+          const placeholder =
+            previewPhoto.querySelector(
+              "span"
+            );
+
+          if (placeholder) {
+            placeholder.style.display =
+              "none";
+          }
+        }
+
+
+        // Comprimir
+
+        const img =
+          new Image();
+
+
+        img.onload =
+          () => {
+
+            const max = 700;
+
+            const scale =
+              Math.min(
+                1,
+                max /
+                  Math.max(
+                    img.width,
+                    img.height
+                  )
+              );
+
+
+            const canvas =
+              document.createElement(
+                "canvas"
+              );
+
+
+            canvas.width =
+              Math.round(
+                img.width * scale
+              );
+
+            canvas.height =
+              Math.round(
+                img.height * scale
+              );
+
+
+            const ctx =
+              canvas.getContext(
+                "2d"
+              );
+
+
+            if (!ctx) return;
+
+
+            ctx.drawImage(
+              img,
+              0,
+              0,
+              canvas.width,
+              canvas.height
+            );
+
+
+            photoData =
+              canvas.toDataURL(
+                "image/jpeg",
+                0.68
+              );
+          };
+
+
+        img.src =
+          originalUrl;
+      };
+
+
+    reader.readAsDataURL(file);
+  }
+);
+
+
+// ==========================================
+// NAVEGAÇÃO DA PRÉVIA
+// ==========================================
+
+const previewTabs =
+  document.querySelectorAll(
+    "[data-preview-tab]"
+  );
+
+const previewPages =
+  document.querySelectorAll(
+    "[data-preview-page]"
+  );
+
+
+previewTabs.forEach((tab) => {
+
+  tab.addEventListener(
+    "click",
+    () => {
+
+      const target =
+        tab.dataset.previewTab;
+
+
+      previewTabs.forEach((item) => {
+        item.classList.remove(
+          "active"
+        );
+      });
+
+
+      previewPages.forEach((page) => {
+        page.classList.remove(
+          "active"
+        );
+      });
+
+
+      tab.classList.add(
+        "active"
       );
 
-      const canvas = document.createElement("canvas");
 
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
+      const page =
+        document.querySelector(
+          `[data-preview-page="${target}"]`
+        );
 
-      const ctx = canvas.getContext("2d");
 
-      if (!ctx) return;
+      if (page) {
+        page.classList.add(
+          "active"
+        );
+      }
 
-      ctx.drawImage(
-        img,
-        0,
-        0,
-        canvas.width,
-        canvas.height
-      );
+    }
+  );
 
-      photoData = canvas.toDataURL("image/jpeg", 0.68);
-    };
-
-    img.src = originalUrl;
-  };
-
-  reader.readAsDataURL(file);
 });
 
 
@@ -162,152 +438,37 @@ photoInput?.addEventListener("change", () => {
 // GERAR PRÉVIA
 // ==========================================
 
-form?.addEventListener("submit", (event) => {
-  event.preventDefault();
+form?.addEventListener(
+  "submit",
+  (event) => {
 
-  updatePreview();
+    event.preventDefault();
 
-  document
-    .getElementById("lovePreview")
-    ?.classList.add("ready");
+    updatePreview();
 
-  gerarLinkDeTeste();
 
-  // Leva o usuário para a prévia
-  setTimeout(() => {
-    document
-      .getElementById("lovePreview")
-      ?.scrollIntoView({
+    const preview =
+      document.getElementById(
+        "lovePreview"
+      );
+
+
+    preview?.classList.add(
+      "ready"
+    );
+
+
+    setTimeout(() => {
+
+      preview?.scrollIntoView({
         behavior: "smooth",
         block: "center"
       });
-  }, 100);
-});
 
+    }, 100);
 
-// ==========================================
-// GERAR LINK DE TESTE
-// ==========================================
-
-function gerarLinkDeTeste() {
-  const data = {
-    loveName:
-      nameInput?.value.trim() || "meu amor",
-
-    yourName:
-      yourNameInput?.value.trim() || "",
-
-    message:
-      messageInput?.value.trim() ||
-      "Eu fiz esse cantinho especialmente para você.",
-
-    date:
-      dateInput?.value || "",
-
-    photo:
-      photoData || ""
-  };
-
-  const encoded = btoa(
-    unescape(
-      encodeURIComponent(
-        JSON.stringify(data)
-      )
-    )
-  );
-
-  const link = new URL(
-    "site.html",
-    window.location.href
-  );
-
-  link.hash = "data=" + encoded;
-
-  let box =
-    document.getElementById(
-      "generatedLinkBox"
-    );
-
-  if (!box) {
-    box = document.createElement("div");
-
-    box.id = "generatedLinkBox";
-    box.className = "generated-link-box";
-
-    form?.appendChild(box);
   }
-
-  const safeLink = escapeHtml(link.href);
-
-  box.innerHTML = `
-    <div class="generated-title">
-      🎉 Sua prévia foi criada!
-    </div>
-
-    <p>
-      Este é o seu link de teste.
-      Você pode abrir e compartilhar:
-    </p>
-
-    <input
-      readonly
-      value="${safeLink}"
-      onclick="this.select()"
-    >
-
-    <div class="generated-actions">
-
-      <a
-        class="btn"
-        href="${safeLink}"
-        target="_blank"
-        rel="noopener"
-      >
-        🔗 Abrir meu link
-      </a>
-
-      <button
-        type="button"
-        class="btn secondary"
-        id="copyGenerated"
-      >
-        Copiar link
-      </button>
-
-    </div>
-  `;
-
-  document
-    .getElementById("copyGenerated")
-    ?.addEventListener("click", async () => {
-
-      try {
-        await navigator.clipboard.writeText(
-          link.href
-        );
-
-        const button =
-          document.getElementById(
-            "copyGenerated"
-          );
-
-        if (button) {
-          button.textContent =
-            "✓ Copiado!";
-        }
-
-      } catch (error) {
-        alert(
-          "Não foi possível copiar automaticamente. Copie o link manualmente."
-        );
-      }
-    });
-
-  box.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-}
+);
 
 
 // ==========================================
@@ -318,14 +479,31 @@ planButtons.forEach((button) => {
 
   button.addEventListener(
     "click",
-    async (event) => {
+    (event) => {
 
       event.preventDefault();
 
       selectedPlan =
         button.dataset.plan || "";
 
-      await iniciarCheckout(button);
+
+      const pedido =
+        document.getElementById(
+          "pedido"
+        );
+
+
+      if (pedido) {
+
+        pedido.scrollIntoView({
+          behavior: "smooth"
+        });
+
+      }
+
+
+      updateWhatsapp();
+
     }
   );
 
@@ -333,199 +511,49 @@ planButtons.forEach((button) => {
 
 
 // ==========================================
-// IDENTIFICAR PLANO
+// WHATSAPP
 // ==========================================
 
-function getPlanId(planText) {
+function updateWhatsapp() {
+
+  const recipient =
+    nameInput?.value.trim() ||
+    "meu amor";
+
+  const sender =
+    yourNameInput?.value.trim() ||
+    "não informado";
+
+  const message =
+    messageInput?.value.trim() ||
+    "não informada";
+
+  const plan =
+    selectedPlan ||
+    "Quero saber qual plano escolher";
+
 
   const text =
-    planText.toLowerCase();
+`Olá! Testei o Amor em Site e gostei da prévia. ❤️
 
-  if (text.includes("essencial")) {
-    return "essencial";
-  }
+Pessoa especial: ${recipient}
+Meu nome: ${sender}
+Mensagem: ${message}
+Plano: ${plan}
 
-  if (text.includes("romântico") ||
-      text.includes("romantico")) {
-    return "romantico";
-  }
-
-  if (text.includes("premium")) {
-    return "premium";
-  }
-
-  return null;
-}
+Quero liberar meu site completo.`;
 
 
-// ==========================================
-// CRIAR CHECKOUT
-// ==========================================
-
-async function iniciarCheckout(button) {
-
-  const planId =
-    getPlanId(selectedPlan);
-
-  if (!planId) {
-    alert(
-      "Não foi possível identificar o plano escolhido."
-    );
-
-    return;
-  }
-
-  // Dados atuais do cliente
-  const customerData = {
-
-    loveName:
-      nameInput?.value.trim() || "",
-
-    yourName:
-      yourNameInput?.value.trim() || "",
-
-    message:
-      messageInput?.value.trim() || "",
-
-    date:
-      dateInput?.value || "",
-
-    photo:
-      photoData || ""
-  };
-
-
-  // Exige pelo menos o nome da pessoa especial
-  if (!customerData.loveName) {
-
-    alert(
-      "Antes de escolher o plano, coloque o nome de quem vai receber o site. ❤️"
-    );
-
-    nameInput?.focus();
-
-    document
-      .getElementById("teste")
-      ?.scrollIntoView({
-        behavior: "smooth"
-      });
-
-    return;
-  }
-
-
-  // Texto original do botão
-  const originalText =
-    button.textContent;
-
-
-  // Estado de carregamento
-  button.textContent =
-    "⏳ Preparando pagamento...";
-
-  button.style.pointerEvents =
-    "none";
-
-  button.style.opacity =
-    "0.7";
-
-
-  try {
-
-    const response =
-      await fetch(
-        `${API_URL}/api/create-checkout`,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-
-            plan: planId,
-
-            customerData:
-              customerData
-
-          })
-        }
-      );
-
-
-    const result =
-      await response.json();
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        result?.error ||
-        "Não foi possível criar o checkout."
-      );
-    }
-
-
-    if (
-      !result.checkoutUrl
-    ) {
-
-      throw new Error(
-        "O Asaas não retornou o endereço do checkout."
-      );
-    }
-
-
-    // Guardamos algumas informações
-    // localmente para a página de retorno
-    localStorage.setItem(
-      "amorEmSiteOrder",
-      JSON.stringify({
-
-        orderId:
-          result.orderId || "",
-
-        checkoutId:
-          result.checkoutId || "",
-
-        plan:
-          planId,
-
-        loveName:
-          customerData.loveName
-      })
+  const button =
+    document.getElementById(
+      "whatsapp"
     );
 
 
-    // Vai para o checkout do Asaas
-    window.location.href =
-      result.checkoutUrl;
+  if (button) {
 
-
-  } catch (error) {
-
-    console.error(
-      "Erro ao criar checkout:",
-      error
-    );
-
-    alert(
-      error.message ||
-      "Ocorreu um erro ao preparar o pagamento. Tente novamente."
-    );
-
-
-    // Restaurar botão
-    button.textContent =
-      originalText;
-
-    button.style.pointerEvents =
-      "";
-
-    button.style.opacity =
-      "";
+    button.href =
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
   }
 
@@ -538,10 +566,8 @@ async function iniciarCheckout(button) {
 
 updatePreview();
 
+updateWhatsapp();
 
-// ==========================================
-// LOG DE TESTE
-// ==========================================
 
 console.log(
   "❤️ Amor em Site iniciado"
