@@ -224,17 +224,126 @@
       </label>
 
 
-      <label>
-        Foto principal
-        <input
-          id="lovePhoto"
-          type="file"
-          accept="image/*"
-        >
-        <small class="field-help">
-          No teste grátis, você pode usar 1 foto.
-        </small>
-      </label>
+    <div class="photo-editor" id="photoEditor">
+
+  <div class="photo-editor-title">
+    Ajuste sua foto ❤️
+  </div>
+
+  <p class="photo-editor-help">
+    Arraste a foto diretamente na prévia.
+    Você também pode escolher o formato e ajustar o zoom.
+  </p>
+
+  <div class="photo-ratios">
+
+    <button
+      type="button"
+      class="photo-ratio active"
+      data-ratio="4/5"
+    >
+      Vertical
+    </button>
+
+    <button
+      type="button"
+      class="photo-ratio"
+      data-ratio="1/1"
+    >
+      Quadrada
+    </button>
+
+    <button
+      type="button"
+      class="photo-ratio"
+      data-ratio="16/9"
+    >
+      Horizontal
+    </button>
+
+    <button
+      type="button"
+      class="photo-ratio"
+      data-ratio="3/4"
+    >
+      Retrato
+    </button>
+
+  </div>
+
+
+  <label class="photo-control">
+
+    <span>
+      Zoom
+      <strong id="photoZoomValue">
+        100%
+      </strong>
+    </span>
+
+    <input
+      id="photoZoom"
+      type="range"
+      min="100"
+      max="180"
+      value="100"
+      step="1"
+    >
+
+  </label>
+
+
+  <label class="photo-control">
+
+    <span>
+      Horizontal
+      <strong id="photoXValue">
+        50%
+      </strong>
+    </span>
+
+    <input
+      id="photoX"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      step="1"
+    >
+
+  </label>
+
+
+  <label class="photo-control">
+
+    <span>
+      Vertical
+      <strong id="photoYValue">
+        20%
+      </strong>
+    </span>
+
+    <input
+      id="photoY"
+      type="range"
+      min="0"
+      max="100"
+      value="20"
+      step="1"
+    >
+
+  </label>
+
+
+  <button
+    type="button"
+    class="photo-reset"
+    id="photoReset"
+  >
+    ↺ Restaurar enquadramento
+  </button>
+
+</div>
 
 
       <label>
