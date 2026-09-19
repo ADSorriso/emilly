@@ -306,7 +306,7 @@ function validatePlanPersonalization() {
   if (rules.reasons > 0) {
     const reasons100 = document.getElementById("reasons100");
     const reasons = (reasons100?.value || "")
-      .split("\n")
+      .split("\\n")
       .map((item) => item.trim())
       .filter(Boolean);
 
@@ -1104,6 +1104,7 @@ Seu jeito de me apoiar"></textarea>
   document.body.appendChild(modal);
 
   const close = () => {
+    // Fecha de forma explícita para não depender apenas da classe CSS.
     modal.classList.remove("is-open");
     modal.style.display = "none";
     document.body.style.overflow = "";
@@ -1143,7 +1144,7 @@ Seu jeito de me apoiar"></textarea>
     if (key === "essencial") {
       help.textContent = "No Essencial, você escolhe 1 entre 2 músicas.";
     } else if (key === "premium") {
-      help.textContent = "No Premium, você tem acesso à biblioteca completa de músicas.";
+      help.textContent = "No Premium, você tem a biblioteca completa + opção exclusiva.";
     } else {
       help.textContent = "No Romântico, você pode escolher entre as músicas disponíveis.";
     }
@@ -1154,6 +1155,19 @@ Seu jeito de me apoiar"></textarea>
   modal.addEventListener("click", (event) => {
     if (event.target === modal) close();
   });
+
+  // Fallback por delegação: garante que X e Voltar fechem mesmo se
+  // outro código/estilo interferir nos listeners dos botões.
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+
+    if (target.closest("#pemClose") || target.closest("#pemCancel")) {
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    }
+  }, true);
 
   document.getElementById("pemForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -1198,7 +1212,7 @@ Seu jeito de me apoiar"></textarea>
     }
 
     if (rules?.reasons) {
-      const reasons = modalReasons.value.split("\n").map(x => x.trim()).filter(Boolean);
+      const reasons = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
       if (!reasons.length) {
         alert("Digite pelo menos 1 motivo.");
         return;
@@ -1279,7 +1293,7 @@ Seu jeito de me apoiar"></textarea>
         const r1 = document.getElementById("reason1");
         const r2 = document.getElementById("reason2");
         const r3 = document.getElementById("reason3");
-        const reasonLines = modalReasons.value.split("\n").map(x => x.trim()).filter(Boolean);
+        const reasonLines = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
         if (r1) r1.value = reasonLines[0] || "";
         if (r2) r2.value = reasonLines[1] || "";
         if (r3) r3.value = reasonLines[2] || "";
@@ -1421,7 +1435,7 @@ function openPlanPersonalization(planKey) {
       isEssential
         ? "No Essencial, você escolhe 1 entre 2 músicas."
         : isPremium
-          ? "No Premium, você tem acesso à biblioteca completa de músicas."
+          ? "No Premium, você tem a biblioteca completa + opção exclusiva."
           : "No Romântico, você escolhe entre as músicas disponíveis.";
   }
 
@@ -1446,10 +1460,8 @@ function openPlanPersonalization(planKey) {
   }
 
   document.getElementById("pemSubmit").textContent =
-    `❤️ Criar minha prévia — ${planName}`;
+    `❤️ Abrir prévia — ${planName}`;
 
-  // Garante que o modal apareça por cima da página e que o clique
-  // no plano não navegue para #pedido.
   modal.style.display = "flex";
   modal.classList.add("is-open");
   document.body.style.overflow = "hidden";
@@ -1459,22 +1471,11 @@ function openPlanPersonalization(planKey) {
   }, 50);
 }
 
-document.addEventListener("click", (event) => {
-  const button = event.target.closest("[data-plan-id]");
-  if (!button) return;
-
-  const planKey = button.dataset.planId || "";
-  if (!PLAN_RULES[planKey]) return;
-
-  event.preventDefault();
-  event.stopPropagation();
-  openPlanPersonalization(planKey);
-}, true);
-
+// O clique nos planos SEMPRE abre primeiro a personalização.
 planButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
-    event.stopPropagation();
+    event.stopImmediatePropagation();
 
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
@@ -1497,7 +1498,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        `❤️ Criar meu site — ${planName}`;
+        `❤️ Abrir prévia — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
   } else {
@@ -1508,7 +1509,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        "✨ Gerar minha prévia";
+        "✨ Abrir minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }
