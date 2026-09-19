@@ -222,6 +222,134 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   .reason-card p{font-size:31px !important}
 }
 </style>
+
+<style>
+/* Refinamento da seção Motivos */
+#motivos{
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  padding-left:20px !important;
+  padding-right:20px !important;
+}
+
+#motivos::before{
+  content:"";
+  position:absolute;
+  width:520px;
+  height:360px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(255,49,88,.13),transparent 68%);
+  pointer-events:none;
+}
+
+#motivos > *{
+  position:relative;
+  z-index:1;
+}
+
+#motivos .reason-number{
+  margin:0 auto 8px !important;
+  font-size:12px !important;
+  line-height:1 !important;
+  letter-spacing:4px;
+  color:rgba(255,113,136,.72);
+  font-weight:700;
+}
+
+#motivos > .eyebrow{
+  display:block;
+  margin-bottom:14px;
+  color:#ff7188;
+  letter-spacing:4px;
+  font-size:10px;
+  font-weight:800;
+}
+
+#motivos h2{
+  margin:0 auto 30px !important;
+  font-size:clamp(38px,5vw,62px) !important;
+  line-height:1 !important;
+  letter-spacing:-1.5px;
+}
+
+#motivos h2 em{
+  font-family:"Great Vibes",cursive;
+  color:#ff3158;
+  font-weight:400;
+}
+
+#motivos .reason-card{
+  width:min(680px,100%) !important;
+  min-height:145px !important;
+  margin:0 auto 24px !important;
+  padding:30px 34px !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  border:1px solid rgba(255,49,88,.20);
+  border-radius:24px;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,49,88,.035));
+  box-shadow:0 25px 70px rgba(0,0,0,.30),0 0 45px rgba(255,49,88,.06);
+  backdrop-filter:blur(12px);
+}
+
+#motivos .reason-card > span{
+  flex:0 0 auto;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#ff3158;
+  background:rgba(255,49,88,.10);
+  box-shadow:0 0 25px rgba(255,49,88,.12);
+}
+
+#motivos .reason-card p{
+  margin:0 !important;
+  color:#fff;
+  font-size:clamp(22px,3vw,32px) !important;
+  line-height:1.3 !important;
+  font-weight:500;
+}
+
+#motivos #nextReason{
+  margin-top:0;
+}
+
+#motivos #reasonCounter{
+  display:block;
+  margin-top:14px;
+  color:rgba(255,255,255,.42);
+  font-size:10px;
+  letter-spacing:1.5px;
+}
+
+#motivos .reason-grid{
+  width:min(900px,100%);
+  margin:34px auto 0 !important;
+}
+
+@media(max-width:600px){
+  #motivos h2{
+    font-size:43px !important;
+  }
+
+  #motivos .reason-card{
+    min-height:125px !important;
+    padding:24px 18px !important;
+  }
+
+  #motivos .reason-card p{
+    font-size:21px !important;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -278,9 +406,15 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   <section class="reasons-section preview-lock" id="motivos">
     <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>100 Motivos</strong><p>Os 100 motivos fazem parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
-    <div class="reason-number" id="reasonNumber">01</div><span class="eyebrow">UM DOS 100 MOTIVOS</span><h2>Por que eu te amo?</h2>
-    <div class="reason-card"><span>♥</span><p id="reasonText">Seu sorriso.</p></div>
-    <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button><small id="reasonCounter">Motivo 1 de 1</small>
+    <div class="reason-number" id="reasonNumber">01</div>
+    <span class="eyebrow">MOTIVOS PARA TE AMAR</span>
+    <h2>Por que eu <em>te amo?</em></h2>
+    <div class="reason-card">
+      <span>♥</span>
+      <p id="reasonText">Seu sorriso.</p>
+    </div>
+    <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
+    <small id="reasonCounter">Motivo 1 de 1</small>
     <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
