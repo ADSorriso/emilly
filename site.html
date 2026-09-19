@@ -180,7 +180,7 @@ section[id],.checkout-final{scroll-margin-top:92px}
 /* História mais compacta e cinematográfica */
 #historia{padding-top:115px !important;padding-bottom:115px !important}
 .timeline-preview{max-width:720px !important}
-.timeline-item{min-height:125px !important;grid-template-columns:42px 12px 1fr !important;gap:16px !important}
+.timeline-item{min-height:125px !important;grid-template-columns:12px 1fr !important;gap:16px !important}
 .timeline-item>div:nth-child(2):after{height:112px !important}
 .timeline-item h3{font-size:21px !important;margin-bottom:8px !important}
 .timeline-item p{max-width:560px;line-height:1.75 !important}
@@ -211,7 +211,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   .hero h1{font-size:64px !important;line-height:.98 !important;margin-top:24px !important}
   .hero-photo{width:min(305px,82vw) !important;margin-top:28px !important}
   #historia{padding-top:90px !important;padding-bottom:90px !important}
-  .timeline-item{grid-template-columns:34px 10px 1fr !important;gap:11px !important}
+  .timeline-item{grid-template-columns:10px 1fr !important;gap:11px !important}
   .timeline-item>div:nth-child(2):after{height:105px !important}
   #momentos{padding-top:90px !important;padding-bottom:80px !important}
   .heart-gallery{transform:scale(.86);margin-bottom:-65px !important}
@@ -350,6 +350,65 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 }
 </style>
 
+
+<style>
+.hero .preview-date{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  width:max-content;
+  max-width:100%;
+  margin:18px auto 0 !important;
+  padding:7px 15px;
+  color:rgba(255,255,255,.58) !important;
+  font-size:9px !important;
+  font-weight:700;
+  letter-spacing:3px !important;
+  line-height:1;
+  text-transform:uppercase;
+}
+.hero .preview-date::before,
+.hero .preview-date::after{
+  content:"";
+  width:26px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,49,88,.75));
+}
+.hero .preview-date::after{
+  background:linear-gradient(90deg,rgba(255,49,88,.75),transparent);
+}
+#historia .timeline-item{
+  grid-template-columns:12px 1fr !important;
+}
+#historia .timeline-item > div:nth-child(2){
+  grid-column:1;
+}
+#historia .timeline-item > div:nth-child(3){
+  grid-column:2;
+}
+#motivos .reason-card{
+  margin-top:0 !important;
+}
+#motivos .reason-grid .reason-item{
+  display:flex;
+  align-items:center;
+  min-height:54px;
+}
+@media(max-width:600px){
+  .hero .preview-date{
+    gap:9px;
+    padding:7px 10px;
+    font-size:8px !important;
+    letter-spacing:2px !important;
+  }
+  .hero .preview-date::before,
+  .hero .preview-date::after{
+    width:18px;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -382,7 +441,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
     <div class="timeline-preview preview-lock" id="storySection">
-      <div class="timeline-item"><div class="timeline-number">01</div><div><div class="timeline-dot"></div></div><div><h3>O começo de vocês ❤️</h3><p id="loveStory">Conte aqui a história de vocês.</p></div></div>
+      <div class="timeline-item"><div><div class="timeline-dot"></div></div><div><h3>O começo de vocês ❤️</h3><p id="loveStory">Conte aqui a história de vocês.</p></div></div>
       <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
@@ -406,7 +465,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   <section class="reasons-section preview-lock" id="motivos">
     <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>100 Motivos</strong><p>Os 100 motivos fazem parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
-    <div class="reason-number" id="reasonNumber">01</div>
     <span class="eyebrow">MOTIVOS PARA TE AMAR</span>
     <h2>Por que eu <em>te amo?</em></h2>
     <div class="reason-card">
