@@ -306,7 +306,7 @@ function validatePlanPersonalization() {
   if (rules.reasons > 0) {
     const reasons100 = document.getElementById("reasons100");
     const reasons = (reasons100?.value || "")
-      .split("\\n")
+      .split("\n")
       .map((item) => item.trim())
       .filter(Boolean);
 
@@ -1142,7 +1142,7 @@ Seu jeito de me apoiar"></textarea>
     if (key === "essencial") {
       help.textContent = "No Essencial, você escolhe 1 entre 2 músicas.";
     } else if (key === "premium") {
-      help.textContent = "No Premium, você tem a biblioteca completa + opção exclusiva.";
+      help.textContent = "No Premium, você tem acesso à biblioteca completa de músicas.";
     } else {
       help.textContent = "No Romântico, você pode escolher entre as músicas disponíveis.";
     }
@@ -1197,7 +1197,7 @@ Seu jeito de me apoiar"></textarea>
     }
 
     if (rules?.reasons) {
-      const reasons = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
+      const reasons = modalReasons.value.split("\n").map(x => x.trim()).filter(Boolean);
       if (!reasons.length) {
         alert("Digite pelo menos 1 motivo.");
         return;
@@ -1278,7 +1278,7 @@ Seu jeito de me apoiar"></textarea>
         const r1 = document.getElementById("reason1");
         const r2 = document.getElementById("reason2");
         const r3 = document.getElementById("reason3");
-        const reasonLines = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
+        const reasonLines = modalReasons.value.split("\n").map(x => x.trim()).filter(Boolean);
         if (r1) r1.value = reasonLines[0] || "";
         if (r2) r2.value = reasonLines[1] || "";
         if (r3) r3.value = reasonLines[2] || "";
@@ -1420,7 +1420,7 @@ function openPlanPersonalization(planKey) {
       isEssential
         ? "No Essencial, você escolhe 1 entre 2 músicas."
         : isPremium
-          ? "No Premium, você tem a biblioteca completa + opção exclusiva."
+          ? "No Premium, você tem acesso à biblioteca completa de músicas."
           : "No Romântico, você escolhe entre as músicas disponíveis.";
   }
 
@@ -1445,8 +1445,11 @@ function openPlanPersonalization(planKey) {
   }
 
   document.getElementById("pemSubmit").textContent =
-    `❤️ Abrir prévia — ${planName}`;
+    `❤️ Criar minha prévia — ${planName}`;
 
+  // Garante que o modal apareça por cima da página e que o clique
+  // no plano não navegue para #pedido.
+  modal.style.display = "flex";
   modal.classList.add("is-open");
   document.body.style.overflow = "hidden";
 
@@ -1455,57 +1458,17 @@ function openPlanPersonalization(planKey) {
   }, 50);
 }
 
-function startDirectPlanPreview(planKey) {
-  const rules = PLAN_RULES[planKey];
-  if (!rules) return;
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-plan-id]");
+  if (!button) return;
 
-  selectedPlan = `${PLAN_NAMES[planKey]} — ${PLAN_PRICES[planKey]}`;
+  const planKey = button.dataset.planId || "";
+  if (!PLAN_RULES[planKey]) return;
 
-  // Se o visitante já preencheu algo no teste, aproveitamos os dados.
-  // Se ainda não preencheu, a prévia abre imediatamente com um exemplo elegante.
-  const defaultMusic = planKey === "essencial"
-    ? "Love Me Like You Do"
-    : "A Thousand Years";
-
-  const previewData = {
-    planKey,
-    plan: selectedPlan,
-    loveName: nameInput?.value.trim() || "Emilly",
-    yourName: yourNameInput?.value.trim() || "Ricael",
-    loveMessage: messageInput?.value.trim() ||
-      "Um cantinho especial feito com amor, com cada detalhe pensado para vocês dois.",
-    loveDate: dateInput?.value || "",
-    loveMusic: musicInput?.value || defaultMusic,
-    loveStory: storyInput?.value.trim() ||
-      "Foi assim que começou uma história que merece ser lembrada.",
-    reasons100: document.getElementById("reasons100")?.value.trim() ||
-      "Seu sorriso\nSeu carinho\nO jeito que você me faz feliz",
-    loveLetter: document.getElementById("loveLetter")?.value.trim() ||
-      "Talvez eu não consiga colocar em palavras tudo aquilo que sinto, mas cada detalhe deste site foi feito pensando em você.",
-    loveSurprise: document.getElementById("loveSurprise")?.value.trim() ||
-      "Eu escolheria você em todas as vidas. ❤️",
-    photoData: photoData || "",
-    customization: planKey === "premium"
-      ? (window.amorEmSiteCustomization || {
-          heartStyle: "classico",
-          photoStyle: "natural",
-          photoLayout: "coracao",
-          animation: "suave",
-          fontStyle: "elegante",
-          theme: "rose",
-          effects: "essencial"
-        })
-      : {}
-  };
-
-  try {
-    sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
-    window.location.href = "site.html?preview=1";
-  } catch (error) {
-    console.error("Não foi possível abrir a prévia:", error);
-    alert("Não foi possível preparar a prévia. Tente novamente.");
-  }
-}
+  event.preventDefault();
+  event.stopPropagation();
+  openPlanPersonalization(planKey);
+}, true);
 
 planButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
@@ -1515,7 +1478,7 @@ planButtons.forEach((button) => {
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
 
-    startDirectPlanPreview(planKey);
+    openPlanPersonalization(planKey);
   });
 });
 
@@ -1533,7 +1496,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        `❤️ Abrir prévia — ${planName}`;
+        `❤️ Criar meu site — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
   } else {
@@ -1544,7 +1507,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        "✨ Abrir minha prévia";
+        "✨ Gerar minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }
