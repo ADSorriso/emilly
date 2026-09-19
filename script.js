@@ -727,17 +727,24 @@ form?.addEventListener(
 // PLANOS
 // ==========================================
 
-planButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+// Intercepta o clique nos planos ANTES de qualquer outro listener.
+// Assim, clicar em "Quero esse" nunca abre o Asaas diretamente.
+document.addEventListener(
+  "click",
+  (event) => {
+    const button = event.target.closest?.("[data-plan]");
+    if (!button) return;
+
     event.preventDefault();
+    event.stopImmediatePropagation();
 
     selectedPlan = button.dataset.plan || "";
 
     applyPlanRules();
     updateCheckoutButton();
 
-    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
-    // Primeiro ele preenche os dados de personalização.
+    // Primeiro o cliente personaliza. O pagamento só acontece
+    // quando clicar em "Criar meu site".
     document
       .getElementById("teste")
       ?.scrollIntoView({
@@ -751,8 +758,9 @@ planButtons.forEach((button) => {
         `❤️ Criar meu site — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
-  });
-});
+  },
+  true
+);
 
 function updateCheckoutButton() {
   if (!checkoutButton) return;
@@ -880,7 +888,11 @@ async function startCheckout() {
 
 checkoutButton?.addEventListener(
   "click",
-  () => startCheckout()
+  (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    startCheckout();
+  }
 );
 
 
