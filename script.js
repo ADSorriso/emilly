@@ -732,28 +732,27 @@ planButtons.forEach((button) => {
     event.preventDefault();
 
     const planId = button.dataset.planId || "";
-
     const planMap = {
       essencial: "Essencial — R$ 10,90",
       romantico: "Romântico — R$ 39,90",
       premium: "Premium — R$ 59,90"
     };
-
     selectedPlan = planMap[planId] || "";
-
-    if (!selectedPlan) return;
 
     applyPlanRules();
     updateCheckoutButton();
 
-    // O plano foi escolhido. Agora mostramos a área de personalização.
-    // Não cria pedido e não abre o Asaas neste momento.
-    const builderSection = document.getElementById("teste");
+    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
+    // Primeiro ele preenche os dados de personalização.
+    const builderForm = document.getElementById("builderForm");
 
-    if (builderSection) {
-      builderSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    if (builderForm) {
+      // Leva o cliente diretamente para os campos de personalização,
+      // deixando o título da seção acima, sem parar no cabeçalho.
+      const top = builderForm.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth"
       });
     }
 
