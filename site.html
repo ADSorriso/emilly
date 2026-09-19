@@ -1,48 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#060305">
-  <title>Amor em Site ❤️</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .preview-lock{position:relative;overflow:hidden}
-    .preview-lock.is-locked > .locked-overlay{display:flex}
-    .locked-overlay{display:none;position:absolute;inset:0;z-index:20;align-items:center;justify-content:center;text-align:center;padding:25px;background:rgba(3,2,3,.82);backdrop-filter:blur(7px)}
-    .locked-box{max-width:460px;padding:30px;border:1px solid rgba(255,49,88,.38);border-radius:22px;background:rgba(18,8,11,.94);box-shadow:0 25px 80px rgba(0,0,0,.5)}
-    .locked-box strong{display:block;color:#fff;font-size:20px;margin-bottom:8px}.locked-box p{color:#aaa;line-height:1.6;margin-bottom:18px}
-    .locked-box button,.checkout-final button{border:0;border-radius:999px;padding:14px 22px;background:linear-gradient(135deg,#ff3158,#a40032);color:#fff;font-weight:800;cursor:pointer}
-    .preview-badge{position:fixed;top:92px;left:50%;transform:translateX(-50%);z-index:105;padding:8px 15px;border:1px solid rgba(255,49,88,.45);border-radius:999px;background:rgba(18,8,11,.88);backdrop-filter:blur(12px);color:#ff8da4;font-size:11px;letter-spacing:1px}
-    .hero-photo{width:min(320px,82vw);aspect-ratio:4/5;margin:28px auto 0;border-radius:22px;overflow:hidden;border:1px solid rgba(255,49,88,.45);box-shadow:0 30px 80px rgba(0,0,0,.45);background:#16090d}
-    .hero-photo img{width:100%;height:100%;object-fit:cover;display:block}.hero-photo.empty{display:grid;place-items:center;color:#ff5574;font-size:70px}
-    .preview-name{font-family:"Great Vibes",cursive;color:#ff3158;font-size:1.2em}
-    .story-card{max-width:850px;margin:0 auto;padding:35px;border:1px solid rgba(255,49,88,.22);border-radius:22px;background:#ffffff04}
-    .story-card p{color:#aaa;line-height:1.9;white-space:pre-wrap}.story-card h3{margin-bottom:15px}
-    .reason-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:900px;margin:0 auto}.reason-item{padding:18px;border:1px solid rgba(255,49,88,.18);border-radius:16px;background:#ffffff04;color:#ddd}.reason-item span{color:#ff3158;margin-right:8px}
-    .letter-content{max-width:700px;margin:28px auto 0}.letter-content p{line-height:1.9;color:#321d20;margin-bottom:15px;white-space:pre-wrap}
-    .checkout-final{text-align:center;padding:90px 20px;background:radial-gradient(circle,rgba(255,0,60,.18),transparent 45%),#030303}.checkout-final h2{font-size:clamp(38px,6vw,70px);line-height:1;margin:18px 0}.checkout-final h2 em{font-family:"Great Vibes",cursive;color:#ff3158;font-weight:400}.checkout-final p{color:#999;max-width:600px;margin:0 auto 25px;line-height:1.7}.checkout-final small{display:block;color:#666;margin-top:14px}
-    .music-status{margin:18px auto 0;color:#777;font-size:12px}.music-status b{color:#ff5574}
-    .demo-note{max-width:760px;margin:0 auto 35px;text-align:center;color:#777;line-height:1.7}.demo-note strong{color:#aaa}
-    @media(max-width:700px){.reason-grid{grid-template-columns:1fr}.preview-badge{top:76px;font-size:9px}.hero-photo{width:min(260px,82vw)}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070305">
+<title>Para o meu amor ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site-preview.css">
+<style>
+/* Camada exclusiva da prévia comercial — não altera o design comercial. */
+.preview-badge{position:fixed;top:94px;left:50%;transform:translateX(-50%);z-index:120;padding:8px 16px;border:1px solid rgba(255,49,88,.45);border-radius:999px;background:rgba(10,4,7,.78);backdrop-filter:blur(14px);color:#ff7188;font-size:10px;letter-spacing:2px;font-weight:700;white-space:nowrap}
+.preview-lock{position:relative;overflow:hidden}
+.preview-lock.is-locked{min-height:360px}
+.preview-lock.is-locked>*:not(.locked-overlay){filter:blur(2px);opacity:.72}
+.locked-overlay{display:none;position:absolute;inset:0;z-index:30;align-items:center;justify-content:center;padding:28px;background:rgba(4,2,4,.72);backdrop-filter:blur(8px)}
+.preview-lock.is-locked .locked-overlay{display:flex}
+.locked-box{width:min(480px,92vw);padding:32px 28px;text-align:center;border:1px solid rgba(255,49,88,.38);border-radius:24px;background:linear-gradient(145deg,rgba(40,7,15,.96),rgba(12,5,8,.97));box-shadow:0 25px 90px rgba(0,0,0,.55)}
+.locked-box .lock-icon{font-size:30px;margin-bottom:12px}.locked-box strong{display:block;font-size:20px;margin-bottom:8px}.locked-box p{color:#b8aaae;line-height:1.7;margin-bottom:18px}.locked-box button{border:0;border-radius:999px;padding:13px 20px;background:linear-gradient(135deg,#ff3158,#a40032);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 35px rgba(255,49,88,.2)}
+.demo-note{max-width:760px;margin:-35px auto 55px;padding:0 20px;text-align:center;color:#777;line-height:1.7}.demo-note strong{color:#aaa}
+.hero-photo{width:min(330px,88vw);aspect-ratio:4/5;margin:28px auto 0;border-radius:24px;overflow:hidden;border:1px solid rgba(255,49,88,.42);box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 45px rgba(255,49,88,.08);background:#16090d}.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}.hero-photo.empty{display:grid;place-items:center;color:#ff5574;font-size:74px}
+.hero-data{max-width:680px;margin:0 auto}.hero-data .eyebrow{display:block;margin-bottom:14px}.preview-message{max-width:650px;margin:0 auto;color:#aaa;line-height:1.9;white-space:pre-wrap}.music-status{margin-top:18px;color:#777;font-size:12px}.music-status b{color:#ff5574}.preview-date{margin-top:10px;color:#666;font-size:11px;letter-spacing:1px}
+.timeline-preview{max-width:850px;margin:0 auto}.timeline-item p{white-space:pre-wrap}
+.heart-section .section-heading{margin-bottom:55px}.heart-gallery img{cursor:zoom-in}
+.reason-grid{max-width:900px;margin:40px auto 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.reason-item{padding:17px 18px;border:1px solid rgba(255,49,88,.18);border-radius:16px;background:rgba(255,255,255,.025);color:#ddd;text-align:left}.reason-item span{color:#ff3158;margin-right:9px;font-weight:700}
+.letter-content{max-width:700px;margin:28px auto 0;text-align:left}.letter-content p{color:#321d20;line-height:1.9;margin-bottom:15px;white-space:pre-wrap}.letter-content .signature{font:28px "Great Vibes",cursive;color:#9e3048;margin-top:28px}
+.checkout-final{text-align:center;padding:110px 20px;background:radial-gradient(circle,rgba(255,0,60,.18),transparent 45%),#030303;border-top:1px solid rgba(255,255,255,.04)}.checkout-final h2{font-size:clamp(42px,6vw,76px);line-height:.95;margin:22px 0 45px}.checkout-final h2 em{font-family:"Great Vibes",cursive;color:#ff3158;font-weight:400}.checkout-final p{max-width:620px;margin:0 auto 25px;color:#999;line-height:1.8}.checkout-final button{border:0;border-radius:999px;padding:16px 25px;background:linear-gradient(135deg,#ff3158,#a40032);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 16px 45px rgba(255,49,88,.22)}.checkout-final small{display:block;color:#666;margin-top:15px}
+.preview-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,30px);z-index:500;background:#17080d;border:1px solid rgba(255,49,88,.28);padding:12px 18px;border-radius:999px;color:#fff;opacity:0;pointer-events:none;transition:.3s}.preview-toast.show{opacity:1;transform:translate(-50%,0)}
+.preview-photo-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.preview-photo-grid .photo-card{height:330px}.preview-photo-grid img{width:100%;height:100%;object-fit:cover}
+@media(max-width:800px){.preview-badge{top:78px;font-size:8px;padding:7px 12px}.reason-grid{grid-template-columns:1fr}.preview-photo-grid{grid-template-columns:repeat(2,1fr)}.preview-photo-grid .photo-card{height:230px}}
+</style>
 </head>
 <body>
-<div class="preview-badge" id="planBadge">PRÉVIA</div>
+<div class="preview-badge" id="planBadge">PRÉVIA • PLANO</div>
 <div id="hearts" aria-hidden="true"></div>
 
+<div id="giftOverlay" class="gift-overlay">
+  <div class="gift-box">
+    <div class="gift-kicker">UMA SURPRESA PARA VOCÊ</div>
+    <h1 id="giftTitle">Isso é para você. ❤️</h1>
+    <p>Veja como seu site pode ficar antes de escolher o plano.</p>
+    <button id="openGiftBtn">❤️ ABRIR MEU SITE</button>
+  </div>
+</div>
+<audio id="romanticAudio" preload="auto" loop></audio>
+
 <header class="navbar">
-  <a class="logo" href="#inicio">Amor <span>em Site</span> ♥</a>
+  <a class="logo" href="#inicio">Para o meu amor <span>♡</span></a>
   <nav>
-    <a href="#inicio">Início</a>
-    <a href="#historia">Nossa História</a>
-    <a href="#momentos">Momentos</a>
-    <a href="#motivos">Motivos</a>
-    <a href="#carta">Carta</a>
-    <a href="#surpresa">Surpresa</a>
+    <a href="#inicio">Início</a><a href="#historia">Nossa História</a><a href="#momentos">Momentos</a><a href="#motivos">Motivos</a><a href="#carta">Carta</a><a href="#surpresa">Surpresa</a>
   </nav>
   <button class="love-pill" id="lovePill">♥ Eu te amo</button>
 </header>
@@ -50,199 +57,163 @@
 <main>
   <section class="hero" id="inicio">
     <div class="hero-glow"></div>
-    <div class="hero-content">
+    <div class="hero-content hero-data">
       <span class="eyebrow">PARA O MEU AMOR</span>
       <h1>Oi, <em id="loveName">meu amor.</em></h1>
-      <p id="loveMessage">Um cantinho feito especialmente para vocês.</p>
+      <p class="preview-message" id="loveMessage">Um cantinho feito especialmente para vocês.</p>
       <div class="hero-photo empty" id="heroPhoto"><span>♥</span></div>
       <div class="music-status">🎵 <b id="musicName">Nossa música</b></div>
+      <div class="preview-date" id="loveDate"></div>
       <button class="primary-btn" id="openMusic">Entrar no nosso mundo ♥</button>
       <div class="scroll-hint"><i></i>deslize</div>
     </div>
   </section>
 
+  <div class="demo-note"><strong>Prévia interativa:</strong> você está vendo o site com os dados que acabou de preencher. Os recursos liberados dependem do plano escolhido.</div>
+
   <section class="section" id="historia">
-    <div class="section-heading reveal">
-      <span class="eyebrow">NOSSA HISTÓRIA</span>
-      <h2>Como tudo <em>começou.</em></h2>
-      <p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p>
-    </div>
-    <div class="story-card preview-lock" id="storySection">
-      <h3>O começo de vocês ❤️</h3>
-      <p id="loveStory">Conte aqui a história de vocês.</p>
-      <div class="locked-overlay"><div class="locked-box"><strong>🔒 Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
+    <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
+    <div class="timeline-preview preview-lock" id="storySection">
+      <div class="timeline-item"><div class="timeline-number">01</div><div><div class="timeline-dot"></div></div><div><h3>O começo de vocês ❤️</h3><p id="loveStory">Conte aqui a história de vocês.</p></div></div>
+      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
 
   <section class="heart-section" id="momentos">
-    <div class="section-heading reveal">
-      <span class="eyebrow">MOMENTOS</span>
-      <h2>Um pedacinho de <em>vocês.</em></h2>
-      <p>O site completo transforma suas fotos em uma experiência romântica.</p>
-    </div>
-    <div class="heart-gallery" id="heartGallery">
-      <div class="heart-photo p1"><img id="heartPhoto1" alt="Foto do casal"></div>
-      <div class="heart-photo p2"><img id="heartPhoto2" alt="Foto do casal"></div>
-      <div class="heart-photo p3"><img id="heartPhoto3" alt="Foto do casal"></div>
-      <div class="heart-photo p4"><img id="heartPhoto4" alt="Foto do casal"></div>
-      <div class="heart-photo p5"><img id="heartPhoto5" alt="Foto do casal"></div>
-      <div class="heart-photo p6"><img id="heartPhoto6" alt="Foto do casal"></div>
-      <div class="heart-photo p7"><img id="heartPhoto7" alt="Foto do casal"></div>
-      <div class="heart-photo p8"><img id="heartPhoto8" alt="Foto do casal"></div>
+    <div class="section-heading reveal"><span class="eyebrow">MOMENTOS</span><h2>Um pedacinho de <em>vocês.</em></h2><p>As fotos de vocês formando um coração interativo.</p></div>
+    <div class="heart-gallery preview-lock" id="momentsSection">
+      <div class="heart-photo p1"><img id="heartPhoto1" alt="Foto do casal"></div><div class="heart-photo p2"><img id="heartPhoto2" alt="Foto do casal"></div><div class="heart-photo p3"><img id="heartPhoto3" alt="Foto do casal"></div><div class="heart-photo p4"><img id="heartPhoto4" alt="Foto do casal"></div><div class="heart-photo p5"><img id="heartPhoto5" alt="Foto do casal"></div><div class="heart-photo p6"><img id="heartPhoto6" alt="Foto do casal"></div><div class="heart-photo p7"><img id="heartPhoto7" alt="Foto do casal"></div><div class="heart-photo p8"><img id="heartPhoto8" alt="Foto do casal"></div>
       <div class="heart-center"><strong id="heartName">Vocês</strong><small>para sempre</small><span>♥</span></div>
+      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Coração com fotos</strong><p>O coração de fotos faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="momentos-grid">
+    <div class="section-heading reveal"><span class="eyebrow">FOTOS</span><h2>Momentos que <em>ficam.</em></h2></div>
+    <div class="preview-photo-grid preview-lock" id="photoGridSection">
+      <div class="photo-card"><img id="gridPhoto1" alt="Momento"></div><div class="photo-card"><img id="gridPhoto2" alt="Momento"></div><div class="photo-card"><img id="gridPhoto3" alt="Momento"></div>
+      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>As opções completas de fotos fazem parte dos planos Romântico e Premium.</p><button data-upgrade="romantico">Ver plano Romântico</button></div></div>
     </div>
   </section>
 
   <section class="reasons-section preview-lock" id="motivos">
-    <div class="locked-overlay" id="reasonsLock"><div class="locked-box"><strong>🔒 100 Motivos</strong><p>Os 100 motivos fazem parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
-    <div class="reason-number" id="reasonNumber">01</div>
-    <span class="eyebrow">MOTIVOS PARA TE AMAR</span>
-    <h2>Por que eu te amo?</h2>
+    <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>100 Motivos</strong><p>Os 100 motivos fazem parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
+    <div class="reason-number" id="reasonNumber">01</div><span class="eyebrow">UM DOS 100 MOTIVOS</span><h2>Por que eu te amo?</h2>
     <div class="reason-card"><span>♥</span><p id="reasonText">Seu sorriso.</p></div>
-    <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
-    <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid" style="margin-top:35px"></div>
+    <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button><small id="reasonCounter">Motivo 1 de 1</small>
+    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
-    <div class="locked-overlay"><div class="locked-box"><strong>🔒 Carta interativa</strong><p>A carta interativa faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
+    <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Carta interativa</strong><p>A carta interativa faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     <div class="section-heading reveal"><span class="eyebrow">UMA CARTA</span><h2>Algumas coisas precisam ser <em>ditas.</em></h2></div>
     <button class="envelope" id="envelope" aria-label="Abrir carta"><div class="flap"></div><div class="seal">♥</div><span>Clique para abrir</span></button>
-    <div class="letter-paper" id="letterPaper" aria-hidden="true">
-      <span>Para você, meu amor.</span><h3>Eu te amo.</h3><div class="letter-content" id="letterText"></div>
-      <p class="signature" id="letterSignature"></p>
-    </div>
+    <div class="letter-paper" id="letterPaper" aria-hidden="true"><span>Para você, meu amor.</span><h3>Eu te amo.</h3><div class="letter-content" id="letterText"></div><p class="signature" id="letterSignature"></p></div>
   </section>
 
-  <section class="future-section">
-    <div class="future-content reveal"><span class="eyebrow">AINDA TEM MUITO PELA FRENTE</span><h2>E isso é apenas <em>o começo.</em></h2><div class="future-grid"><span>Mais viagens.</span><span>Mais risadas.</span><span>Mais abraços.</span><span>Mais histórias.</span><span>Mais sonhos.</span><span>Mais nós.</span></div></div>
-  </section>
+  <section class="future-section"><div class="future-content reveal"><span class="eyebrow">AINDA TEM MUITO PELA FRENTE</span><h2>E isso é apenas <em>o começo.</em></h2><div class="future-grid"><span>Mais viagens.</span><span>Mais risadas.</span><span>Mais abraços.</span><span>Mais histórias.</span><span>Mais sonhos.</span><span>Mais nós.</span></div></div></section>
 
   <section class="surprise-section preview-lock" id="surpresa">
-    <div class="locked-overlay"><div class="locked-box"><strong>🔒 Surpresa final</strong><p>A surpresa final faz parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
+    <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Surpresa final</strong><p>A surpresa final faz parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
     <div id="surpriseBefore" class="reveal"><span class="eyebrow">AINDA TEM UMA COISA...</span><h2>Tenho uma última <em>surpresa.</em></h2><button class="primary-btn" id="surpriseButton">Abrir surpresa ♥</button></div>
     <div id="surpriseAfter" class="final-message hidden"><div class="big-heart">♥</div><span>PARA SEMPRE</span><h2>Eu escolheria você<br><em>em todas as vidas.</em></h2><p id="surpriseText">Te amo. ❤️</p></div>
   </section>
 
-  <section class="checkout-final" id="checkout">
-    <span class="eyebrow">GOSTOU DA PRÉVIA?</span>
-    <h2>Agora transforme isso em<br><em>um site de vocês.</em></h2>
-    <p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p>
-    <button id="checkoutButtonFinal">Continuar para pagamento ❤️</button>
-    <small id="checkoutPrice">Pagamento seguro • Link exclusivo</small>
-  </section>
+  <section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
 </main>
 
-<footer><strong>Amor em Site ♥</strong><p>Feito com amor, especialmente para vocês.</p></footer>
+<footer><strong>Para o meu amor ♥</strong><p>Feito com amor, especialmente para vocês.</p></footer>
 <div class="modal" id="photoModal" aria-hidden="true"><button id="closeModal" aria-label="Fechar">×</button><img id="modalImage" src="" alt="Foto ampliada"></div>
-<div class="toast" id="toast">Feito com amor ❤️</div>
-<button class="music-button" id="musicButton" title="Ativar música">♫</button>
-<audio id="music" loop preload="auto"></audio>
+<div class="preview-toast" id="toast">Feito com amor ❤️</div>
+<button class="music-button" id="musicButton" title="Música">♫</button>
+<audio id="music" loop preload="none"></audio>
 
 <script>
 (function(){
-  const API_URL = "https://amor-em-site-backend.vercel.app";
-  const raw = sessionStorage.getItem("amorEmSitePreview");
-  const data = raw ? JSON.parse(raw) : null;
-  const planKey = data?.planKey || "romantico";
-  const rules = { essencial: "Essencial", romantico: "Romântico", premium: "Premium" };
-  const prices = { essencial: "R$ 10,90", romantico: "R$ 39,90", premium: "R$ 59,90" };
-  const unlocked = planKey !== "essencial";
-  const romantic = planKey === "romantico" || planKey === "premium";
-
-  if(!data){
-    document.getElementById("loveName").textContent = "meu amor.";
-    document.getElementById("loveMessage").textContent = "Crie sua prévia escolhendo um plano na página inicial.";
-  }
-
-  const text = (id,value,fallback="") => { const el=document.getElementById(id); if(el) el.textContent=value || fallback; };
-  const photo = data?.photoData || "";
-  text("loveName", data?.loveName || "meu amor");
-  text("heartName", data?.loveName || "Vocês");
-  text("loveMessage", data?.loveMessage || "Um cantinho feito especialmente para vocês.");
-  text("loveStory", data?.loveStory || "Conte aqui a história de vocês.");
-  text("musicName", data?.loveMusic || "Nossa música");
-  text("planBadge", `PRÉVIA • PLANO ${rules[planKey] || "ROMÂNTICO"}`);
-  document.getElementById("checkoutDescription").textContent = `Você está testando o plano ${rules[planKey] || "Romântico"}. Continue para o pagamento e libere o site completo por ${prices[planKey] || "R$ 39,90"}.`;
-  document.getElementById("checkoutPrice").textContent = `Pagamento seguro • ${prices[planKey] || "R$ 39,90"} • Link exclusivo`;
-
-  if(photo){
-    const hero=document.getElementById("heroPhoto"); hero.classList.remove("empty"); hero.innerHTML=`<img src="${photo}" alt="Foto de vocês">`;
-    document.querySelectorAll("[id^='heartPhoto']").forEach(img=>img.src=photo);
-  }
-
-  const reasons = (data?.reasons100 || "").split("\\n").map(x=>x.trim()).filter(Boolean).slice(0,100);
-  if(reasons.length){
-    text("reasonText", reasons[0]);
-    text("reasonCounter", `Motivo 1 de ${reasons.length}`);
-    const grid=document.getElementById("reasonGrid");
-    grid.innerHTML=reasons.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${escapeHtml(r)}</div>`).join("");
-  }
-
-  const letter=(data?.loveLetter || "").trim();
-  const letterText=document.getElementById("letterText");
-  letterText.innerHTML=letter ? escapeHtml(letter).replace(/\n/g,"<br>") : "Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.<br><br>Mas tentei transformar um pouco desse sentimento em cada detalhe deste pequeno cantinho.";
-  text("letterSignature", data?.yourName ? `Com todo meu amor,<br>${data.yourName} ♥` : "Com todo meu amor, ♥");
-  text("surpriseText", data?.loveSurprise || "Te amo. ❤️");
-
-  // Essencial: bloqueia os recursos do Romântico/Premium. Romântico/Premium: libera.
-  [document.getElementById("storySection"),document.getElementById("motivos"),document.getElementById("carta"),document.getElementById("surpresa")].forEach(el=>{
-    if(!el) return;
-    if(!romantic) el.classList.add("is-locked");
-  });
-
-  // Premium: mostra que as opções avançadas fazem parte da experiência.
-  if(planKey === "premium"){
-    const badge=document.getElementById("planBadge"); badge.textContent="PRÉVIA • PLANO PREMIUM • PERSONALIZAÇÃO AVANÇADA";
-  }
-
-  // Motivos: no Romântico/Premium usa todos os motivos; no Essencial fica bloqueado.
-  let reasonIndex=0;
-  document.getElementById("nextReason")?.addEventListener("click",()=>{
-    if(!romantic || !reasons.length) return;
-    reasonIndex=(reasonIndex+1)%reasons.length;
-    text("reasonText",reasons[reasonIndex]);
-    text("reasonNumber",String(reasonIndex+1).padStart(2,"0"));
-    text("reasonCounter",`Motivo ${reasonIndex+1} de ${reasons.length}`);
-  });
-
-  document.getElementById("envelope")?.addEventListener("click",()=>{
-    if(!romantic) return;
-    document.getElementById("letterPaper")?.classList.toggle("open");
-  });
-  document.getElementById("surpriseButton")?.addEventListener("click",()=>{
-    if(!romantic) return;
-    document.getElementById("surpriseBefore").style.display="none";
-    document.getElementById("surpriseAfter").classList.remove("hidden");
-    burstHearts(24);
-  });
-
-  const audio=document.getElementById("music");
+  const API_URL="https://amor-em-site-backend.vercel.app";
+  const data=(()=>{try{return JSON.parse(sessionStorage.getItem("amorEmSitePreview")||"null")}catch(e){return null}})();
+  const params=new URLSearchParams(location.search);
+  const paid=params.get("pedido")||params.get("order");
+  if(!data && !paid){ location.href="index.html#planos"; return; }
+  const prices={essencial:"R$ 10,90",romantico:"R$ 39,90",premium:"R$ 59,90"};
+  const names={essencial:"Essencial",romantico:"Romântico",premium:"Premium"};
   const musicFiles={"Love Me Like You Do":"love-me-like-you-do.mp3","The Reason":"the-reason.mp3","Far Away":"far-away.mp3","A Thousand Years":"a-thousand-years.mp3"};
-  const musicFile=musicFiles[data?.loveMusic] || "";
-  if(musicFile) audio.src=musicFile;
-  document.getElementById("openMusic")?.addEventListener("click",async()=>{ if(audio.src){ try{await audio.play();}catch(e){} } document.getElementById("inicio")?.scrollIntoView({behavior:"smooth"}); });
-  document.getElementById("musicButton")?.addEventListener("click",async()=>{ if(!audio.src)return; if(audio.paused){await audio.play();document.getElementById("musicButton").textContent="❚❚";}else{audio.pause();document.getElementById("musicButton").textContent="♫";} });
+  let current=data||{};
+  let plan=current.planKey||"romantico";
+  const $=id=>document.getElementById(id);
+  const set=(id,v)=>{const e=$(id);if(e&&v!==undefined&&v!==null&&String(v).trim())e.textContent=String(v)};
+  const esc=v=>String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
+  const lines=(current.reasons100||"").split(/\\n|\n/).map(x=>x.trim()).filter(Boolean).slice(0,100);
+  const romantic=plan!=="essencial";
 
-  document.querySelectorAll("[data-upgrade]").forEach(btn=>btn.addEventListener("click",()=>document.getElementById("checkout")?.scrollIntoView({behavior:"smooth"})));
+  set("planBadge",`PRÉVIA • PLANO ${names[plan]||"Romântico"}`);
+  set("giftTitle",`${current.loveName||"Meu amor"}, isso é para você. ❤️`);
+  set("loveName",current.loveName||"meu amor");
+  set("heartName",current.loveName||"Vocês");
+  set("loveMessage",current.loveMessage||"Um cantinho feito especialmente para vocês.");
+  set("musicName",current.loveMusic||"Nossa música");
+  set("loveStory",current.loveStory||"Conte aqui a história de vocês.");
+  if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
+  set("surpriseText",current.loveSurprise||"Te amo. ❤️");
+  set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
-  document.getElementById("checkoutButtonFinal")?.addEventListener("click",async()=>{
-    if(!data){ window.location.href="index.html#planos"; return; }
-    const button=document.getElementById("checkoutButtonFinal"); button.disabled=true; button.textContent="Preparando pagamento...";
+  const letter=current.loveLetter||"Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.\n\nMas tentei transformar um pouco desse sentimento em cada detalhe deste pequeno cantinho.\n\nObrigado por fazer parte da minha vida, pelos momentos que vivemos e por todos aqueles que ainda vamos viver.";
+  $("letterText").innerHTML=esc(letter).replace(/\n/g,"<br>");
+
+  const photo=current.photoData||"";
+  if(photo){
+    $("heroPhoto").classList.remove("empty");$("heroPhoto").innerHTML=`<img src="${photo}" alt="Foto de vocês">`;
+    for(let i=1;i<=8;i++)$("heartPhoto"+i).src=photo;
+    for(let i=1;i<=3;i++)$("gridPhoto"+i).src=photo;
+  }
+
+  // Essencial mantém a experiência inicial e deixa os recursos avançados visivelmente bloqueados.
+  const lockIds= ["storySection","momentsSection","photoGridSection","motivos","carta","surpresa"];
+  if(!romantic) lockIds.forEach(id=>$(id)?.classList.add("is-locked"));
+  // No Romântico/Premium, a galeria e os recursos completos ficam ativos.
+
+  if(lines.length){
+    set("reasonText",lines[0]);set("reasonCounter",`Motivo 1 de ${lines.length}`);
+    $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
+  }
+
+  let reasonIndex=0;
+  $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%lines.length;set("reasonText",lines[reasonIndex]);set("reasonNumber",String(reasonIndex+1).padStart(2,"0"));set("reasonCounter",`Motivo ${reasonIndex+1} de ${lines.length}`)};
+  $("envelope").onclick=()=>{if(!romantic)return;$("envelope").classList.toggle("opened");$("letterPaper").classList.toggle("open")};
+  $("surpriseButton").onclick=()=>{if(!romantic)return;$("surpriseBefore").style.display="none";$("surpriseAfter").classList.remove("hidden");burst(28)};
+
+  const audio=$("music");const musicFile=musicFiles[current.loveMusic]||"";if(musicFile){audio.src=musicFile;$("romanticAudio").src=musicFile}
+  async function playMusic(){if(!audio.src)return;try{await audio.play();$("musicButton").textContent="❚❚"}catch(e){}}
+  $("openGiftBtn").onclick=async()=>{$("giftOverlay").classList.add("hidden");await playMusic();try{await $("romanticAudio").play()}catch(e){}};
+  $("openMusic").onclick=async()=>{await playMusic();$("inicio").scrollIntoView({behavior:"smooth"})};
+  $("musicButton").onclick=async()=>{if(!audio.src)return;if(audio.paused)await playMusic();else{audio.pause();$("musicButton").textContent="♫"}};
+
+  document.querySelectorAll("[data-upgrade]").forEach(btn=>btn.onclick=()=>$("checkout").scrollIntoView({behavior:"smooth"}));
+  $("lovePill").onclick=()=>{const t=$("toast");t.textContent="Feito com amor ❤️";t.classList.add("show");burst(10);setTimeout(()=>t.classList.remove("show"),1800)};
+
+  $("checkoutDescription").textContent=`Você está testando o plano ${names[plan]||"Romântico"}. Continue para o pagamento e libere o site completo por ${prices[plan]||"R$ 39,90"}.`;
+  $("checkoutPrice").textContent=`Pagamento seguro • ${prices[plan]||"R$ 39,90"} • Link exclusivo`;
+  $("checkoutButtonFinal").onclick=async()=>{
+    if(!data){location.href="index.html#planos";return}
+    const b=$("checkoutButtonFinal");b.disabled=true;b.textContent="Preparando pagamento...";
     try{
-      const payload={plan:data.plan,customer:{loveName:data.loveName||"",yourName:data.yourName||"",loveMessage:data.loveMessage||"",loveDate:data.loveDate||"",loveMusic:data.loveMusic||"",loveStory:data.loveStory||"",reason1:reasons[0]||"",reason2:reasons[1]||"",reason3:reasons[2]||"",reasons100:data.reasons100||"",loveLetter:data.loveLetter||"",loveSurprise:data.loveSurprise||"",photoData:data.photoData||"",customization:data.customization||{}}};
-      const response=await fetch(`${API_URL}/api/create-checkout`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
-      const result=await response.json().catch(()=>({}));
-      if(!response.ok || !result.link) throw new Error(result.error||result.message||"Não foi possível criar o pagamento.");
-      window.location.href=result.link;
-    }catch(error){alert(error.message||"Não foi possível iniciar o pagamento.");button.disabled=false;button.textContent="Continuar para pagamento ❤️";}
-  });
+      const payload={plan:data.plan,customer:{loveName:data.loveName||"",yourName:data.yourName||"",loveMessage:data.loveMessage||"",loveDate:data.loveDate||"",loveMusic:data.loveMusic||"",loveStory:data.loveStory||"",reason1:lines[0]||"",reason2:lines[1]||"",reason3:lines[2]||"",reasons100:data.reasons100||"",loveLetter:data.loveLetter||"",loveSurprise:data.loveSurprise||"",photoData:data.photoData||"",customization:data.customization||{}}};
+      const r=await fetch(`${API_URL}/api/create-checkout`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const result=await r.json().catch(()=>({}));
+      if(!r.ok||!result.link)throw new Error(result.error||result.message||"Não foi possível criar o pagamento.");location.href=result.link;
+    }catch(e){alert(e.message||"Não foi possível iniciar o pagamento.");b.disabled=false;b.textContent="Continuar para pagamento ❤️"}
+  };
 
-  document.getElementById("lovePill")?.addEventListener("click",()=>{const t=document.getElementById("toast");t.classList.add("show");burstHearts(8);setTimeout(()=>t.classList.remove("show"),1600)});
-  function burstHearts(amount){for(let i=0;i<amount;i++){const h=document.createElement("span");h.textContent="♥";h.className="floating-heart";h.style.left=`${Math.random()*100}%`;h.style.fontSize=`${12+Math.random()*22}px`;h.style.animationDuration=`${3+Math.random()*5}s`;document.getElementById("hearts").appendChild(h);setTimeout(()=>h.remove(),9000)}}
-  setInterval(()=>burstHearts(1),1800);
-  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12}); document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
-  function escapeHtml(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;")}
+  function burst(n){for(let i=0;i<n;i++){const h=document.createElement("span");h.textContent="♥";h.className="floating-heart";h.style.left=`${Math.random()*100}%`;h.style.fontSize=`${12+Math.random()*22}px`;h.style.animationDuration=`${3+Math.random()*5}s`;$("hearts").appendChild(h);setTimeout(()=>h.remove(),9000)}}
+  setInterval(()=>burst(1),2200);
+  const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")}),{threshold:.12});document.querySelectorAll(".reveal").forEach(e=>observer.observe(e));
+
+  // Modal de fotos
+  const modal=$("photoModal"),modalImage=$("modalImage");document.querySelectorAll(".heart-photo img,.photo-card img").forEach(img=>img.onclick=()=>{if(!img.src)return;modalImage.src=img.src;modal.classList.add("open")});$("closeModal").onclick=()=>modal.classList.remove("open");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("open")};
+
+  // Se veio de um pedido pago, carrega os dados reais e transforma a página em site final.
+  if(paid){
+    (async()=>{try{const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});const j=await r.json();if(j.ok&&j.order){const o=j.order;set("loveName",o.love_name||"meu amor");set("loveMessage",o.love_message||"");set("musicName",o.love_music||"Nossa música");set("loveStory",o.love_story||"");set("reasonText",o.reason_1||"");}}catch(e){console.error(e)}})();
+  }
 })();
 </script>
 </body>
