@@ -724,44 +724,445 @@ form?.addEventListener(
 
 
 // ==========================================
-// PLANOS
+// PLANOS — PERSONALIZAÇÃO ANTES DO PAGAMENTO
 // ==========================================
+
+const PLAN_PRICES = {
+  essencial: "R$ 10,90",
+  romantico: "R$ 39,90",
+  premium: "R$ 59,90"
+};
+
+const PLAN_NAMES = {
+  essencial: "Essencial",
+  romantico: "Romântico",
+  premium: "Premium"
+};
+
+function ensurePlanPersonalizationModal() {
+  if (document.getElementById("planPersonalizationModal")) return;
+
+  const style = document.createElement("style");
+  style.id = "planPersonalizationModalStyles";
+  style.textContent = `
+    #planPersonalizationModal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0,0,0,.82);
+      backdrop-filter: blur(10px);
+      overflow-y: auto;
+    }
+    #planPersonalizationModal.is-open { display: flex; }
+    .pem-card {
+      width: min(760px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      background: #fff;
+      color: #171117;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 30px 90px rgba(0,0,0,.45);
+    }
+    .pem-head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:24px;
+    }
+    .pem-kicker {
+      color:#e51d4f;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+    .pem-title {
+      margin:0;
+      font-size:30px;
+      line-height:1.1;
+      font-weight:800;
+    }
+    .pem-title em {
+      font-family:"Great Vibes",cursive;
+      color:#e51d4f;
+      font-weight:400;
+      font-size:1.15em;
+    }
+    .pem-plan {
+      margin-top:8px;
+      color:#777;
+      font-size:14px;
+    }
+    .pem-close {
+      border:0;
+      background:#f3eef0;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      cursor:pointer;
+      font-size:22px;
+      flex:0 0 auto;
+    }
+    .pem-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .pem-field { display:flex; flex-direction:column; gap:7px; }
+    .pem-field.full { grid-column:1/-1; }
+    .pem-field label { font-weight:700; font-size:14px; }
+    .pem-field input,
+    .pem-field textarea,
+    .pem-field select {
+      width:100%;
+      box-sizing:border-box;
+      border:1px solid #ddd;
+      border-radius:12px;
+      padding:13px 14px;
+      font:inherit;
+      background:#fff;
+      color:#171117;
+      outline:none;
+    }
+    .pem-field textarea { min-height:105px; resize:vertical; }
+    .pem-field input:focus,
+    .pem-field textarea:focus,
+    .pem-field select:focus { border-color:#e51d4f; }
+    .pem-help { color:#777; font-size:12px; line-height:1.4; }
+    .pem-section {
+      grid-column:1/-1;
+      margin-top:4px;
+      padding-top:16px;
+      border-top:1px solid #eee;
+    }
+    .pem-section strong { font-size:15px; }
+    .pem-actions {
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      margin-top:24px;
+    }
+    .pem-secondary, .pem-primary {
+      border:0;
+      border-radius:999px;
+      padding:13px 22px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .pem-secondary { background:#f1ecee; color:#333; }
+    .pem-primary { background:#e51d4f; color:#fff; }
+    @media (max-width: 650px) {
+      #planPersonalizationModal { padding:12px; }
+      .pem-card { padding:22px; max-height:calc(100vh - 24px); border-radius:20px; }
+      .pem-grid { grid-template-columns:1fr; }
+      .pem-field.full, .pem-section { grid-column:auto; }
+      .pem-title { font-size:25px; }
+      .pem-actions { flex-direction:column-reverse; }
+      .pem-secondary, .pem-primary { width:100%; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const modal = document.createElement("div");
+  modal.id = "planPersonalizationModal";
+  modal.innerHTML = `
+    <div class="pem-card" role="dialog" aria-modal="true" aria-labelledby="pemTitle">
+      <div class="pem-head">
+        <div>
+          <div class="pem-kicker">PERSONALIZE SEU SITE</div>
+          <h2 class="pem-title" id="pemTitle">Seu site, <em>só de vocês.</em></h2>
+          <div class="pem-plan" id="pemPlanName"></div>
+        </div>
+        <button class="pem-close" id="pemClose" type="button" aria-label="Fechar">×</button>
+      </div>
+
+      <form id="pemForm">
+        <div class="pem-grid">
+          <div class="pem-field">
+            <label for="pemLoveName">Nome de quem vai receber *</label>
+            <input id="pemLoveName" maxlength="40" placeholder="Ex.: Emilly" required>
+          </div>
+
+          <div class="pem-field">
+            <label for="pemYourName">Seu nome</label>
+            <input id="pemYourName" maxlength="40" placeholder="Ex.: Ricael">
+          </div>
+
+          <div class="pem-field full">
+            <label for="pemMessage">Mensagem personalizada *</label>
+            <textarea id="pemMessage" maxlength="180" placeholder="Ex.: Te amo meu amor ❤️" required></textarea>
+          </div>
+
+          <div class="pem-field" data-pem="date">
+            <label for="pemDate">Data especial *</label>
+            <input id="pemDate" type="date">
+          </div>
+
+          <div class="pem-field">
+            <label for="pemPhoto">Foto principal *</label>
+            <input id="pemPhoto" type="file" accept="image/*" required>
+            <span class="pem-help">Até 10 MB.</span>
+          </div>
+
+          <div class="pem-field" data-pem="music">
+            <label for="pemMusic">🎵 Música escolhida *</label>
+            <select id="pemMusic">
+              <option value="Nossa música">Nossa música</option>
+              <option value="Piano romântico">Piano romântico</option>
+              <option value="Romântica">Romântica</option>
+            </select>
+          </div>
+
+          <div class="pem-field full" data-pem="story">
+            <label for="pemStory">📖 Nossa história *</label>
+            <textarea id="pemStory" maxlength="400" placeholder="Como vocês se conheceram?"></textarea>
+          </div>
+
+          <div class="pem-section" data-pem="romantic">
+            <strong>💕 Recursos do Romântico/Premium</strong>
+          </div>
+
+          <div class="pem-field full" data-pem="romantic">
+            <label for="pemReasons">❤️ 100 motivos *</label>
+            <textarea id="pemReasons" maxlength="10000" rows="7"
+              placeholder="Digite um motivo por linha. Ex.:
+Seu sorriso
+Seu carinho
+Seu jeito de me apoiar"></textarea>
+            <span class="pem-help">Você pode cadastrar até 100 motivos, um por linha.</span>
+          </div>
+
+          <div class="pem-field full" data-pem="romantic">
+            <label for="pemLetter">💌 Carta interativa *</label>
+            <textarea id="pemLetter" maxlength="2500" placeholder="Escreva sua carta de amor..."></textarea>
+          </div>
+
+          <div class="pem-field full" data-pem="romantic">
+            <label for="pemSurprise">🎁 Surpresa final *</label>
+            <textarea id="pemSurprise" maxlength="1500" placeholder="Mensagem da surpresa final..."></textarea>
+          </div>
+        </div>
+
+        <div class="pem-actions">
+          <button class="pem-secondary" id="pemCancel" type="button">Voltar</button>
+          <button class="pem-primary" id="pemSubmit" type="submit">❤️ Criar meu site</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const close = () => {
+    modal.classList.remove("is-open");
+    document.body.style.overflow = "";
+  };
+
+  document.getElementById("pemClose")?.addEventListener("click", close);
+  document.getElementById("pemCancel")?.addEventListener("click", close);
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) close();
+  });
+
+  document.getElementById("pemForm")?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const key = modal.dataset.planKey || "";
+    const rules = PLAN_RULES[key];
+
+    const modalLoveName = document.getElementById("pemLoveName");
+    const modalMessage = document.getElementById("pemMessage");
+    const modalPhoto = document.getElementById("pemPhoto");
+    const modalDate = document.getElementById("pemDate");
+    const modalStory = document.getElementById("pemStory");
+    const modalMusic = document.getElementById("pemMusic");
+    const modalReasons = document.getElementById("pemReasons");
+    const modalLetter = document.getElementById("pemLetter");
+    const modalSurprise = document.getElementById("pemSurprise");
+
+    if (!modalLoveName.value.trim() || !modalMessage.value.trim()) {
+      alert("Preencha o nome e a mensagem.");
+      return;
+    }
+
+    if (!modalPhoto.files?.length) {
+      alert("Escolha a foto principal.");
+      return;
+    }
+
+    if (key !== "essencial" && !modalDate.value) {
+      alert("Informe a data especial.");
+      return;
+    }
+
+    if (rules?.story && !modalStory.value.trim()) {
+      alert("Preencha a história de vocês.");
+      return;
+    }
+
+    if (rules?.music && !modalMusic.value) {
+      alert("Escolha a música.");
+      return;
+    }
+
+    if (rules?.reasons) {
+      const reasons = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
+      if (!reasons.length) {
+        alert("Digite pelo menos 1 motivo.");
+        return;
+      }
+      if (reasons.length > 100) {
+        alert("O limite é de 100 motivos.");
+        return;
+      }
+      if (!modalLetter.value.trim()) {
+        alert("Preencha a carta interativa.");
+        return;
+      }
+      if (!modalSurprise.value.trim()) {
+        alert("Preencha a surpresa final.");
+        return;
+      }
+    }
+
+    const file = modalPhoto.files[0];
+    if (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) {
+      alert("Escolha uma imagem válida de até 10 MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const originalUrl = e.target.result;
+      const img = new Image();
+
+      img.onload = async () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          alert("Não foi possível preparar a foto.");
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        photoData = canvas.toDataURL("image/jpeg", 0.75);
+
+        // Preenche o formulário original para reaproveitar a prévia,
+        // as validações e o checkout já existentes.
+        applyPlanRules();
+
+        loveNameInput.value = modalLoveName.value.trim();
+        yourNameInput.value = document.getElementById("pemYourName").value.trim();
+        messageInput.value = modalMessage.value.trim();
+        dateInput.value = modalDate.value || "";
+        musicInput.value = modalMusic.value || "Nossa música";
+        storyInput.value = modalStory.value.trim();
+
+        const r1 = document.getElementById("reason1");
+        const r2 = document.getElementById("reason2");
+        const r3 = document.getElementById("reason3");
+        const reasonLines = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
+        if (r1) r1.value = reasonLines[0] || "";
+        if (r2) r2.value = reasonLines[1] || "";
+        if (r3) r3.value = reasonLines[2] || "";
+
+        const reasons100 = document.getElementById("reasons100");
+        const loveLetter = document.getElementById("loveLetter");
+        const loveSurprise = document.getElementById("loveSurprise");
+        if (reasons100) reasons100.value = modalReasons.value.trim();
+        if (loveLetter) loveLetter.value = modalLetter.value.trim();
+        if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
+
+        updatePreview();
+
+        close();
+
+        // Só agora, depois da personalização, abre o pagamento.
+        await startCheckout();
+      };
+
+      img.src = originalUrl;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function openPlanPersonalization(planKey) {
+  const planName = PLAN_NAMES[planKey];
+  if (!planName) return;
+
+  selectedPlan = `${planName} — ${PLAN_PRICES[planKey]}`;
+
+  ensurePlanPersonalizationModal();
+
+  const modal = document.getElementById("planPersonalizationModal");
+  modal.dataset.planKey = planKey;
+
+  document.getElementById("pemPlanName").textContent =
+    `Plano escolhido: ${selectedPlan}`;
+
+  const isEssential = planKey === "essencial";
+  const isPremium = planKey === "premium";
+  const romantic = planKey === "romantico" || isPremium;
+
+  document.querySelectorAll("[data-pem='date']").forEach(el => {
+    el.style.display = isEssential ? "none" : "";
+  });
+  document.getElementById("pemDate").required = !isEssential;
+
+  document.querySelectorAll("[data-pem='story']").forEach(el => {
+    el.style.display = romantic ? "" : "none";
+  });
+  document.getElementById("pemStory").required = romantic;
+
+  document.querySelectorAll("[data-pem='romantic']").forEach(el => {
+    el.style.display = romantic ? "" : "none";
+  });
+
+  document.querySelectorAll("[data-pem='music']").forEach(el => {
+    el.style.display = isPremium ? "" : "none";
+  });
+  document.getElementById("pemMusic").required = isPremium;
+
+  const reasons = document.getElementById("pemReasons");
+  const letter = document.getElementById("pemLetter");
+  const surprise = document.getElementById("pemSurprise");
+  if (reasons) reasons.required = romantic;
+  if (letter) letter.required = romantic;
+  if (surprise) surprise.required = romantic;
+
+  document.getElementById("pemSubmit").textContent =
+    `❤️ Criar meu site — ${planName}`;
+
+  modal.classList.add("is-open");
+  document.body.style.overflow = "hidden";
+
+  setTimeout(() => {
+    document.getElementById("pemLoveName")?.focus();
+  }, 50);
+}
 
 planButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
+    event.stopPropagation();
 
-    const planId = button.dataset.planId || "";
-    const planMap = {
-      essencial: "Essencial — R$ 10,90",
-      romantico: "Romântico — R$ 39,90",
-      premium: "Premium — R$ 59,90"
-    };
-    selectedPlan = planMap[planId] || "";
+    const planKey = button.dataset.planId || "";
+    if (!PLAN_RULES[planKey]) return;
 
-    applyPlanRules();
-    updateCheckoutButton();
-
-    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
-    // Primeiro ele preenche os dados de personalização.
-    const builderForm = document.getElementById("builderForm");
-
-    if (builderForm) {
-      // Leva o cliente diretamente para os campos de personalização,
-      // deixando o título da seção acima, sem parar no cabeçalho.
-      const top = builderForm.getBoundingClientRect().top + window.scrollY - 90;
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "smooth"
-      });
-    }
-
-    if (generatePreviewButton) {
-      const planName = selectedPlan.split(" — ")[0];
-      generatePreviewButton.textContent =
-        `❤️ Criar meu site — ${planName}`;
-      generatePreviewButton.classList.add("selected");
-    }
+    openPlanPersonalization(planKey);
   });
 });
 
