@@ -28,3 +28,39 @@ section[id]{scroll-margin-top:92px}
   .hero h1{letter-spacing:-3px}
   .section-heading{padding:0 6px}
 }
+
+
+/* AMOR EM SITE — REFINAMENTO V2 */
+.preview-plan-chip{display:none!important}
+.hero{padding-top:175px!important;padding-bottom:105px!important}
+.hero h1{line-height:.96!important;margin:28px 0 20px!important}
+.hero-photo{margin-top:34px!important;width:min(330px,82vw)!important}
+.navbar{height:68px!important}
+section[id],.checkout-final{scroll-margin-top:88px!important}
+#historia{padding-top:115px!important;padding-bottom:115px!important}
+.timeline-preview{max-width:720px!important}
+.timeline-item{min-height:125px!important}
+.timeline-item>div:nth-child(2):after{height:112px!important}
+#momentos{padding-top:115px!important;padding-bottom:115px!important}
+.heart-section .section-heading{margin-bottom:35px!important}
+.heart-gallery{transform:scale(.92);transform-origin:center top;margin-bottom:-42px!important}
+#momentos-grid{padding-top:110px!important;padding-bottom:115px!important}
+.preview-photo-grid{max-width:980px!important;gap:12px!important}
+.preview-photo-grid .photo-card{height:300px!important;border-radius:20px;overflow:hidden}
+#motivos{min-height:760px!important;padding-top:110px!important;padding-bottom:110px!important}
+.reason-number{font-size:96px!important}
+.reason-card{width:min(720px,100%)!important;min-height:125px!important;padding:28px 34px!important;margin-bottom:22px!important}
+.reason-card p{font-size:36px!important;line-height:1.15!important}
+@media(max-width:800px){
+.hero{padding-top:120px!important;padding-bottom:75px!important}
+.hero h1{font-size:64px!important;line-height:.98!important;margin-top:24px!important}
+.hero-photo{width:min(305px,82vw)!important;margin-top:28px!important}
+#historia{padding-top:90px!important;padding-bottom:90px!important}
+#momentos{padding-top:90px!important;padding-bottom:80px!important}
+.heart-gallery{transform:scale(.86);margin-bottom:-65px!important}
+#momentos-grid{padding-top:80px!important}
+#motivos{min-height:690px!important;padding-top:90px!important;padding-bottom:90px!important}
+.reason-number{font-size:78px!important}
+.reason-card{min-height:115px!important;padding:24px 18px!important}
+.reason-card p{font-size:31px!important}
+}

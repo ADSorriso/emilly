@@ -166,6 +166,61 @@ section[id],.checkout-final{scroll-margin-top:92px}
   .locked-box{padding:24px 19px}
   .locked-box strong{font-size:17px}
 }
+
+/* Refinamento visual — versão 2 */
+.preview-plan-chip{display:none !important}
+.hero{padding-top:175px !important;padding-bottom:105px !important}
+.hero-content{padding-top:10px}
+.hero h1{line-height:.96 !important;margin:28px 0 20px !important}
+.hero .preview-message{min-height:28px}
+.hero-photo{margin-top:34px !important;width:min(330px,82vw) !important}
+.music-status{margin-top:16px !important}
+.scroll-hint{margin-top:34px !important}
+
+/* História mais compacta e cinematográfica */
+#historia{padding-top:115px !important;padding-bottom:115px !important}
+.timeline-preview{max-width:720px !important}
+.timeline-item{min-height:125px !important;grid-template-columns:42px 12px 1fr !important;gap:16px !important}
+.timeline-item>div:nth-child(2):after{height:112px !important}
+.timeline-item h3{font-size:21px !important;margin-bottom:8px !important}
+.timeline-item p{max-width:560px;line-height:1.75 !important}
+
+/* Momentos: conjunto mais equilibrado */
+#momentos{padding-top:115px !important;padding-bottom:115px !important}
+.heart-section .section-heading{margin-bottom:35px !important}
+.heart-gallery{transform:scale(.92);transform-origin:center top;margin-bottom:-42px !important}
+
+/* Galeria horizontal com mais presença */
+#momentos-grid{padding-top:110px !important;padding-bottom:115px !important}
+.preview-photo-grid{max-width:980px !important;gap:12px !important}
+.preview-photo-grid .photo-card{height:300px !important;border-radius:20px;overflow:hidden;border:1px solid rgba(255,49,88,.12)}
+
+/* Motivos: menos vazio, mais foco no texto */
+#motivos{min-height:760px !important;padding-top:110px !important;padding-bottom:110px !important}
+.reason-number{font-size:96px !important}
+.reason-card{width:min(720px,100%) !important;min-height:125px !important;padding:28px 34px !important;margin-bottom:22px !important}
+.reason-card p{font-size:36px !important;line-height:1.15 !important}
+.reason-grid{margin-top:30px !important}
+
+/* Navegação e âncoras */
+.navbar{height:68px !important}
+section[id],.checkout-final{scroll-margin-top:88px !important}
+
+@media(max-width:800px){
+  .hero{padding-top:120px !important;padding-bottom:75px !important}
+  .hero h1{font-size:64px !important;line-height:.98 !important;margin-top:24px !important}
+  .hero-photo{width:min(305px,82vw) !important;margin-top:28px !important}
+  #historia{padding-top:90px !important;padding-bottom:90px !important}
+  .timeline-item{grid-template-columns:34px 10px 1fr !important;gap:11px !important}
+  .timeline-item>div:nth-child(2):after{height:105px !important}
+  #momentos{padding-top:90px !important;padding-bottom:80px !important}
+  .heart-gallery{transform:scale(.86);margin-bottom:-65px !important}
+  #momentos-grid{padding-top:80px !important}
+  #motivos{min-height:690px !important;padding-top:90px !important;padding-bottom:90px !important}
+  .reason-number{font-size:78px !important}
+  .reason-card{min-height:115px !important;padding:24px 18px !important}
+  .reason-card p{font-size:31px !important}
+}
 </style>
 </head>
 <body class="preview-mode">
@@ -185,7 +240,6 @@ section[id],.checkout-final{scroll-margin-top:92px}
     <div class="hero-glow"></div>
     <div class="hero-content hero-data">
       <span class="eyebrow">PARA O MEU AMOR</span>
-      <div class="preview-plan-chip" id="planBadge">PRÉVIA • PLANO</div>
       <h1>Oi, <em id="loveName">meu amor.</em></h1>
       <p class="preview-message" id="loveMessage">Um cantinho feito especialmente para vocês.</p>
       <div class="hero-photo empty" id="heroPhoto"><span>♥</span></div>
@@ -265,22 +319,32 @@ section[id],.checkout-final{scroll-margin-top:92px}
   const prices={essencial:"R$ 10,90",romantico:"R$ 39,90",premium:"R$ 59,90"};
   const names={essencial:"Essencial",romantico:"Romântico",premium:"Premium"};
   const musicFiles={"Love Me Like You Do":"love-me-like-you-do.mp3","The Reason":"the-reason.mp3","Far Away":"far-away.mp3","A Thousand Years":"a-thousand-years.mp3"};
-  let current=data||{};
+  let current={...(data||{})};
   let plan=current.planKey||"romantico";
+
+  // Evita que testes antigos com apenas "e"/"E" apareçam como conteúdo real na prévia.
+  // Textos maiores continuam exatamente como foram preenchidos pelo cliente.
+  const cleanPreviewText=(value,fallback)=>{
+    const text=String(value??"").trim();
+    return (!text || /^[eE]$/.test(text)) ? fallback : text;
+  };
+  current.loveMessage=cleanPreviewText(current.loveMessage,"Um cantinho feito especialmente para vocês.");
+  current.loveStory=cleanPreviewText(current.loveStory,"Uma história feita de pequenos momentos que se tornaram algo enorme.");
+  current.loveSurprise=cleanPreviewText(current.loveSurprise,"Te amo. ❤️");
+  current.loveLetter=cleanPreviewText(current.loveLetter,"Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.");
   const $=id=>document.getElementById(id);
   const set=(id,v)=>{const e=$(id);if(e&&v!==undefined&&v!==null&&String(v).trim())e.textContent=String(v)};
   const esc=v=>String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
-  const lines=(current.reasons100||"").split(/\\n|\n/).map(x=>x.trim()).filter(Boolean).slice(0,100);
+  const lines=(current.reasons100||"").split(/\\n|\n/).map(x=>x.trim()).filter(x=>x && !/^[eE]$/.test(x)).slice(0,100);
   const romantic=plan!=="essencial";
 
-  set("planBadge",`PRÉVIA • PLANO ${names[plan]||"Romântico"}`);
   set("loveName",current.loveName||"meu amor");
   set("heartName",current.loveName||"Vocês");
-  set("loveMessage",current.loveMessage||"Um cantinho feito especialmente para vocês.");
+  set("loveMessage",current.loveMessage);
   set("musicName",current.loveMusic||"Nossa música");
-  set("loveStory",current.loveStory||"Conte aqui a história de vocês.");
+  set("loveStory",current.loveStory);
   if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
-  set("surpriseText",current.loveSurprise||"Te amo. ❤️");
+  set("surpriseText",current.loveSurprise);
   set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
   const letter=current.loveLetter||"Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.\n\nMas tentei transformar um pouco desse sentimento em cada detalhe deste pequeno cantinho.\n\nObrigado por fazer parte da minha vida, pelos momentos que vivemos e por todos aqueles que ainda vamos viver.";
