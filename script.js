@@ -1294,10 +1294,37 @@ Seu jeito de me apoiar"></textarea>
         window.amorEmSiteCustomization = premiumOptions;
 
         updatePreview();
-        close();
 
-        // Só agora, depois da personalização, abre o pagamento.
-        await startCheckout();
+        const previewData = {
+          planKey: key,
+          plan: selectedPlan,
+          loveName: modalLoveName.value.trim(),
+          yourName: modalYourName.value.trim(),
+          loveMessage: modalMessage.value.trim(),
+          loveDate: modalDate.value || "",
+          loveMusic: modalMusic.value || "",
+          loveStory: modalStory.value.trim(),
+          reasons100: modalReasons.value.trim(),
+          loveLetter: modalLetter.value.trim(),
+          loveSurprise: modalSurprise.value.trim(),
+          photoData: photoData || "",
+          customization: premiumOptions
+        };
+
+        try {
+          sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
+        } catch (storageError) {
+          console.error("Não foi possível guardar a prévia:", storageError);
+          alert("A foto ficou grande demais para a prévia. Escolha uma foto menor e tente novamente.");
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
+          }
+          return;
+        }
+
+        close();
+        window.location.href = "site.html?preview=1";
       };
 
       img.onerror = () => {
@@ -1366,23 +1393,20 @@ function openPlanPersonalization(planKey) {
   if (musicSelect) {
     const options = {
       essencial: [
-        ["love-me-like-you-do", "🎵 Ellie Goulding — Love Me Like You Do"],
-        ["the-reason", "🎵 Hoobastank — The Reason"]
+        ["Love Me Like You Do", "🎵 Ellie Goulding — Love Me Like You Do"],
+        ["The Reason", "🎵 Hoobastank — The Reason"]
       ],
       romantico: [
-        ["nossa-musica", "🎵 Nossa música"],
-        ["piano-romantico", "🎹 Piano romântico"],
-        ["romantica", "💗 Romântica"],
-        ["amor-acustico", "🎸 Amor acústico"],
-        ["noite-de-amor", "🌙 Noite de amor"]
+        ["Love Me Like You Do", "🎵 Ellie Goulding — Love Me Like You Do"],
+        ["The Reason", "🎵 Hoobastank — The Reason"],
+        ["Far Away", "🎵 Nickelback — Far Away"],
+        ["A Thousand Years", "🎵 Christina Perri — A Thousand Years"]
       ],
       premium: [
-        ["nossa-musica", "🎵 Nossa música"],
-        ["piano-romantico", "🎹 Piano romântico"],
-        ["romantica", "💗 Romântica"],
-        ["amor-acustico", "🎸 Amor acústico"],
-        ["noite-de-amor", "🌙 Noite de amor"],
-        ["especial-premium", "👑 Música especial Premium"]
+        ["Love Me Like You Do", "🎵 Ellie Goulding — Love Me Like You Do"],
+        ["The Reason", "🎵 Hoobastank — The Reason"],
+        ["Far Away", "🎵 Nickelback — Far Away"],
+        ["A Thousand Years", "🎵 Christina Perri — A Thousand Years"]
       ]
     };
     musicSelect.innerHTML = (options[planKey] || options.romantico)
