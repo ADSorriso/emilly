@@ -243,7 +243,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
       <h1>Oi, <em id="loveName">meu amor.</em></h1>
       <p class="preview-message" id="loveMessage">Um cantinho feito especialmente para vocês.</p>
       <div class="hero-photo empty" id="heroPhoto"><span>♥</span></div>
-      <div class="music-status">🎵 <b id="musicName">Nossa música</b></div>
       <div class="preview-date" id="loveDate"></div>
       <button class="primary-btn" id="openMusic">Entrar no nosso mundo ♥</button>
       <div class="scroll-hint"><i></i>deslize</div>
@@ -401,7 +400,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   // Se veio de um pedido pago, carrega os dados reais e transforma a página em site final.
   if(paid){
-    (async()=>{try{const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});const j=await r.json();if(j.ok&&j.order){const o=j.order;set("loveName",o.love_name||"meu amor");set("loveMessage",o.love_message||"");set("musicName",o.love_music||"Nossa música");set("loveStory",o.love_story||"");set("reasonText",o.reason_1||"");}}catch(e){console.error(e)}})();
+    (async()=>{try{const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});const j=await r.json();if(j.ok&&j.order){const o=j.order;set("loveName",o.love_name||"meu amor");set("loveMessage",o.love_message||"");set("loveStory",o.love_story||"");set("reasonText",o.reason_1||"");}}catch(e){console.error(e)}})();
   }
 })();
 </script>
