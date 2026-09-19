@@ -14,3 +14,17 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;bac
 footer{text-align:center;padding:60px 20px;border-top:1px solid var(--line);color:#777}footer strong{font:30px "Great Vibes",cursive;color:var(--red)}footer p{font-size:11px;margin-top:8px}
 .modal{position:fixed;inset:0;background:#000e;z-index:300;display:none;place-items:center;padding:30px}.modal.open{display:grid}.modal img{max-width:92vw;max-height:88vh;border-radius:10px;box-shadow:0 0 100px #ff1e4630}.modal button{position:fixed;right:25px;top:15px;background:none;color:#fff;font-size:42px;cursor:pointer}.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,30px);background:#17080d;border:1px solid #ff315844;color:#fff;padding:12px 18px;border-radius:50px;opacity:0;pointer-events:none;z-index:400;transition:.3s}.toast.show{opacity:1;transform:translate(-50%,0)}.music-button{position:fixed;right:20px;bottom:20px;z-index:110;width:45px;height:45px;border-radius:50%;background:#13070b;border:1px solid #ff315866;color:#ff5574;cursor:pointer}.reveal{opacity:0;transform:translateY(25px);transition:opacity .8s ease,transform .8s ease}.reveal.visible{opacity:1;transform:none}
 @media(max-width:800px){.navbar{height:65px;padding:0 18px}.navbar nav{display:none}.logo{font-size:22px}.love-pill{padding:9px 13px;font-size:11px}.hero h1{font-size:68px}.hero p{font-size:14px}.section{padding:95px 20px}.section-heading{margin-bottom:50px}.section-heading h2{font-size:40px}.timeline-item{grid-template-columns:38px 10px 1fr;gap:12px}.timeline-item h3{font-size:20px}.heart-gallery{width:350px;height:450px}.heart-photo{width:96px;height:96px}.p1{left:70px;top:15px}.p2{left:180px;top:15px}.p3{left:30px;top:105px}.p4{left:127px;top:100px}.p5{left:224px;top:105px}.p6{left:70px;top:200px}.p7{left:180px;top:200px}.p8{left:115px;top:300px}.heart-center{width:110px;height:110px;top:44%}.heart-center strong{font-size:24px}.heart-center small{font-size:8px}.photo-grid{grid-template-columns:repeat(2,1fr)}.photo-card{height:230px}.reason-number{font-size:82px}.reason-card{padding:30px 20px}.reason-card p{font-size:30px}.letter-paper{padding:35px 25px}.letter-paper h3{font-size:45px}.future-section{min-height:650px}.big-heart{font-size:90px}}
+
+
+/* Ajustes finais da prévia comercial */
+html{scroll-behavior:smooth}
+body.preview-mode{overflow-x:hidden}
+section[id]{scroll-margin-top:92px}
+.hero{padding-top:120px;padding-bottom:90px}
+.hero-content{width:100%}
+.hero .scroll-hint{position:static;margin:30px auto 0}
+@media(max-width:800px){
+  .hero{padding-top:100px;padding-bottom:65px}
+  .hero h1{letter-spacing:-3px}
+  .section-heading{padding:0 6px}
+}

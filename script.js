@@ -1445,7 +1445,7 @@ function openPlanPersonalization(planKey) {
   }
 
   document.getElementById("pemSubmit").textContent =
-    `❤️ Criar meu site — ${planName}`;
+    `❤️ Abrir prévia — ${planName}`;
 
   modal.classList.add("is-open");
   document.body.style.overflow = "hidden";
@@ -1453,6 +1453,58 @@ function openPlanPersonalization(planKey) {
   setTimeout(() => {
     document.getElementById("pemLoveName")?.focus();
   }, 50);
+}
+
+function startDirectPlanPreview(planKey) {
+  const rules = PLAN_RULES[planKey];
+  if (!rules) return;
+
+  selectedPlan = `${PLAN_NAMES[planKey]} — ${PLAN_PRICES[planKey]}`;
+
+  // Se o visitante já preencheu algo no teste, aproveitamos os dados.
+  // Se ainda não preencheu, a prévia abre imediatamente com um exemplo elegante.
+  const defaultMusic = planKey === "essencial"
+    ? "Love Me Like You Do"
+    : "A Thousand Years";
+
+  const previewData = {
+    planKey,
+    plan: selectedPlan,
+    loveName: nameInput?.value.trim() || "Emilly",
+    yourName: yourNameInput?.value.trim() || "Ricael",
+    loveMessage: messageInput?.value.trim() ||
+      "Um cantinho especial feito com amor, com cada detalhe pensado para vocês dois.",
+    loveDate: dateInput?.value || "",
+    loveMusic: musicInput?.value || defaultMusic,
+    loveStory: storyInput?.value.trim() ||
+      "Foi assim que começou uma história que merece ser lembrada.",
+    reasons100: document.getElementById("reasons100")?.value.trim() ||
+      "Seu sorriso\nSeu carinho\nO jeito que você me faz feliz",
+    loveLetter: document.getElementById("loveLetter")?.value.trim() ||
+      "Talvez eu não consiga colocar em palavras tudo aquilo que sinto, mas cada detalhe deste site foi feito pensando em você.",
+    loveSurprise: document.getElementById("loveSurprise")?.value.trim() ||
+      "Eu escolheria você em todas as vidas. ❤️",
+    photoData: photoData || "",
+    customization: planKey === "premium"
+      ? (window.amorEmSiteCustomization || {
+          heartStyle: "classico",
+          photoStyle: "natural",
+          photoLayout: "coracao",
+          animation: "suave",
+          fontStyle: "elegante",
+          theme: "rose",
+          effects: "essencial"
+        })
+      : {}
+  };
+
+  try {
+    sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
+    window.location.href = "site.html?preview=1";
+  } catch (error) {
+    console.error("Não foi possível abrir a prévia:", error);
+    alert("Não foi possível preparar a prévia. Tente novamente.");
+  }
 }
 
 planButtons.forEach((button) => {
@@ -1463,7 +1515,7 @@ planButtons.forEach((button) => {
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
 
-    openPlanPersonalization(planKey);
+    startDirectPlanPreview(planKey);
   });
 });
 
@@ -1481,7 +1533,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        `❤️ Criar meu site — ${planName}`;
+        `❤️ Abrir prévia — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
   } else {
@@ -1492,7 +1544,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        "✨ Gerar minha prévia";
+        "✨ Abrir minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }

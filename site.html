@@ -10,41 +10,167 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site-preview.css">
 <style>
-/* Camada exclusiva da prévia comercial — não altera o design comercial. */
-.preview-badge{position:fixed;top:94px;left:50%;transform:translateX(-50%);z-index:120;padding:8px 16px;border:1px solid rgba(255,49,88,.45);border-radius:999px;background:rgba(10,4,7,.78);backdrop-filter:blur(14px);color:#ff7188;font-size:10px;letter-spacing:2px;font-weight:700;white-space:nowrap}
-.preview-lock{position:relative;overflow:hidden}
-.preview-lock.is-locked{min-height:360px}
-.preview-lock.is-locked>*:not(.locked-overlay){filter:blur(2px);opacity:.72}
-.locked-overlay{display:none;position:absolute;inset:0;z-index:30;align-items:center;justify-content:center;padding:28px;background:rgba(4,2,4,.72);backdrop-filter:blur(8px)}
+/* Camada exclusiva da prévia comercial — visual integrado ao site original. */
+:root{
+  --preview-red:#ff3158;
+  --preview-red-soft:#ff7188;
+  --preview-panel:rgba(18,6,10,.78);
+}
+.preview-plan-chip{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:18px auto 0;
+  padding:8px 14px;
+  border:1px solid rgba(255,49,88,.28);
+  border-radius:999px;
+  background:rgba(255,49,88,.07);
+  color:#ff7188;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.preview-lock{
+  position:relative;
+  overflow:hidden;
+  border-radius:24px;
+}
+.preview-lock.is-locked{
+  min-height:300px;
+}
+.preview-lock.is-locked>*:not(.locked-overlay){
+  opacity:.5;
+  filter:blur(1.5px);
+}
+.locked-overlay{
+  display:none;
+  position:absolute;
+  inset:0;
+  z-index:30;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:linear-gradient(180deg,rgba(4,2,4,.45),rgba(4,2,4,.82));
+  backdrop-filter:blur(4px);
+}
 .preview-lock.is-locked .locked-overlay{display:flex}
-.locked-box{width:min(480px,92vw);padding:32px 28px;text-align:center;border:1px solid rgba(255,49,88,.38);border-radius:24px;background:linear-gradient(145deg,rgba(40,7,15,.96),rgba(12,5,8,.97));box-shadow:0 25px 90px rgba(0,0,0,.55)}
-.locked-box .lock-icon{font-size:30px;margin-bottom:12px}.locked-box strong{display:block;font-size:20px;margin-bottom:8px}.locked-box p{color:#b8aaae;line-height:1.7;margin-bottom:18px}.locked-box button{border:0;border-radius:999px;padding:13px 20px;background:linear-gradient(135deg,#ff3158,#a40032);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 35px rgba(255,49,88,.2)}
-.demo-note{max-width:760px;margin:-35px auto 55px;padding:0 20px;text-align:center;color:#777;line-height:1.7}.demo-note strong{color:#aaa}
-.hero-photo{width:min(330px,88vw);aspect-ratio:4/5;margin:28px auto 0;border-radius:24px;overflow:hidden;border:1px solid rgba(255,49,88,.42);box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 45px rgba(255,49,88,.08);background:#16090d}.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}.hero-photo.empty{display:grid;place-items:center;color:#ff5574;font-size:74px}
-.hero-data{max-width:680px;margin:0 auto}.hero-data .eyebrow{display:block;margin-bottom:14px}.preview-message{max-width:650px;margin:0 auto;color:#aaa;line-height:1.9;white-space:pre-wrap}.music-status{margin-top:18px;color:#777;font-size:12px}.music-status b{color:#ff5574}.preview-date{margin-top:10px;color:#666;font-size:11px;letter-spacing:1px}
-.timeline-preview{max-width:850px;margin:0 auto}.timeline-item p{white-space:pre-wrap}
-.heart-section .section-heading{margin-bottom:55px}.heart-gallery img{cursor:zoom-in}
-.reason-grid{max-width:900px;margin:40px auto 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.reason-item{padding:17px 18px;border:1px solid rgba(255,49,88,.18);border-radius:16px;background:rgba(255,255,255,.025);color:#ddd;text-align:left}.reason-item span{color:#ff3158;margin-right:9px;font-weight:700}
-.letter-content{max-width:700px;margin:28px auto 0;text-align:left}.letter-content p{color:#321d20;line-height:1.9;margin-bottom:15px;white-space:pre-wrap}.letter-content .signature{font:28px "Great Vibes",cursive;color:#9e3048;margin-top:28px}
-.checkout-final{text-align:center;padding:110px 20px;background:radial-gradient(circle,rgba(255,0,60,.18),transparent 45%),#030303;border-top:1px solid rgba(255,255,255,.04)}.checkout-final h2{font-size:clamp(42px,6vw,76px);line-height:.95;margin:22px 0 45px}.checkout-final h2 em{font-family:"Great Vibes",cursive;color:#ff3158;font-weight:400}.checkout-final p{max-width:620px;margin:0 auto 25px;color:#999;line-height:1.8}.checkout-final button{border:0;border-radius:999px;padding:16px 25px;background:linear-gradient(135deg,#ff3158,#a40032);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 16px 45px rgba(255,49,88,.22)}.checkout-final small{display:block;color:#666;margin-top:15px}
-.preview-toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,30px);z-index:500;background:#17080d;border:1px solid rgba(255,49,88,.28);padding:12px 18px;border-radius:999px;color:#fff;opacity:0;pointer-events:none;transition:.3s}.preview-toast.show{opacity:1;transform:translate(-50%,0)}
-.preview-photo-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.preview-photo-grid .photo-card{height:330px}.preview-photo-grid img{width:100%;height:100%;object-fit:cover}
-@media(max-width:800px){.preview-badge{top:78px;font-size:8px;padding:7px 12px}.reason-grid{grid-template-columns:1fr}.preview-photo-grid{grid-template-columns:repeat(2,1fr)}.preview-photo-grid .photo-card{height:230px}}
+.locked-box{
+  width:min(450px,92vw);
+  padding:28px 25px;
+  text-align:center;
+  border:1px solid rgba(255,49,88,.28);
+  border-radius:22px;
+  background:linear-gradient(145deg,rgba(36,7,14,.96),rgba(10,4,7,.97));
+  box-shadow:0 24px 70px rgba(0,0,0,.48),0 0 45px rgba(255,49,88,.08);
+}
+.locked-box .lock-icon{font-size:26px;margin-bottom:10px}
+.locked-box strong{display:block;font-size:18px;margin-bottom:7px}
+.locked-box p{color:#b8aaae;line-height:1.65;margin-bottom:16px;font-size:13px}
+.locked-box button{
+  border:0;border-radius:999px;padding:12px 18px;
+  background:linear-gradient(135deg,#ff3158,#a40032);
+  color:#fff;font-weight:800;font-size:12px;cursor:pointer;
+  box-shadow:0 10px 30px rgba(255,49,88,.18);
+}
+.demo-note{
+  max-width:760px;
+  margin:-28px auto 20px;
+  padding:0 20px;
+  text-align:center;
+  color:#696064;
+  font-size:10px;
+  letter-spacing:.2px;
+  line-height:1.7;
+}
+.demo-note strong{color:#9e8d93}
+.hero-photo{
+  width:min(340px,82vw);
+  aspect-ratio:4/5;
+  margin:30px auto 0;
+  border-radius:28px;
+  overflow:hidden;
+  border:1px solid rgba(255,49,88,.28);
+  box-shadow:0 28px 85px rgba(0,0,0,.52),0 0 50px rgba(255,49,88,.08);
+  background:#16090d;
+}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-photo.empty{display:grid;place-items:center;color:#ff5574;font-size:68px}
+.hero-data{max-width:700px;margin:0 auto}
+.hero-data .eyebrow{display:block;margin-bottom:0}
+.preview-message{max-width:620px;margin:0 auto;color:#aaa;line-height:1.85;white-space:pre-wrap}
+.music-status{margin-top:17px;color:#777;font-size:11px}
+.music-status b{color:#ff5574}
+.preview-date{margin-top:9px;color:#666;font-size:10px;letter-spacing:1px}
+.timeline-preview{max-width:850px;margin:0 auto}
+.timeline-item p{white-space:pre-wrap}
+.heart-section .section-heading{margin-bottom:48px}
+.heart-gallery img{cursor:zoom-in}
+.reason-grid{
+  max-width:900px;margin:36px auto 0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+.reason-item{
+  padding:16px 17px;
+  border:1px solid rgba(255,49,88,.16);
+  border-radius:15px;
+  background:rgba(255,255,255,.025);
+  color:#ddd;text-align:left;
+  line-height:1.55;font-size:13px;
+}
+.reason-item span{color:#ff3158;margin-right:9px;font-weight:700}
+.letter-content{max-width:700px;margin:28px auto 0;text-align:left}
+.letter-content p{color:#321d20;line-height:1.9;margin-bottom:15px;white-space:pre-wrap}
+.letter-content .signature{font:28px "Great Vibes",cursive;color:#9e3048;margin-top:28px}
+.checkout-final{
+  text-align:center;padding:120px 20px 130px;
+  background:radial-gradient(circle,rgba(255,0,60,.18),transparent 45%),#030303;
+  border-top:1px solid rgba(255,255,255,.04);
+}
+.checkout-final h2{font-size:clamp(42px,6vw,76px);line-height:.95;margin:22px 0 38px}
+.checkout-final h2 em{font-family:"Great Vibes",cursive;color:#ff3158;font-weight:400}
+.checkout-final p{max-width:620px;margin:0 auto 25px;color:#999;line-height:1.8}
+.checkout-final button{
+  border:0;border-radius:999px;padding:16px 25px;
+  background:linear-gradient(135deg,#ff3158,#a40032);
+  color:#fff;font-weight:800;cursor:pointer;
+  box-shadow:0 16px 45px rgba(255,49,88,.22);
+}
+.checkout-final small{display:block;color:#666;margin-top:15px}
+.preview-toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,30px);
+  z-index:500;background:#17080d;border:1px solid rgba(255,49,88,.28);
+  padding:12px 18px;border-radius:999px;color:#fff;opacity:0;
+  pointer-events:none;transition:.3s
+}
+.preview-toast.show{opacity:1;transform:translate(-50%,0)}
+.preview-photo-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.preview-photo-grid .photo-card{height:330px}
+.preview-photo-grid img{width:100%;height:100%;object-fit:cover}
+section[id],.checkout-final{scroll-margin-top:92px}
+@media(max-width:800px){
+  .preview-plan-chip{font-size:8px;padding:7px 11px}
+  .reason-grid{grid-template-columns:1fr}
+  .preview-photo-grid{grid-template-columns:repeat(2,1fr)}
+  .preview-photo-grid .photo-card{height:230px}
+  .hero-photo{width:min(310px,82vw)}
+  .demo-note{margin-top:-18px}
+}
+@media(max-width:520px){
+  .preview-photo-grid{grid-template-columns:1fr}
+  .preview-photo-grid .photo-card{height:280px}
+  .locked-box{padding:24px 19px}
+  .locked-box strong{font-size:17px}
+}
 </style>
 </head>
-<body>
-<div class="preview-badge" id="planBadge">PRÉVIA • PLANO</div>
+<body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
 
-<div id="giftOverlay" class="gift-overlay">
-  <div class="gift-box">
-    <div class="gift-kicker">UMA SURPRESA PARA VOCÊ</div>
-    <h1 id="giftTitle">Isso é para você. ❤️</h1>
-    <p>Veja como seu site pode ficar antes de escolher o plano.</p>
-    <button id="openGiftBtn">❤️ ABRIR MEU SITE</button>
-  </div>
-</div>
-<audio id="romanticAudio" preload="auto" loop></audio>
 
 <header class="navbar">
   <a class="logo" href="#inicio">Para o meu amor <span>♡</span></a>
@@ -59,6 +185,7 @@
     <div class="hero-glow"></div>
     <div class="hero-content hero-data">
       <span class="eyebrow">PARA O MEU AMOR</span>
+      <div class="preview-plan-chip" id="planBadge">PRÉVIA • PLANO</div>
       <h1>Oi, <em id="loveName">meu amor.</em></h1>
       <p class="preview-message" id="loveMessage">Um cantinho feito especialmente para vocês.</p>
       <div class="hero-photo empty" id="heroPhoto"><span>♥</span></div>
@@ -69,7 +196,7 @@
     </div>
   </section>
 
-  <div class="demo-note"><strong>Prévia interativa:</strong> você está vendo o site com os dados que acabou de preencher. Os recursos liberados dependem do plano escolhido.</div>
+  <div class="demo-note"><strong>Prévia interativa</strong><span> • Recursos liberados de acordo com o plano escolhido.</span></div>
 
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
@@ -147,7 +274,6 @@
   const romantic=plan!=="essencial";
 
   set("planBadge",`PRÉVIA • PLANO ${names[plan]||"Romântico"}`);
-  set("giftTitle",`${current.loveName||"Meu amor"}, isso é para você. ❤️`);
   set("loveName",current.loveName||"meu amor");
   set("heartName",current.loveName||"Vocês");
   set("loveMessage",current.loveMessage||"Um cantinho feito especialmente para vocês.");
@@ -182,9 +308,8 @@
   $("envelope").onclick=()=>{if(!romantic)return;$("envelope").classList.toggle("opened");$("letterPaper").classList.toggle("open")};
   $("surpriseButton").onclick=()=>{if(!romantic)return;$("surpriseBefore").style.display="none";$("surpriseAfter").classList.remove("hidden");burst(28)};
 
-  const audio=$("music");const musicFile=musicFiles[current.loveMusic]||"";if(musicFile){audio.src=musicFile;$("romanticAudio").src=musicFile}
+  const audio=$("music");const musicFile=musicFiles[current.loveMusic]||"";if(musicFile){audio.src=musicFile}
   async function playMusic(){if(!audio.src)return;try{await audio.play();$("musicButton").textContent="❚❚"}catch(e){}}
-  $("openGiftBtn").onclick=async()=>{$("giftOverlay").classList.add("hidden");await playMusic();try{await $("romanticAudio").play()}catch(e){}};
   $("openMusic").onclick=async()=>{await playMusic();$("inicio").scrollIntoView({behavior:"smooth"})};
   $("musicButton").onclick=async()=>{if(!audio.src)return;if(audio.paused)await playMusic();else{audio.pause();$("musicButton").textContent="♫"}};
 
