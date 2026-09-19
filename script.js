@@ -1,6 +1,6 @@
 // ==========================================
 // AMOR EM SITE ❤️
-// TESTE GRATUITO
+// TESTE GRATUITO + PERSONALIZAÇÃO + CHECKOUT
 // ==========================================
 
 const API_URL = "https://amor-em-site-backend.vercel.app";
@@ -40,6 +40,269 @@ const generatePreviewButton = document.getElementById("generatePreviewButton");
 
 let selectedPlan = "";
 let photoData = "";
+
+// ==========================================
+// REGRAS DE PERSONALIZAÇÃO POR PLANO
+// ==========================================
+
+const PLAN_RULES = {
+  essencial: {
+    label: "Essencial",
+    fields: ["loveName", "yourName", "loveMessage", "lovePhoto"],
+    extras: false,
+    music: false,
+    reasons: 0,
+    story: false
+  },
+  romantico: {
+    label: "Romântico",
+    fields: [
+      "loveName",
+      "yourName",
+      "loveMessage",
+      "loveDate",
+      "lovePhoto",
+      "loveStory",
+      "reasons"
+    ],
+    extras: true,
+    music: false,
+    reasons: 100,
+    story: true
+  },
+  premium: {
+    label: "Premium",
+    fields: [
+      "loveName",
+      "yourName",
+      "loveMessage",
+      "loveDate",
+      "lovePhoto",
+      "loveMusic",
+      "loveStory",
+      "reasons"
+    ],
+    extras: true,
+    music: true,
+    reasons: 100,
+    story: true
+  }
+};
+
+function getPlanKey(plan = selectedPlan) {
+  const raw = String(plan || "")
+    .split(" — ")[0]
+    .trim()
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .toLowerCase();
+
+  if (raw.includes("premium")) return "premium";
+  if (raw.includes("romantico")) return "romantico";
+  if (raw.includes("essencial")) return "essencial";
+  return "";
+}
+
+function getSelectedPlanRules() {
+  return PLAN_RULES[getPlanKey()] || null;
+}
+
+function getFieldContainer(element) {
+  return element?.closest("label") || element?.parentElement;
+}
+
+function setFieldVisibility(element, visible, required = false) {
+  const container = getFieldContainer(element);
+  if (!container) return;
+
+  container.style.display = visible ? "" : "none";
+
+  if ("required" in element) {
+    element.required = visible && required;
+  }
+
+  if (!visible) {
+    element.value = "";
+  }
+}
+
+function ensureAdvancedFields() {
+  const existing = document.getElementById("advancedPlanFields");
+  if (existing) return existing;
+
+  const wrapper = document.createElement("div");
+  wrapper.id = "advancedPlanFields";
+  wrapper.style.display = "none";
+  wrapper.innerHTML = `
+    <div class="reasons-title">💌 Recursos do plano Romântico/Premium</div>
+
+    <label id="letterField">
+      💌 Carta interativa
+      <textarea id="loveLetter" maxlength="2500"
+        placeholder="Escreva uma carta especial para o seu amor..."></textarea>
+      <small class="field-help">Este conteúdo será usado na carta interativa do site.</small>
+    </label>
+
+    <label id="surpriseField">
+      🎁 Surpresa final
+      <textarea id="loveSurprise" maxlength="1500"
+        placeholder="Escreva a mensagem que aparecerá na surpresa final..."></textarea>
+      <small class="field-help">Mensagem exibida no momento da surpresa.</small>
+    </label>
+
+    <label id="reasons100Field">
+      ❤️ 100 motivos
+      <textarea id="reasons100" maxlength="10000" rows="8"
+        placeholder="Digite um motivo por linha. Exemplo:
+1. Seu sorriso
+2. Seu carinho
+3. Seu jeito de me apoiar
+..."></textarea>
+      <small class="field-help">No plano Romântico/Premium, você pode cadastrar até 100 motivos, um por linha.</small>
+    </label>
+
+    <div id="premiumAdvancedNote" class="field-help" style="display:none;">
+      👑 O Premium inclui música escolhida, personalização avançada e mais animações.
+    </div>
+  `;
+
+  const reasonsTitle = document.querySelector(".reasons-title");
+  const formElement = document.getElementById("builderForm");
+
+  if (reasonsTitle?.parentElement) {
+    reasonsTitle.parentElement.insertBefore(wrapper, reasonsTitle.nextSibling);
+  } else if (formElement) {
+    const button = document.getElementById("generatePreviewButton");
+    formElement.insertBefore(wrapper, button || null);
+  }
+
+  return wrapper;
+}
+
+function applyPlanRules() {
+  const rules = getSelectedPlanRules();
+  const advanced = ensureAdvancedFields();
+
+  // Antes de escolher um plano, mantém a prévia gratuita funcionando.
+  if (!rules) {
+    advanced.style.display = "none";
+    setFieldVisibility(nameInput, true, true);
+    setFieldVisibility(yourNameInput, true, false);
+    setFieldVisibility(messageInput, true, false);
+    setFieldVisibility(dateInput, true, false);
+    setFieldVisibility(photoInput, true, false);
+    setFieldVisibility(musicInput, true, false);
+    setFieldVisibility(storyInput, true, false);
+    [reason1Input, reason2Input, reason3Input].forEach((el) => setFieldVisibility(el, true, false));
+    return;
+  }
+
+  const isEssential = getPlanKey() === "essencial";
+  const isRomanticOrPremium = rules.extras;
+
+  setFieldVisibility(nameInput, true, true);
+  setFieldVisibility(yourNameInput, true, false);
+  setFieldVisibility(messageInput, true, true);
+  setFieldVisibility(dateInput, !isEssential, !isEssential);
+  setFieldVisibility(photoInput, true, true);
+  setFieldVisibility(musicInput, rules.music, rules.music);
+  setFieldVisibility(storyInput, rules.story, rules.story);
+
+  // Os 3 motivos antigos não são usados como recurso principal nos planos pagos.
+  [reason1Input, reason2Input, reason3Input].forEach((el) => {
+    setFieldVisibility(el, !isRomanticOrPremium, !isRomanticOrPremium);
+  });
+
+  advanced.style.display = isRomanticOrPremium ? "" : "none";
+
+  const letter = document.getElementById("loveLetter");
+  const surprise = document.getElementById("loveSurprise");
+  const reasons100 = document.getElementById("reasons100");
+  const premiumNote = document.getElementById("premiumAdvancedNote");
+
+  if (letter) letter.required = isRomanticOrPremium;
+  if (surprise) surprise.required = isRomanticOrPremium;
+  if (reasons100) reasons100.required = isRomanticOrPremium;
+  if (premiumNote) premiumNote.style.display = getPlanKey() === "premium" ? "" : "none";
+}
+
+function validatePlanPersonalization() {
+  const rules = getSelectedPlanRules();
+  if (!rules) return true;
+
+  const key = getPlanKey();
+
+  if (nameInput && !nameInput.value.trim()) {
+    nameInput.reportValidity();
+    return false;
+  }
+
+  if (messageInput && !messageInput.value.trim()) {
+    messageInput.reportValidity();
+    return false;
+  }
+
+  if (photoInput && !photoInput.files?.length && !photoData) {
+    alert("Escolha a foto principal para continuar.");
+    photoInput.focus();
+    return false;
+  }
+
+  if (key !== "essencial" && dateInput && !dateInput.value) {
+    dateInput.reportValidity();
+    return false;
+  }
+
+  if (rules.story && storyInput && !storyInput.value.trim()) {
+    storyInput.reportValidity();
+    return false;
+  }
+
+  if (rules.music && musicInput && !musicInput.value.trim()) {
+    musicInput.reportValidity();
+    return false;
+  }
+
+  if (rules.reasons > 0) {
+    const reasons100 = document.getElementById("reasons100");
+    const reasons = (reasons100?.value || "")
+      .split("\\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (reasons.length < 1) {
+      alert("Digite pelo menos 1 motivo. Você pode cadastrar até 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
+    if (reasons.length > 100) {
+      alert("O limite deste plano é de 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
+    const letter = document.getElementById("loveLetter");
+    const surprise = document.getElementById("loveSurprise");
+
+    if (!letter?.value.trim()) {
+      alert("Preencha a carta interativa.");
+      letter?.focus();
+      return false;
+    }
+
+    if (!surprise?.value.trim()) {
+      alert("Preencha a surpresa final.");
+      surprise?.focus();
+      return false;
+    }
+  }
+
+  return true;
+}
+
+ensureAdvancedFields();
+
 
 function escapeHtml(value) {
   return String(value)
@@ -428,9 +691,26 @@ function generatePreview() {
 
 generatePreviewButton?.addEventListener(
   "click",
-  (event) => {
+  async (event) => {
     event.preventDefault();
-    generatePreview();
+
+    // Sem plano selecionado: continua sendo apenas uma prévia gratuita.
+    if (!selectedPlan) {
+      generatePreview();
+      return;
+    }
+
+    // Com plano selecionado: valida as regras daquele plano,
+    // cria o pedido e leva o cliente ao pagamento.
+    if (!validatePlanPersonalization()) return;
+
+    if (form && !form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    updatePreview();
+    await startCheckout();
   }
 );
 
@@ -448,17 +728,29 @@ form?.addEventListener(
 // ==========================================
 
 planButtons.forEach((button) => {
-  button.addEventListener("click", async (event) => {
+  button.addEventListener("click", (event) => {
     event.preventDefault();
 
-    selectedPlan =
-      button.dataset.plan || "";
+    selectedPlan = button.dataset.plan || "";
 
+    applyPlanRules();
     updateCheckoutButton();
 
-    // O cliente já escolheu o plano.
-    // Não mandamos mais para "Escolher meu plano".
-    await startCheckout();
+    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
+    // Primeiro ele preenche os dados de personalização.
+    document
+      .getElementById("teste")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    if (generatePreviewButton) {
+      const planName = selectedPlan.split(" — ")[0];
+      generatePreviewButton.textContent =
+        `❤️ Criar meu site — ${planName}`;
+      generatePreviewButton.classList.add("selected");
+    }
   });
 });
 
@@ -473,11 +765,23 @@ function updateCheckoutButton() {
       `Continuar com ${planName} ❤️`;
 
     checkoutButton.classList.add("selected");
+
+    if (generatePreviewButton) {
+      generatePreviewButton.textContent =
+        `❤️ Criar meu site — ${planName}`;
+      generatePreviewButton.classList.add("selected");
+    }
   } else {
     checkoutButton.textContent =
       "Escolher meu plano ❤️";
 
     checkoutButton.classList.remove("selected");
+
+    if (generatePreviewButton) {
+      generatePreviewButton.textContent =
+        "✨ Gerar minha prévia";
+      generatePreviewButton.classList.remove("selected");
+    }
   }
 }
 
@@ -491,6 +795,14 @@ async function startCheckout() {
         block: "center"
       });
 
+    return;
+  }
+
+  // Garante que os recursos preenchidos correspondem ao plano escolhido.
+  if (!validatePlanPersonalization()) return;
+
+  if (form && !form.checkValidity()) {
+    form.reportValidity();
     return;
   }
 
@@ -515,6 +827,9 @@ async function startCheckout() {
         reason1: reason1Input?.value.trim() || "",
         reason2: reason2Input?.value.trim() || "",
         reason3: reason3Input?.value.trim() || "",
+        reasons100: document.getElementById("reasons100")?.value.trim() || "",
+        loveLetter: document.getElementById("loveLetter")?.value.trim() || "",
+        loveSurprise: document.getElementById("loveSurprise")?.value.trim() || "",
         photoData: photoData || ""
       }
     };
@@ -574,6 +889,7 @@ checkoutButton?.addEventListener(
 // ==========================================
 
 updatePreview();
+applyPlanRules();
 updateCheckoutButton();
 
 console.log("❤️ Amor em Site iniciado");
