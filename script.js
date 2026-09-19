@@ -1105,6 +1105,7 @@ Seu jeito de me apoiar"></textarea>
 
   const close = () => {
     modal.classList.remove("is-open");
+    modal.style.display = "none";
     document.body.style.overflow = "";
   };
 
