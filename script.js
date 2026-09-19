@@ -448,23 +448,17 @@ form?.addEventListener(
 // ==========================================
 
 planButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", async (event) => {
     event.preventDefault();
 
     selectedPlan =
       button.dataset.plan || "";
 
-    const pedido =
-      document.getElementById("pedido");
-
-    if (pedido) {
-      pedido.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-
     updateCheckoutButton();
+
+    // O cliente já escolheu o plano.
+    // Não mandamos mais para "Escolher meu plano".
+    await startCheckout();
   });
 });
 
@@ -487,86 +481,91 @@ function updateCheckoutButton() {
   }
 }
 
-checkoutButton?.addEventListener(
-  "click",
-  async () => {
+async function startCheckout() {
 
-    if (!selectedPlan) {
+  if (!selectedPlan) {
+    document
+      .getElementById("planos")
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
 
-      document
-        .getElementById("planos")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "center"
-        });
+    return;
+  }
 
-      return;
-    }
+  const originalText = checkoutButton?.textContent || "Continuar";
 
-    const originalText = checkoutButton.textContent;
-
+  if (checkoutButton) {
     checkoutButton.disabled = true;
     checkoutButton.textContent = "Preparando pagamento...";
+  }
 
-    try {
-      const payload = {
-        plan: selectedPlan,
+  try {
+    const payload = {
+      plan: selectedPlan,
 
-        customer: {
-          loveName: nameInput?.value.trim() || "",
-          yourName: yourNameInput?.value.trim() || "",
-          loveMessage: messageInput?.value.trim() || "",
-          loveDate: dateInput?.value || "",
-          loveMusic: musicInput?.value || "",
-          loveStory: storyInput?.value.trim() || "",
-          reason1: reason1Input?.value.trim() || "",
-          reason2: reason2Input?.value.trim() || "",
-          reason3: reason3Input?.value.trim() || "",
-          photoData: photoData || ""
-        }
-      };
-
-      const response = await fetch(
-        `${API_URL}/api/create-checkout`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(payload)
-        }
-      );
-
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        throw new Error(
-          result.error ||
-          result.message ||
-          "Não foi possível criar o pagamento."
-        );
+      customer: {
+        loveName: nameInput?.value.trim() || "",
+        yourName: yourNameInput?.value.trim() || "",
+        loveMessage: messageInput?.value.trim() || "",
+        loveDate: dateInput?.value || "",
+        loveMusic: musicInput?.value || "",
+        loveStory: storyInput?.value.trim() || "",
+        reason1: reason1Input?.value.trim() || "",
+        reason2: reason2Input?.value.trim() || "",
+        reason3: reason3Input?.value.trim() || "",
+        photoData: photoData || ""
       }
+    };
 
-      if (!result.link) {
-        throw new Error(
-          "O checkout foi criado, mas o link de pagamento não foi retornado."
-        );
+    const response = await fetch(
+      `${API_URL}/api/create-checkout`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
       }
+    );
 
-      window.location.href = result.link;
+    const result = await response.json().catch(() => ({}));
 
-    } catch (error) {
-      console.error("Erro ao criar checkout:", error);
-
-      alert(
-        error?.message ||
-        "Não foi possível iniciar o pagamento. Tente novamente."
+    if (!response.ok) {
+      throw new Error(
+        result.error ||
+        result.message ||
+        "Não foi possível criar o pagamento."
       );
+    }
 
+    if (!result.link) {
+      throw new Error(
+        "O checkout foi criado, mas o link de pagamento não foi retornado."
+      );
+    }
+
+    window.location.href = result.link;
+
+  } catch (error) {
+    console.error("Erro ao criar checkout:", error);
+
+    alert(
+      error?.message ||
+      "Não foi possível iniciar o pagamento. Tente novamente."
+    );
+
+    if (checkoutButton) {
       checkoutButton.disabled = false;
       checkoutButton.textContent = originalText;
     }
   }
+}
+
+checkoutButton?.addEventListener(
+  "click",
+  () => startCheckout()
 );
 
 
