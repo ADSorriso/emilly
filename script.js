@@ -34,7 +34,7 @@ const previewReason3 = document.getElementById("previewReason3");
 
 const heroPreview = document.getElementById("heroPreview");
 
-const planButtons = document.querySelectorAll("[data-plan]");
+const planButtons = document.querySelectorAll("[data-plan-id]");
 const checkoutButton = document.getElementById("checkoutButton");
 const generatePreviewButton = document.getElementById("generatePreviewButton");
 
@@ -94,7 +94,7 @@ function getPlanKey(plan = selectedPlan) {
     .split(" — ")[0]
     .trim()
     .normalize("NFD")
-    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
   if (raw.includes("premium")) return "premium";
@@ -727,24 +727,23 @@ form?.addEventListener(
 // PLANOS
 // ==========================================
 
-// Intercepta o clique nos planos ANTES de qualquer outro listener.
-// Assim, clicar em "Quero esse" nunca abre o Asaas diretamente.
-document.addEventListener(
-  "click",
-  (event) => {
-    const button = event.target.closest?.("[data-plan]");
-    if (!button) return;
-
+planButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
     event.preventDefault();
-    event.stopImmediatePropagation();
 
-    selectedPlan = button.dataset.plan || "";
+    const planMap = {
+      essencial: "Essencial — R$ 10,90",
+      romantico: "Romântico — R$ 39,90",
+      premium: "Premium — R$ 59,90"
+    };
+
+    selectedPlan = planMap[button.dataset.planId] || "";
 
     applyPlanRules();
     updateCheckoutButton();
 
-    // Primeiro o cliente personaliza. O pagamento só acontece
-    // quando clicar em "Criar meu site".
+    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
+    // Primeiro ele preenche os dados de personalização.
     document
       .getElementById("teste")
       ?.scrollIntoView({
@@ -758,9 +757,8 @@ document.addEventListener(
         `❤️ Criar meu site — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
-  },
-  true
-);
+  });
+});
 
 function updateCheckoutButton() {
   if (!checkoutButton) return;
@@ -888,11 +886,7 @@ async function startCheckout() {
 
 checkoutButton?.addEventListener(
   "click",
-  (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    startCheckout();
-  }
+  () => startCheckout()
 );
 
 
