@@ -41,6 +41,36 @@ const generatePreviewButton = document.getElementById("generatePreviewButton");
 let selectedPlan = "";
 let photoData = "";
 
+// Biblioteca de músicas do Amor em Site.
+// Essencial: somente as 2 primeiras.
+// Romântico/Premium: todas as músicas disponíveis.
+const MUSIC_LIBRARY = [
+  { value: "Love Me Like You Do", label: "Ellie Goulding — Love Me Like You Do", file: "love-me-like-you-do.mp3" },
+  { value: "The Reason", label: "Hoobastank — The Reason", file: "the-reason.mp3" },
+  { value: "Far Away", label: "Nickelback — Far Away", file: "far-away.mp3" },
+  { value: "A Thousand Years", label: "Christina Perri — A Thousand Years", file: "a-thousand-years.mp3" }
+];
+
+function updateMusicOptions() {
+  if (!musicInput) return;
+
+  const key = getPlanKey();
+  const previous = musicInput.value;
+  const available = key === "essencial"
+    ? MUSIC_LIBRARY.slice(0, 2)
+    : MUSIC_LIBRARY;
+
+  musicInput.innerHTML = available
+    .map(song => `<option value="${song.value}">${song.label}</option>`)
+    .join("");
+
+  if (available.some(song => song.value === previous)) {
+    musicInput.value = previous;
+  } else if (available[0]) {
+    musicInput.value = available[0].value;
+  }
+}
+
 // ==========================================
 // REGRAS DE PERSONALIZAÇÃO POR PLANO
 // ==========================================
@@ -48,11 +78,13 @@ let photoData = "";
 const PLAN_RULES = {
   essencial: {
     label: "Essencial",
-    fields: ["loveName", "yourName", "loveMessage", "lovePhoto"],
+    fields: ["loveName", "yourName", "loveMessage", "lovePhoto", "loveMusic"],
     extras: false,
-    music: false,
+    music: true,
+    musicLimit: 2,
     reasons: 0,
-    story: false
+    story: false,
+    premium: false
   },
   romantico: {
     label: "Romântico",
@@ -62,13 +94,16 @@ const PLAN_RULES = {
       "loveMessage",
       "loveDate",
       "lovePhoto",
+      "loveMusic",
       "loveStory",
       "reasons"
     ],
     extras: true,
-    music: false,
+    music: true,
+    musicLimit: 0,
     reasons: 100,
-    story: true
+    story: true,
+    premium: false
   },
   premium: {
     label: "Premium",
@@ -84,8 +119,10 @@ const PLAN_RULES = {
     ],
     extras: true,
     music: true,
+    musicLimit: 0,
     reasons: 100,
-    story: true
+    story: true,
+    premium: true
   }
 };
 
@@ -185,6 +222,7 @@ function applyPlanRules() {
 
   // Antes de escolher um plano, mantém a prévia gratuita funcionando.
   if (!rules) {
+    updateMusicOptions();
     advanced.style.display = "none";
     setFieldVisibility(nameInput, true, true);
     setFieldVisibility(yourNameInput, true, false);
@@ -199,6 +237,8 @@ function applyPlanRules() {
 
   const isEssential = getPlanKey() === "essencial";
   const isRomanticOrPremium = rules.extras;
+
+  updateMusicOptions();
 
   setFieldVisibility(nameInput, true, true);
   setFieldVisibility(yourNameInput, true, false);
@@ -759,7 +799,7 @@ function ensurePlanPersonalizationModal() {
     }
     #planPersonalizationModal.is-open { display: flex; }
     .pem-card {
-      width: min(760px, 100%);
+      width: min(820px, 100%);
       max-height: calc(100vh - 48px);
       overflow-y: auto;
       background: #fff;
@@ -800,6 +840,16 @@ function ensurePlanPersonalizationModal() {
       color:#777;
       font-size:14px;
     }
+    .pem-badge {
+      display:inline-flex;
+      margin-top:10px;
+      padding:7px 11px;
+      border-radius:999px;
+      background:#fff0f3;
+      color:#d91b49;
+      font-size:12px;
+      font-weight:800;
+    }
     .pem-close {
       border:0;
       background:#f3eef0;
@@ -839,10 +889,26 @@ function ensurePlanPersonalizationModal() {
     .pem-section {
       grid-column:1/-1;
       margin-top:4px;
-      padding-top:16px;
+      padding:16px 0 2px;
       border-top:1px solid #eee;
     }
     .pem-section strong { font-size:15px; }
+    .pem-premium {
+      grid-column:1/-1;
+      padding:18px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#fff8fa,#f8f1ff);
+      border:1px solid #f0dce3;
+    }
+    .pem-premium-title {
+      font-weight:900;
+      margin-bottom:5px;
+    }
+    .pem-premium-subtitle {
+      color:#777;
+      font-size:12px;
+      margin-bottom:15px;
+    }
     .pem-actions {
       display:flex;
       justify-content:flex-end;
@@ -858,11 +924,12 @@ function ensurePlanPersonalizationModal() {
     }
     .pem-secondary { background:#f1ecee; color:#333; }
     .pem-primary { background:#e51d4f; color:#fff; }
+    .pem-primary:disabled { opacity:.65; cursor:wait; }
     @media (max-width: 650px) {
       #planPersonalizationModal { padding:12px; }
       .pem-card { padding:22px; max-height:calc(100vh - 24px); border-radius:20px; }
       .pem-grid { grid-template-columns:1fr; }
-      .pem-field.full, .pem-section { grid-column:auto; }
+      .pem-field.full, .pem-section, .pem-premium { grid-column:auto; }
       .pem-title { font-size:25px; }
       .pem-actions { flex-direction:column-reverse; }
       .pem-secondary, .pem-primary { width:100%; }
@@ -879,6 +946,7 @@ function ensurePlanPersonalizationModal() {
           <div class="pem-kicker">PERSONALIZE SEU SITE</div>
           <h2 class="pem-title" id="pemTitle">Seu site, <em>só de vocês.</em></h2>
           <div class="pem-plan" id="pemPlanName"></div>
+          <div class="pem-badge" id="pemPlanBadge"></div>
         </div>
         <button class="pem-close" id="pemClose" type="button" aria-label="Fechar">×</button>
       </div>
@@ -912,12 +980,9 @@ function ensurePlanPersonalizationModal() {
           </div>
 
           <div class="pem-field" data-pem="music">
-            <label for="pemMusic">🎵 Música escolhida *</label>
-            <select id="pemMusic">
-              <option value="Nossa música">Nossa música</option>
-              <option value="Piano romântico">Piano romântico</option>
-              <option value="Romântica">Romântica</option>
-            </select>
+            <label for="pemMusic">🎵 Escolha sua música *</label>
+            <select id="pemMusic"></select>
+            <span class="pem-help" id="pemMusicHelp"></span>
           </div>
 
           <div class="pem-field full" data-pem="story">
@@ -936,7 +1001,7 @@ function ensurePlanPersonalizationModal() {
 Seu sorriso
 Seu carinho
 Seu jeito de me apoiar"></textarea>
-            <span class="pem-help">Você pode cadastrar até 100 motivos, um por linha.</span>
+            <span class="pem-help">Até 100 motivos, um por linha.</span>
           </div>
 
           <div class="pem-field full" data-pem="romantic">
@@ -947,6 +1012,85 @@ Seu jeito de me apoiar"></textarea>
           <div class="pem-field full" data-pem="romantic">
             <label for="pemSurprise">🎁 Surpresa final *</label>
             <textarea id="pemSurprise" maxlength="1500" placeholder="Mensagem da surpresa final..."></textarea>
+          </div>
+
+          <div class="pem-premium" id="pemPremiumFields" style="display:none;">
+            <div class="pem-premium-title">👑 Personalização Premium</div>
+            <div class="pem-premium-subtitle">
+              O Premium tem tudo do Romântico + mais opções para deixar o site do jeito de vocês.
+            </div>
+
+            <div class="pem-grid">
+              <div class="pem-field">
+                <label for="pemHeartStyle">❤️ Estilo do coração</label>
+                <select id="pemHeartStyle">
+                  <option value="classico">Clássico</option>
+                  <option value="duplo">Coração duplo</option>
+                  <option value="colagem">Colagem romântica</option>
+                  <option value="moldura">Coração em moldura</option>
+                </select>
+              </div>
+
+              <div class="pem-field">
+                <label for="pemPhotoStyle">📸 Estilo das fotos</label>
+                <select id="pemPhotoStyle">
+                  <option value="natural">Natural</option>
+                  <option value="brilho">Brilho suave</option>
+                  <option value="vintage">Vintage</option>
+                  <option value="pb">Preto e branco</option>
+                </select>
+              </div>
+
+              <div class="pem-field">
+                <label for="pemPhotoLayout">🖼️ Formato da galeria</label>
+                <select id="pemPhotoLayout">
+                  <option value="coracao">Coração tradicional</option>
+                  <option value="coracao-grande">Coração grande</option>
+                  <option value="colagem">Colagem de fotos</option>
+                  <option value="polaroid">Polaroids</option>
+                </select>
+              </div>
+
+              <div class="pem-field">
+                <label for="pemAnimation">✨ Animações</label>
+                <select id="pemAnimation">
+                  <option value="suave">Suaves</option>
+                  <option value="coracoes">Corações flutuando</option>
+                  <option value="cinematic">Cinematográficas</option>
+                  <option value="romantica">Românticas</option>
+                </select>
+              </div>
+
+              <div class="pem-field">
+                <label for="pemFont">🔤 Estilo de fonte</label>
+                <select id="pemFont">
+                  <option value="elegante">Elegante</option>
+                  <option value="romantica">Romântica</option>
+                  <option value="moderna">Moderna</option>
+                  <option value="classica">Clássica</option>
+                </select>
+              </div>
+
+              <div class="pem-field">
+                <label for="pemTheme">🎨 Tema visual</label>
+                <select id="pemTheme">
+                  <option value="rose">Rosa romântico</option>
+                  <option value="noite">Noite apaixonada</option>
+                  <option value="creme">Creme elegante</option>
+                  <option value="lavanda">Lavanda</option>
+                </select>
+              </div>
+
+              <div class="pem-field full">
+                <label for="pemEffects">💫 Efeitos extras</label>
+                <select id="pemEffects">
+                  <option value="essencial">Sem efeitos extras</option>
+                  <option value="brilhos">Brilhos e partículas</option>
+                  <option value="bokeh">Bokeh romântico</option>
+                  <option value="coracoes">Corações + brilhos</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -964,6 +1108,46 @@ Seu jeito de me apoiar"></textarea>
     document.body.style.overflow = "";
   };
 
+  const musicOptions = {
+    essencial: [
+      ["piano-romantico", "🎹 Piano romântico"],
+      ["romantica", "💗 Romântica"]
+    ],
+    romantico: [
+      ["nossa-musica", "🎵 Nossa música"],
+      ["piano-romantico", "🎹 Piano romântico"],
+      ["romantica", "💗 Romântica"],
+      ["amor-acustico", "🎸 Amor acústico"],
+      ["noite-de-amor", "🌙 Noite de amor"]
+    ],
+    premium: [
+      ["nossa-musica", "🎵 Nossa música"],
+      ["piano-romantico", "🎹 Piano romântico"],
+      ["romantica", "💗 Romântica"],
+      ["amor-acustico", "🎸 Amor acústico"],
+      ["noite-de-amor", "🌙 Noite de amor"],
+      ["especial-premium", "👑 Música especial Premium"]
+    ]
+  };
+
+  function setMusicOptions(key) {
+    const select = document.getElementById("pemMusic");
+    const help = document.getElementById("pemMusicHelp");
+    if (!select) return;
+
+    select.innerHTML = (musicOptions[key] || musicOptions.romantico)
+      .map(([value, label]) => `<option value="${value}">${label}</option>`)
+      .join("");
+
+    if (key === "essencial") {
+      help.textContent = "No Essencial, você escolhe 1 entre 2 músicas.";
+    } else if (key === "premium") {
+      help.textContent = "No Premium, você tem a biblioteca completa + opção exclusiva.";
+    } else {
+      help.textContent = "No Romântico, você pode escolher entre as músicas disponíveis.";
+    }
+  }
+
   document.getElementById("pemClose")?.addEventListener("click", close);
   document.getElementById("pemCancel")?.addEventListener("click", close);
   modal.addEventListener("click", (event) => {
@@ -977,6 +1161,7 @@ Seu jeito de me apoiar"></textarea>
     const rules = PLAN_RULES[key];
 
     const modalLoveName = document.getElementById("pemLoveName");
+    const modalYourName = document.getElementById("pemYourName");
     const modalMessage = document.getElementById("pemMessage");
     const modalPhoto = document.getElementById("pemPhoto");
     const modalDate = document.getElementById("pemDate");
@@ -1037,6 +1222,23 @@ Seu jeito de me apoiar"></textarea>
       return;
     }
 
+    const premium = key === "premium";
+    const premiumOptions = premium ? {
+      heartStyle: document.getElementById("pemHeartStyle")?.value || "classico",
+      photoStyle: document.getElementById("pemPhotoStyle")?.value || "natural",
+      photoLayout: document.getElementById("pemPhotoLayout")?.value || "coracao",
+      animation: document.getElementById("pemAnimation")?.value || "suave",
+      fontStyle: document.getElementById("pemFont")?.value || "elegante",
+      theme: document.getElementById("pemTheme")?.value || "rose",
+      effects: document.getElementById("pemEffects")?.value || "essencial"
+    } : {};
+
+    const submit = document.getElementById("pemSubmit");
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "Preparando seu site...";
+    }
+
     const reader = new FileReader();
     reader.onload = async (e) => {
       const originalUrl = e.target.result;
@@ -1052,6 +1254,10 @@ Seu jeito de me apoiar"></textarea>
 
         if (!ctx) {
           alert("Não foi possível preparar a foto.");
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
+          }
           return;
         }
 
@@ -1059,14 +1265,14 @@ Seu jeito de me apoiar"></textarea>
         photoData = canvas.toDataURL("image/jpeg", 0.75);
 
         // Preenche o formulário original para reaproveitar a prévia,
-        // as validações e o checkout já existentes.
+        // validações e checkout existentes.
         applyPlanRules();
 
-        loveNameInput.value = modalLoveName.value.trim();
-        yourNameInput.value = document.getElementById("pemYourName").value.trim();
+        nameInput.value = modalLoveName.value.trim();
+        yourNameInput.value = modalYourName.value.trim();
         messageInput.value = modalMessage.value.trim();
         dateInput.value = modalDate.value || "";
-        musicInput.value = modalMusic.value || "Nossa música";
+        musicInput.value = modalMusic.value || "";
         storyInput.value = modalStory.value.trim();
 
         const r1 = document.getElementById("reason1");
@@ -1084,15 +1290,33 @@ Seu jeito de me apoiar"></textarea>
         if (loveLetter) loveLetter.value = modalLetter.value.trim();
         if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
 
-        updatePreview();
+        // Guarda as opções Premium para o checkout e para a próxima etapa de geração.
+        window.amorEmSiteCustomization = premiumOptions;
 
+        updatePreview();
         close();
 
         // Só agora, depois da personalização, abre o pagamento.
         await startCheckout();
       };
 
+      img.onerror = () => {
+        alert("Não foi possível ler a imagem escolhida.");
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
+        }
+      };
+
       img.src = originalUrl;
+    };
+
+    reader.onerror = () => {
+      alert("Não foi possível preparar a foto.");
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
+      }
     };
 
     reader.readAsDataURL(file);
@@ -1131,10 +1355,50 @@ function openPlanPersonalization(planKey) {
     el.style.display = romantic ? "" : "none";
   });
 
+  // Música existe nos 3 planos.
   document.querySelectorAll("[data-pem='music']").forEach(el => {
-    el.style.display = isPremium ? "" : "none";
+    el.style.display = "";
   });
-  document.getElementById("pemMusic").required = isPremium;
+  document.getElementById("pemMusic").required = true;
+
+  // A quantidade/opções disponíveis muda conforme o plano.
+  const musicSelect = document.getElementById("pemMusic");
+  if (musicSelect) {
+    const options = {
+      essencial: [
+        ["love-me-like-you-do", "🎵 Ellie Goulding — Love Me Like You Do"],
+        ["the-reason", "🎵 Hoobastank — The Reason"]
+      ],
+      romantico: [
+        ["nossa-musica", "🎵 Nossa música"],
+        ["piano-romantico", "🎹 Piano romântico"],
+        ["romantica", "💗 Romântica"],
+        ["amor-acustico", "🎸 Amor acústico"],
+        ["noite-de-amor", "🌙 Noite de amor"]
+      ],
+      premium: [
+        ["nossa-musica", "🎵 Nossa música"],
+        ["piano-romantico", "🎹 Piano romântico"],
+        ["romantica", "💗 Romântica"],
+        ["amor-acustico", "🎸 Amor acústico"],
+        ["noite-de-amor", "🌙 Noite de amor"],
+        ["especial-premium", "👑 Música especial Premium"]
+      ]
+    };
+    musicSelect.innerHTML = (options[planKey] || options.romantico)
+      .map(([value, label]) => `<option value="${value}">${label}</option>`)
+      .join("");
+  }
+
+  const musicHelp = document.getElementById("pemMusicHelp");
+  if (musicHelp) {
+    musicHelp.textContent =
+      isEssential
+        ? "No Essencial, você escolhe 1 entre 2 músicas."
+        : isPremium
+          ? "No Premium, você tem a biblioteca completa + opção exclusiva."
+          : "No Romântico, você escolhe entre as músicas disponíveis.";
+  }
 
   const reasons = document.getElementById("pemReasons");
   const letter = document.getElementById("pemLetter");
@@ -1142,6 +1406,19 @@ function openPlanPersonalization(planKey) {
   if (reasons) reasons.required = romantic;
   if (letter) letter.required = romantic;
   if (surprise) surprise.required = romantic;
+
+  const premiumFields = document.getElementById("pemPremiumFields");
+  if (premiumFields) premiumFields.style.display = isPremium ? "" : "none";
+
+  const badge = document.getElementById("pemPlanBadge");
+  if (badge) {
+    badge.textContent =
+      isEssential
+        ? "🎵 2 músicas à escolha"
+        : isPremium
+          ? "👑 Tudo do Romântico + personalização avançada"
+          : "🎵 Música + experiência romântica completa";
+  }
 
   document.getElementById("pemSubmit").textContent =
     `❤️ Criar meu site — ${planName}`;
@@ -1242,7 +1519,8 @@ async function startCheckout() {
         reasons100: document.getElementById("reasons100")?.value.trim() || "",
         loveLetter: document.getElementById("loveLetter")?.value.trim() || "",
         loveSurprise: document.getElementById("loveSurprise")?.value.trim() || "",
-        photoData: photoData || ""
+        photoData: photoData || "",
+        customization: window.amorEmSiteCustomization || {}
       }
     };
 
