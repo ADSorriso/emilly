@@ -94,7 +94,7 @@ function getPlanKey(plan = selectedPlan) {
     .split(" — ")[0]
     .trim()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\\u0300-\\u036f]/g, "")
     .toLowerCase();
 
   if (raw.includes("premium")) return "premium";
@@ -731,25 +731,31 @@ planButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
 
+    const planId = button.dataset.planId || "";
+
     const planMap = {
       essencial: "Essencial — R$ 10,90",
       romantico: "Romântico — R$ 39,90",
       premium: "Premium — R$ 59,90"
     };
 
-    selectedPlan = planMap[button.dataset.planId] || "";
+    selectedPlan = planMap[planId] || "";
+
+    if (!selectedPlan) return;
 
     applyPlanRules();
     updateCheckoutButton();
 
-    // O cliente escolheu o plano, mas NÃO vai para o pagamento ainda.
-    // Primeiro ele preenche os dados de personalização.
-    document
-      .getElementById("teste")
-      ?.scrollIntoView({
+    // O plano foi escolhido. Agora mostramos a área de personalização.
+    // Não cria pedido e não abre o Asaas neste momento.
+    const builderSection = document.getElementById("teste");
+
+    if (builderSection) {
+      builderSection.scrollIntoView({
         behavior: "smooth",
         block: "start"
       });
+    }
 
     if (generatePreviewButton) {
       const planName = selectedPlan.split(" — ")[0];
