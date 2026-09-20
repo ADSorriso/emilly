@@ -186,18 +186,6 @@ function ensureAdvancedFields() {
         placeholder="Escreva a mensagem que aparecerá na surpresa final..."></textarea>
       <small class="field-help">Mensagem exibida no momento da surpresa.</small>
     </label>
-
-    <label id="reasons100Field">
-      ❤️ 100 motivos
-      <textarea id="reasons100" maxlength="10000" rows="8"
-        placeholder="Digite um motivo por linha. Exemplo:
-1. Seu sorriso
-2. Seu carinho
-3. Seu jeito de me apoiar
-..."></textarea>
-      <small class="field-help">No plano Romântico/Premium, você pode cadastrar até 100 motivos, um por linha.</small>
-    </label>
-
     <div id="premiumAdvancedNote" class="field-help" style="display:none;">
       👑 O Premium inclui música escolhida, personalização avançada e mais animações.
     </div>
@@ -302,43 +290,7 @@ function validatePlanPersonalization() {
     musicInput.reportValidity();
     return false;
   }
-
-  if (rules.reasons > 0) {
-    const reasons100 = document.getElementById("reasons100");
-    const reasons = (reasons100?.value || "")
-      .split("\\n")
-      .map((item) => item.trim())
-      .filter(Boolean);
-
-    if (reasons.length < 1) {
-      alert("Digite pelo menos 1 motivo. Você pode cadastrar até 100 motivos.");
-      reasons100?.focus();
-      return false;
-    }
-
-    if (reasons.length > 100) {
-      alert("O limite deste plano é de 100 motivos.");
-      reasons100?.focus();
-      return false;
-    }
-
-    const letter = document.getElementById("loveLetter");
-    const surprise = document.getElementById("loveSurprise");
-
-    if (!letter?.value.trim()) {
-      alert("Preencha a carta interativa.");
-      letter?.focus();
-      return false;
-    }
-
-    if (!surprise?.value.trim()) {
-      alert("Preencha a surpresa final.");
-      surprise?.focus();
-      return false;
-    }
-  }
-
-  return true;
+return true;
 }
 
 ensureAdvancedFields();
@@ -993,17 +945,6 @@ function ensurePlanPersonalizationModal() {
           <div class="pem-section" data-pem="romantic">
             <strong>💕 Recursos do Romântico/Premium</strong>
           </div>
-
-          <div class="pem-field full" data-pem="romantic">
-            <label for="pemReasons">❤️ 100 motivos *</label>
-            <textarea id="pemReasons" maxlength="10000" rows="7"
-              placeholder="Digite um motivo por linha. Ex.:
-Seu sorriso
-Seu carinho
-Seu jeito de me apoiar"></textarea>
-            <span class="pem-help">Até 100 motivos, um por linha.</span>
-          </div>
-
           <div class="pem-field full" data-pem="romantic">
             <label for="pemLetter">💌 Carta interativa *</label>
             <textarea id="pemLetter" maxlength="2500" placeholder="Escreva sua carta de amor..."></textarea>
@@ -1182,7 +1123,7 @@ Seu jeito de me apoiar"></textarea>
     const modalDate = document.getElementById("pemDate");
     const modalStory = document.getElementById("pemStory");
     const modalMusic = document.getElementById("pemMusic");
-    const modalReasons = document.getElementById("pemReasons");
+    const modalReasons = null;
     const modalLetter = document.getElementById("pemLetter");
     const modalSurprise = document.getElementById("pemSurprise");
 
@@ -1209,26 +1150,6 @@ Seu jeito de me apoiar"></textarea>
     if (rules?.music && !modalMusic.value) {
       alert("Escolha a música.");
       return;
-    }
-
-    if (rules?.reasons) {
-      const reasons = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
-      if (!reasons.length) {
-        alert("Digite pelo menos 1 motivo.");
-        return;
-      }
-      if (reasons.length > 100) {
-        alert("O limite é de 100 motivos.");
-        return;
-      }
-      if (!modalLetter.value.trim()) {
-        alert("Preencha a carta interativa.");
-        return;
-      }
-      if (!modalSurprise.value.trim()) {
-        alert("Preencha a surpresa final.");
-        return;
-      }
     }
 
     const file = modalPhoto.files[0];
@@ -1439,7 +1360,7 @@ function openPlanPersonalization(planKey) {
           : "No Romântico, você escolhe entre as músicas disponíveis.";
   }
 
-  const reasons = document.getElementById("pemReasons");
+  const reasons = null;
   const letter = document.getElementById("pemLetter");
   const surprise = document.getElementById("pemSurprise");
   if (reasons) reasons.required = romantic;
