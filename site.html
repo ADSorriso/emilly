@@ -409,6 +409,15 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 }
 </style>
 
+
+<style>
+/* Prévia limpa: remove blocos que estavam causando o visual quebrado */
+#historia .timeline-item,
+#motivos .reason-grid{
+  display:none !important;
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -441,7 +450,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
     <div class="timeline-preview preview-lock" id="storySection">
-      <div class="timeline-item"><div><div class="timeline-dot"></div></div><div><h3>O começo de vocês ❤️</h3><p id="loveStory">Conte aqui a história de vocês.</p></div></div>
+      
       <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
@@ -473,7 +482,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -555,7 +563,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   if(lines.length){
     set("reasonText",lines[0]);set("reasonCounter",`Motivo 1 de ${lines.length}`);
-    $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
+    // A lista visual de motivos foi removida da prévia; os motivos continuam no card principal.
   }
 
   let reasonIndex=0;
