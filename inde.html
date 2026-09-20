@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Crie e teste seu site romântico antes de comprar.">
+  <meta name="theme-color" content="#070506">
+  <title>Amor em Site ❤️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body>
+
+<header class="navbar">
+  <a class="brand" href="#inicio">Amor <span>em Site</span> ♥</a>
+
+  <nav>
+    <a href="#teste">Teste grátis</a>
+    <a href="#recursos">O que recebe</a>
+    <a href="#planos">Planos</a>
+  </nav>
+
+  <a class="navcta" href="#teste">Testar agora ♥</a>
+</header>
+
+<main>
+
+<section class="hero" id="inicio">
+  <div class="copy">
+    <div class="eyebrow">TESTE ANTES DE COMPRAR</div>
+
+    <h1>
+      Transforme o seu amor em uma
+      <em>experiência.</em>
+    </h1>
+
+    <p>
+      Monte uma prévia do seu site gratuitamente.
+      Personalize fotos, mensagem, história e muito mais
+      antes de escolher seu plano.
+    </p>
+
+    <div class="actions">
+      <a class="btn" href="#teste">Criar meu teste ♥</a>
+      <a class="link" href="#como-funciona">Ver como funciona ↓</a>
+    </div>
+
+    <div class="trust">
+      ♥ Teste grátis　 ✦ Sem compromisso　 ⌁ Para celular
+    </div>
+  </div>
+
+  <div class="phone-area">
+    <div class="phone">
+      <div class="notch"></div>
+
+      <div class="screen" id="heroPreview">
+        <small>PARA O MEU AMOR</small>
+
+        <div class="heart">♥</div>
+
+        <h2>
+          Oi, meu<br>
+          <em>amor.</em>
+        </h2>
+
+        <p>
+          Eu fiz esse cantinho especialmente para você.
+        </p>
+
+        <div class="mini-btn">
+          Entrar no nosso mundo ♥
+        </div>
+
+        <div class="photos">
+          <i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="float f1">💌 Carta interativa</div>
+    <div class="float f2">📸 Fotos de vocês</div>
+    <div class="float f3">🎁 Surpresa final</div>
+  </div>
+</section>
+
+<section class="statement">
+  <div class="tag">A IDEIA</div>
+
+  <h2>
+    Você monta.<br>
+    <em>Você testa. Você decide.</em>
+  </h2>
+
+  <p>
+    Experimente uma prévia personalizada antes de comprar.
+    O conteúdo completo é liberado somente depois do pagamento.
+  </p>
+</section>
+
+<section class="section builder" id="teste">
+  <div class="heading">
+    <div class="tag">TESTE GRÁTIS</div>
+
+    <h2>
+      Monte sua prévia
+      <em>agora.</em>
+    </h2>
+
+    <p>
+      Quanto mais você personalizar, mais parecida ficará
+      com a experiência final.
+    </p>
+  </div>
+
+  <div class="builder-grid">
+
+    <form class="builder-form" id="builderForm">
+
+      <label>
+        Nome de quem vai receber
+        <input
+          id="loveName"
+          type="text"
+          maxlength="40"
+          placeholder="Ex.: Emilly"
+          required
+        >
+      </label>
+
+      <label>
+        Seu nome
+        <input
+          id="yourName"
+          type="text"
+          maxlength="40"
+          placeholder="Ex.: Ricael"
+        >
+      </label>
+
+      <label>
+        Mensagem inicial
+        <textarea
+          id="loveMessage"
+          maxlength="180"
+          placeholder="Ex.: Te amo meu amor ❤️"
+        ></textarea>
+      </label>
+
+      <label>
+        Data especial
+        <input
+          id="loveDate"
+          type="date"
+        >
+      </label>
+
+      <label>
+        Foto principal
+        <input
+          id="lovePhoto"
+          type="file"
+          accept="image/*"
+        >
+
+        <small class="field-help">
+          No teste grátis, você pode usar 1 foto.
+        </small>
+      </label>
+
+      <div class="photo-editor" id="photoEditor">
+
+        <div class="photo-editor-title">
+          Ajuste sua foto ❤️
+        </div>
+
+        <p class="photo-editor-help">
+          Arraste a foto na prévia, escolha o formato e ajuste o zoom.
+        </p>
+
+        <div class="photo-ratios">
+
+          <button
+            type="button"
+            class="photo-ratio active"
+            data-ratio="4/5"
+          >
+            Vertical
+          </button>
+
+          <button
+            type="button"
+            class="photo-ratio"
+            data-ratio="1/1"
+          >
+            Quadrada
+          </button>
+
+          <button
+            type="button"
+            class="photo-ratio"
+            data-ratio="16/9"
+          >
+            Horizontal
+          </button>
+
+          <button
+            type="button"
+            class="photo-ratio"
+            data-ratio="3/4"
+          >
+            Retrato
+          </button>
+
+        </div>
+
+        <label class="photo-control">
+          <span>
+            Zoom
+            <strong id="photoZoomValue">100%</strong>
+          </span>
+
+          <input
+            id="photoZoom"
+            type="range"
+            min="100"
+            max="180"
+            value="100"
+            step="1"
+          >
+        </label>
+
+        <label class="photo-control">
+          <span>
+            Horizontal
+            <strong id="photoXValue">50%</strong>
+          </span>
+
+          <input
+            id="photoX"
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            step="1"
+          >
+        </label>
+
+        <label class="photo-control">
+          <span>
+            Vertical
+            <strong id="photoYValue">20%</strong>
+          </span>
+
+          <input
+            id="photoY"
+            type="range"
+            min="0"
+            max="100"
+            value="20"
+            step="1"
+          >
+        </label>
+
+        <button
+          type="button"
+          class="photo-reset"
+          id="photoReset"
+        >
+          ↺ Restaurar enquadramento
+        </button>
+
+      </div>
+
+      <label>
+        🎵 Música
+        <select id="loveMusic">
+          <option value="Love Me Like You Do">Ellie Goulding — Love Me Like You Do</option>
+          <option value="The Reason">Hoobastank — The Reason</option>
+          <option value="Far Away">Nickelback — Far Away</option>
+          <option value="A Thousand Years">Christina Perri — A Thousand Years</option>
+        </select>
+      </label>
+
+      <label>
+        📖 Nossa história
+        <textarea
+          id="loveStory"
+          maxlength="400"
+          placeholder="Como vocês se conheceram? Conte um pouquinho..."
+        ></textarea>
+
+        <small class="field-help">
+          No teste, mostramos apenas um trecho.
+        </small>
+      </label>
+
+      <div class="reasons-title">
+        ❤️ 3 motivos para amar
+      </div>
+
+      <label>
+        Motivo 1
+        <input
+          id="reason1"
+          type="text"
+          maxlength="100"
+          placeholder="Ex.: Você me faz sorrir"
+        >
+      </label>
+
+      <label>
+        Motivo 2
+        <input
+          id="reason2"
+          type="text"
+          maxlength="100"
+          placeholder="Ex.: Está comigo nos momentos difíceis"
+        >
+      </label>
+
+      <label>
+        Motivo 3
+        <input
+          id="reason3"
+          type="text"
+          maxlength="100"
+          placeholder="Ex.: Você é especial para mim"
+        >
+      </label>
+
+      <button
+        class="btn"
+        id="generatePreviewButton"
+        type="button"
+      >
+        ❤️ Criar meu site
+      </button>
+
+      <p class="form-note">
+        A prévia é gratuita.
+        Você só paga se quiser liberar o site completo.
+      </p>
+
+    </form>
+
+    <div class="preview-wrap">
+
+      <div class="preview-label">
+        PRÉVIA DO SEU SITE
+      </div>
+
+      <div class="love-preview" id="lovePreview">
+
+        <div
+          class="preview-photo"
+          id="previewPhoto"
+        >
+          <img
+            id="previewPhotoImage"
+            alt="Foto principal da prévia"
+          >
+
+          <div
+            class="preview-photo-placeholder"
+            id="previewPhotoPlaceholder"
+          >
+            ❤️
+          </div>
+        </div>
+
+        <div class="preview-tabs">
+
+          <button
+            type="button"
+            class="preview-tab active"
+            data-preview-tab="inicio"
+          >
+            Início
+          </button>
+
+          <button
+            type="button"
+            class="preview-tab"
+            data-preview-tab="historia"
+          >
+            História
+          </button>
+
+          <button
+            type="button"
+            class="preview-tab"
+            data-preview-tab="motivos"
+          >
+            Motivos
+          </button>
+
+          <button
+            type="button"
+            class="preview-tab"
+            data-preview-tab="carta"
+          >
+            Carta
+          </button>
+
+        </div>
+
+        <div
+          class="preview-page active"
+          data-preview-page="inicio"
+        >
+          <div class="preview-content">
+
+            <small>PARA O MEU AMOR</small>
+
+            <h3>
+              Oi,
+              <em id="previewName">meu amor</em>
+              ❤️
+            </h3>
+
+            <p id="previewMessage">
+              Crie uma mensagem especial e veja
+              sua surpresa aparecer aqui.
+            </p>
+
+            <div class="preview-heart">
+              ♥
+            </div>
+
+            <div
+              class="preview-date"
+              id="previewDate"
+            >
+              ✦ Nossa data especial ✦
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="preview-page"
+          data-preview-page="historia"
+        >
+          <div class="preview-content">
+
+            <small>NOSSA HISTÓRIA</small>
+
+            <h3>
+              Como tudo
+              <em>começou...</em>
+            </h3>
+
+            <p
+              class="story-preview"
+              id="previewStory"
+            >
+              Conte aqui um pedacinho da história de vocês.
+            </p>
+
+            <div class="locked">
+              <span>🔒</span>
+
+              <b>
+                A história completa
+              </b>
+
+              <small>
+                Desbloqueie o site completo para
+                contar todos os detalhes.
+              </small>
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="preview-page"
+          data-preview-page="motivos"
+        >
+          <div class="preview-content">
+
+            <small>MOTIVOS PARA TE AMAR</small>
+
+            <h3>
+              Porque eu
+              <em>te amo.</em>
+            </h3>
+
+            <div class="reason-list">
+
+              <div>
+                <span>01</span>
+                <p id="previewReason1">
+                  Um motivo especial ❤️
+                </p>
+              </div>
+
+              <div>
+                <span>02</span>
+                <p id="previewReason2">
+                  Outro motivo especial ❤️
+                </p>
+              </div>
+
+              <div>
+                <span>03</span>
+                <p id="previewReason3">
+                  Mais um motivo especial ❤️
+                </p>
+              </div>
+
+            </div>
+
+            <div class="locked">
+              <span>🔒</span>
+
+              <b>
+                Até 100 motivos
+              </b>
+
+              <small>
+                A versão completa pode guardar
+                muito mais motivos para amar.
+              </small>
+            </div>
+
+          </div>
+        </div>
+
+        <div
+          class="preview-page"
+          data-preview-page="carta"
+        >
+          <div class="preview-content">
+
+            <small>UMA CARTA PARA VOCÊ</small>
+
+            <div class="letter-icon">
+              💌
+            </div>
+
+            <h3>
+              Uma carta
+              <em>especial.</em>
+            </h3>
+
+            <p>
+              Existe uma mensagem esperando
+              por você.
+            </p>
+
+            <div class="locked">
+              <span>🔒</span>
+
+              <b>
+                Carta interativa
+              </b>
+
+              <small>
+                O envelope completo é liberado
+                no site pago.
+              </small>
+            </div>
+
+            <div class="final-preview">
+              🎁 Surpresa final bloqueada
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section dark" id="como-funciona">
+
+  <div class="heading">
+
+    <div class="tag">
+      COMO FUNCIONA
+    </div>
+
+    <h2>
+      Teste primeiro.<br>
+      <em>Pague somente se gostar.</em>
+    </h2>
+
+  </div>
+
+  <div class="steps">
+
+    <div>
+      <span>01</span>
+      <h3>Monte a prévia</h3>
+      <p>
+        Coloque nomes, mensagem, data,
+        fotos, história e motivos.
+      </p>
+    </div>
+
+    <div>
+      <span>02</span>
+      <h3>Explore sua experiência</h3>
+      <p>
+        Navegue pela prévia e veja
+        sua história ganhando vida.
+      </p>
+    </div>
+
+    <div>
+      <span>03</span>
+      <h3>Escolha e pague</h3>
+      <p>
+        Gostou? Escolha seu plano e
+        desbloqueie o site completo.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="recursos">
+
+  <div class="heading">
+
+    <div class="tag">
+      O QUE VOCÊ RECEBE
+    </div>
+
+    <h2>
+      Um site feito
+      <em>só para vocês.</em>
+    </h2>
+
+    <p>
+      A prévia mostra a experiência.
+      O pagamento libera o conteúdo completo
+      do plano escolhido.
+    </p>
+
+  </div>
+
+  <div class="grid">
+
+    <article>
+      <b>♥</b>
+      <h3>Tela inicial</h3>
+      <p>
+        Nome, mensagem e uma abertura cinematográfica.
+      </p>
+    </article>
+
+    <article>
+      <b>♡</b>
+      <h3>Coração de fotos</h3>
+      <p>
+        As fotos de vocês formando um coração interativo.
+      </p>
+    </article>
+
+    <article>
+      <b>01</b>
+      <h3>100 motivos</h3>
+      <p>
+        Cada clique revela mais um motivo para amar.
+      </p>
+    </article>
+
+    <article>
+      <b>✉</b>
+      <h3>Carta de amor</h3>
+      <p>
+        Um envelope que se abre para revelar sua mensagem.
+      </p>
+    </article>
+
+    <article>
+      <b>◷</b>
+      <h3>Nossa história</h3>
+      <p>
+        Uma linha do tempo com os momentos importantes.
+      </p>
+    </article>
+
+    <article>
+      <b>✦</b>
+      <h3>Surpresa final</h3>
+      <p>
+        Uma mensagem especial para fechar a experiência.
+      </p>
+    </article>
+
+  </div>
+
+</section>
+
+<section class="section" id="planos">
+
+  <div class="heading">
+
+    <div class="tag">
+      ESCOLHA DEPOIS DO TESTE
+    </div>
+
+    <h2>
+      Gostou da prévia?<br>
+      <em>Desbloqueie seu site.</em>
+    </h2>
+
+  </div>
+
+  <div class="plans">
+
+    <article class="plan">
+
+      <label>ESSENCIAL</label>
+
+      <h3>
+        Seu primeiro site
+      </h3>
+
+      <strong>
+        R$ 10,90
+      </strong>
+
+      <ul>
+        <li>✓ Nome do casal</li>
+        <li>✓ Mensagem personalizada</li>
+        <li>✓ 1 foto principal</li>
+        <li>✓ Site responsivo</li>
+        <li>✓ Link exclusivo para compartilhar</li>
+        <li>✓ 🎵 Escolha 1 de 2 músicas</li>
+      </ul>
+
+      <a
+        href="#pedido"
+        data-plan-id="essencial"
+      >
+        Quero esse
+      </a>
+
+    </article>
+
+    <article class="plan featured">
+
+      <mark>
+        MAIS PEDIDO
+      </mark>
+
+      <label>
+        ROMÂNTICO
+      </label>
+
+      <h3>
+        A experiência completa
+      </h3>
+
+      <strong>
+        R$ 39,90
+      </strong>
+
+      <ul>
+        <li>✓ Tudo do Essencial</li>
+        <li>✓ 🎵 Escolha sua música</li>
+        <li>✓ Coração com fotos</li>
+        <li>✓ 100 motivos</li>
+        <li>✓ Carta interativa</li>
+        <li>✓ Nossa história</li>
+        <li>✓ Surpresa final</li>
+      </ul>
+
+      <a
+        href="#pedido"
+        data-plan-id="romantico"
+      >
+        Quero esse ♥
+      </a>
+
+    </article>
+
+    <article class="plan">
+
+      <label>
+        PREMIUM
+      </label>
+
+      <h3>
+        Feito nos mínimos detalhes
+      </h3>
+
+      <strong>
+        R$ 59,90
+      </strong>
+
+      <ul>
+        <li>✓ Tudo do Romântico</li>
+        <li>✓ 🎵 Escolha sua música</li>
+        <li>✓ ❤️ Mais opções de coração</li>
+        <li>✓ 📸 Edição e estilos de fotos</li>
+        <li>✓ 🎨 Mais designs e fontes</li>
+        <li>✓ ✨ Mais animações e efeitos</li>
+        <li>✓ 🛠️ Personalização detalhada</li>
+      </ul>
+
+      <a
+        href="#pedido"
+        data-plan-id="premium"
+      >
+        Quero esse
+      </a>
+
+    </article>
+
+  </div>
+
+  <p class="note">
+    Você pode testar a prévia antes de escolher qualquer plano.
+  </p>
+
+</section>
+
+<section class="cta" id="pedido">
+
+  <div class="tag">
+    GOSTOU DO RESULTADO?
+  </div>
+
+  <h2>
+    Agora transforme a prévia<br>
+    <em>no site completo. ❤️</em>
+  </h2>
+
+  <p>
+    Escolha o plano e desbloqueie
+    a experiência completa.
+  </p>
+
+  <button
+    id="checkoutButton"
+    class="btn big"
+    type="button"
+  >
+    Escolher meu plano ❤️
+  </button>
+
+  <small>
+    Pagamento seguro • Site personalizado • Link exclusivo
+  </small>
+
+</section>
+
+</main>
+
+<footer>
+
+  <div class="brand">
+    Amor <span>em Site</span> ♥
+  </div>
+
+  <p>
+    Transformando histórias de amor em experiências digitais.
+  </p>
+
+</footer>
+
+<script src="script.js?v=7"></script>
+
+<script id="preview-date-memory-fix">
+/* Guarda a data escolhida antes da navegação para site.html.
+   Assim, se o objeto principal da prévia não trouxer a data,
+   a página final ainda consegue exibi-la. */
+(function(){
+  const dateInput = document.getElementById("loveDate");
+  const previewButton = document.getElementById("generatePreviewButton");
+
+  function rememberPreviewDate(){
+    if(dateInput && dateInput.value){
+      sessionStorage.setItem("amorEmSitePreviewDate", dateInput.value);
+    }
+  }
+
+  dateInput?.addEventListener("change", rememberPreviewDate);
+  previewButton?.addEventListener("click", rememberPreviewDate, true);
+})();
+</script>
+
+
+<script>
+(function () {
+  const API_URL = "https://amor-em-site-backend.vercel.app";
+  const params = new URLSearchParams(window.location.search);
+  const pedido = params.get("pedido");
+  const order = params.get("order");
+
+  if (!pedido && !order) return;
+
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && value != null && String(value).trim()) {
+      el.textContent = String(value);
+    }
+  };
+
+  async function loadPaidOrder() {
+    try {
+      const query = pedido
+        ? `?pedido=${encodeURIComponent(pedido)}`
+        : `?order=${encodeURIComponent(order)}`;
+
+      const response = await fetch(`${API_URL}/api/get-order${query}`, {
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        console.error("Não foi possível carregar o pedido.");
+        return;
+      }
+
+      const result = await response.json();
+
+      if (!result.ok || !result.order) return;
+
+      const o = result.order;
+
+      setText("previewName", o.love_name || "meu amor");
+      setText("previewMessage", o.love_message);
+      setText("previewStory", o.love_story);
+      setText("previewReason1", o.reason_1);
+      setText("previewReason2", o.reason_2);
+      setText("previewReason3", o.reason_3);
+
+      // Se o pedido veio por ?order=AES-..., troca o endereço
+      // pelo slug definitivo depois que o backend retornar.
+      if (order && o.site_slug) {
+        const finalUrl =
+          `${window.location.origin}${window.location.pathname}?pedido=${encodeURIComponent(o.site_slug)}`;
+
+        window.history.replaceState({}, "", finalUrl);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar pedido:", error);
+    }
+  }
+
+  loadPaidOrder();
+})();
+</script>
+
+<script id="preview-history-fix">
+(function () {
+  window.addEventListener("pageshow", function () {
+    try {
+      const navigation = performance.getEntriesByType("navigation")[0];
+      if (navigation && navigation.type === "back_forward") {
+        // Evita voltar para a versão congelada da página/modal.
+        window.location.reload();
+      }
+    } catch (_) {
+      // Navegadores antigos: não interfere no funcionamento normal.
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
