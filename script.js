@@ -186,6 +186,18 @@ function ensureAdvancedFields() {
         placeholder="Escreva a mensagem que aparecerá na surpresa final..."></textarea>
       <small class="field-help">Mensagem exibida no momento da surpresa.</small>
     </label>
+
+    <label id="reasons100Field">
+      ❤️ 100 motivos
+      <textarea id="reasons100" maxlength="10000" rows="8"
+        placeholder="Digite um motivo por linha. Exemplo:
+1. Seu sorriso
+2. Seu carinho
+3. Seu jeito de me apoiar
+..."></textarea>
+      <small class="field-help">No plano Romântico/Premium, você pode cadastrar até 100 motivos, um por linha.</small>
+    </label>
+
     <div id="premiumAdvancedNote" class="field-help" style="display:none;">
       👑 O Premium inclui música escolhida, personalização avançada e mais animações.
     </div>
@@ -290,7 +302,43 @@ function validatePlanPersonalization() {
     musicInput.reportValidity();
     return false;
   }
-return true;
+
+  if (rules.reasons > 0) {
+    const reasons100 = document.getElementById("reasons100");
+    const reasons = (reasons100?.value || "")
+      .split("\\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (reasons.length < 1) {
+      alert("Digite pelo menos 1 motivo. Você pode cadastrar até 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
+    if (reasons.length > 100) {
+      alert("O limite deste plano é de 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
+    const letter = document.getElementById("loveLetter");
+    const surprise = document.getElementById("loveSurprise");
+
+    if (!letter?.value.trim()) {
+      alert("Preencha a carta interativa.");
+      letter?.focus();
+      return false;
+    }
+
+    if (!surprise?.value.trim()) {
+      alert("Preencha a surpresa final.");
+      surprise?.focus();
+      return false;
+    }
+  }
+
+  return true;
 }
 
 ensureAdvancedFields();
@@ -943,8 +991,19 @@ function ensurePlanPersonalizationModal() {
           </div>
 
           <div class="pem-section" data-pem="romantic">
-            <strong>💕 Recursos do Romântico/Premium</strong>
+            <strong>👑 Recursos do Premium</strong>
           </div>
+
+          <div class="pem-field full" data-pem="romantic">
+            <label for="pemReasons">❤️ 100 motivos *</label>
+            <textarea id="pemReasons" maxlength="10000" rows="7"
+              placeholder="Digite um motivo por linha. Ex.:
+Seu sorriso
+Seu carinho
+Seu jeito de me apoiar"></textarea>
+            <span class="pem-help">Até 100 motivos, um por linha.</span>
+          </div>
+
           <div class="pem-field full" data-pem="romantic">
             <label for="pemLetter">💌 Carta interativa *</label>
             <textarea id="pemLetter" maxlength="2500" placeholder="Escreva sua carta de amor..."></textarea>
@@ -958,7 +1017,7 @@ function ensurePlanPersonalizationModal() {
           <div class="pem-premium" id="pemPremiumFields" style="display:none;">
             <div class="pem-premium-title">👑 Personalização Premium</div>
             <div class="pem-premium-subtitle">
-              O Premium tem tudo do Romântico + mais opções para deixar o site do jeito de vocês.
+              O Premium reúne recursos exclusivos para deixar o site do jeito de vocês.
             </div>
 
             <div class="pem-grid">
@@ -1123,7 +1182,6 @@ function ensurePlanPersonalizationModal() {
     const modalDate = document.getElementById("pemDate");
     const modalStory = document.getElementById("pemStory");
     const modalMusic = document.getElementById("pemMusic");
-    const modalReasons = null;
     const modalLetter = document.getElementById("pemLetter");
     const modalSurprise = document.getElementById("pemSurprise");
 
@@ -1210,19 +1268,8 @@ function ensurePlanPersonalizationModal() {
         dateInput.value = modalDate.value || "";
         musicInput.value = modalMusic.value || "";
         storyInput.value = modalStory.value.trim();
-
-        const r1 = document.getElementById("reason1");
-        const r2 = document.getElementById("reason2");
-        const r3 = document.getElementById("reason3");
-        const reasonLines = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
-        if (r1) r1.value = reasonLines[0] || "";
-        if (r2) r2.value = reasonLines[1] || "";
-        if (r3) r3.value = reasonLines[2] || "";
-
-        const reasons100 = document.getElementById("reasons100");
         const loveLetter = document.getElementById("loveLetter");
         const loveSurprise = document.getElementById("loveSurprise");
-        if (reasons100) reasons100.value = modalReasons.value.trim();
         if (loveLetter) loveLetter.value = modalLetter.value.trim();
         if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
 
@@ -1240,7 +1287,7 @@ function ensurePlanPersonalizationModal() {
           loveDate: modalDate.value || "",
           loveMusic: modalMusic.value || "",
           loveStory: modalStory.value.trim(),
-          reasons100: modalReasons.value.trim(),
+          reasons100: "",
           loveLetter: modalLetter.value.trim(),
           loveSurprise: modalSurprise.value.trim(),
           photoData: photoData || "",
@@ -1363,7 +1410,6 @@ function openPlanPersonalization(planKey) {
   const reasons = null;
   const letter = document.getElementById("pemLetter");
   const surprise = document.getElementById("pemSurprise");
-  if (reasons) reasons.required = romantic;
   if (letter) letter.required = romantic;
   if (surprise) surprise.required = romantic;
 
@@ -1376,7 +1422,7 @@ function openPlanPersonalization(planKey) {
       isEssential
         ? "🎵 2 músicas à escolha"
         : isPremium
-          ? "👑 Tudo do Romântico + personalização avançada"
+          ? "👑 Personalização Premium exclusiva"
           : "🎵 Música + experiência romântica completa";
   }
 
