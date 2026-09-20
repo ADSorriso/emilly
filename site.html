@@ -849,6 +849,212 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
+
+<style id="locked-preview-refinement">
+/* Prévia do Essencial: mostrar o conteúdo real dos recursos bloqueados,
+   com desfoque leve e escurecimento suave, sem esconder a experiência. */
+.preview-lock.is-locked {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 28px !important;
+  border: 1px solid rgba(255,49,88,.20) !important;
+  background: radial-gradient(circle at 50% 35%, rgba(82,8,28,.20), rgba(5,2,5,.92) 72%) !important;
+  box-shadow: inset 0 0 80px rgba(255,49,88,.035), 0 24px 80px rgba(0,0,0,.24) !important;
+}
+
+.preview-lock.is-locked > *:not(.locked-overlay) {
+  opacity: .68 !important;
+  filter: blur(2.4px) !important;
+  transform: scale(.992) !important;
+  transform-origin: center !important;
+}
+
+.preview-lock.is-locked .locked-overlay {
+  display: flex !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 30 !important;
+  padding: 28px !important;
+  background: rgba(4,1,4,.20) !important;
+  backdrop-filter: blur(2.8px) saturate(.82) !important;
+  -webkit-backdrop-filter: blur(2.8px) saturate(.82) !important;
+}
+
+.preview-lock.is-locked .locked-box {
+  width: min(460px, calc(100% - 32px)) !important;
+  min-height: 220px !important;
+  padding: 30px 28px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(255,49,88,.46) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(145deg, rgba(38,7,15,.91), rgba(10,3,7,.92)) !important;
+  box-shadow: 0 22px 70px rgba(0,0,0,.50), 0 0 50px rgba(255,49,88,.10) !important;
+}
+
+.preview-lock.is-locked .locked-box .lock-icon {
+  width: 58px !important;
+  height: 58px !important;
+  display: grid !important;
+  place-items: center !important;
+  margin-bottom: 14px !important;
+  border: 1px solid rgba(255,49,88,.45) !important;
+  border-radius: 50% !important;
+  background: rgba(255,49,88,.07) !important;
+  font-size: 27px !important;
+}
+
+.preview-lock.is-locked .locked-box strong {
+  font-size: 19px !important;
+  margin-bottom: 8px !important;
+}
+
+.preview-lock.is-locked .locked-box p {
+  max-width: 420px !important;
+  margin: 0 0 18px !important;
+  color: #c3b4b9 !important;
+  line-height: 1.65 !important;
+  font-size: 13px !important;
+}
+
+.preview-lock.is-locked .locked-box button {
+  min-height: 46px !important;
+  padding: 13px 22px !important;
+  border-radius: 999px !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
+}
+
+/* História: conteúdo de exemplo visível atrás do bloqueio. */
+#storySection {
+  min-height: 500px !important;
+  padding: 48px 58px !important;
+}
+.preview-story-demo {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+.preview-story-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 22px 24px;
+  border: 1px solid rgba(255,49,88,.18);
+  border-radius: 20px;
+  background: rgba(255,255,255,.025);
+  box-shadow: inset 0 0 45px rgba(255,49,88,.025);
+}
+.preview-story-card > span {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,49,88,.30);
+  color: #ff5574;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.preview-story-card small {
+  color: #ff5574;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+.preview-story-card h3 {
+  margin: 7px 0 6px;
+  font-size: 20px;
+}
+.preview-story-card p {
+  margin: 0;
+  color: #9c8e93;
+  line-height: 1.65;
+  font-size: 12px;
+}
+
+/* Motivos: mostrar parte real da experiência por trás do bloqueio. */
+#motivos {
+  min-height: 650px !important;
+}
+#motivos .reason-grid {
+  display: grid !important;
+  max-height: 230px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+#motivos .reason-grid .reason-item:nth-child(n+7) {
+  display: none !important;
+}
+
+/* Carta: deixar o envelope realmente reconhecível no fundo. */
+#carta {
+  min-height: 560px !important;
+}
+#carta .envelope {
+  transform: scale(1.05);
+  transform-origin: center;
+}
+
+/* Surpresa: mostrar a estrutura da surpresa atrás do bloqueio. */
+#surpresa {
+  min-height: 500px !important;
+}
+
+/* Galeria: manter os espaços das fotos visíveis, sem usar nenhuma foto nova. */
+#photoGridSection {
+  min-height: 430px !important;
+}
+
+@media (max-width: 700px) {
+  .preview-lock.is-locked .locked-overlay {
+    padding: 18px !important;
+  }
+  .preview-lock.is-locked .locked-box {
+    width: min(440px, calc(100% - 12px)) !important;
+    min-height: 205px !important;
+    padding: 25px 19px !important;
+  }
+  #storySection {
+    min-height: 520px !important;
+    padding: 30px 18px !important;
+  }
+  .preview-story-card {
+    grid-template-columns: 42px 1fr;
+    gap: 13px;
+    padding: 17px;
+  }
+  .preview-story-card > span {
+    width: 38px;
+    height: 38px;
+  }
+  .preview-story-card h3 {
+    font-size: 17px;
+  }
+  #motivos { min-height: 590px !important; }
+  #carta { min-height: 500px !important; }
+}
+</style>
+
+
+<style>
+/* Motivos: mostrar apenas um motivo por vez.
+   O botão "Revelar outro motivo" continua trocando o conteúdo. */
+#motivos .reason-grid{
+  display:none !important;
+}
+#motivos #reasonCounter{
+  display:block;
+  margin-top:14px;
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -859,7 +1065,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   <nav>
     <a href="#inicio">Início</a><a href="#historia">Nossa História</a><a href="#momentos">Momentos</a><a href="#motivos">Motivos</a><a href="#carta">Carta</a><a href="#surpresa">Surpresa</a>
   </nav>
-  <a class="love-pill" id="lovePill" href="index.html#teste">✨ Prévia grátis</a>
+  <button class="love-pill" id="lovePill">♥ Eu te amo</button>
 </header>
 
 <main>
@@ -882,7 +1088,20 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
     <div class="timeline-preview preview-lock" id="storySection">
-      
+      <div class="preview-story-demo" aria-hidden="true">
+        <article class="preview-story-card">
+          <span>01</span>
+          <div><small>O COMEÇO</small><h3>Quando tudo começou</h3><p>Um primeiro encontro, uma conversa especial e uma história começando a nascer.</p></div>
+        </article>
+        <article class="preview-story-card">
+          <span>02</span>
+          <div><small>OS MOMENTOS</small><h3>Pequenas lembranças</h3><p>Risadas, abraços, passeios e todos aqueles momentos que ficaram na memória.</p></div>
+        </article>
+        <article class="preview-story-card">
+          <span>03</span>
+          <div><small>CONTINUAÇÃO</small><h3>E ainda tem muito pela frente</h3><p>Uma história feita para continuar sendo escrita por vocês.</p></div>
+        </article>
+      </div>
       <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
@@ -914,7 +1133,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
+    
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -1015,7 +1234,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
-    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
@@ -1101,22 +1319,9 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 <script>
 (function(){
   const API_URL="https://amor-em-site-backend.vercel.app";
+  const data=(()=>{try{return JSON.parse(sessionStorage.getItem("amorEmSitePreview")||"null")}catch(e){return null}})();
   const params=new URLSearchParams(location.search);
   const paid=params.get("pedido")||params.get("order");
-  const isFreePreview=params.get("preview")==="1";
-  const requestedPlan=(params.get("plan")||"romantico").toLowerCase();
-  const demo={
-    loveName:"meu amor",yourName:"",
-    loveMessage:"Eu fiz esse cantinho especialmente para você. ❤️",
-    loveDate:"",loveMusic:"Love Me Like You Do",
-    loveStory:"Uma história feita de pequenos momentos que se tornaram algo enorme.",
-    reason1:"Seu sorriso ilumina meus dias.",reason2:"Você torna tudo mais especial.",reason3:"Eu escolheria você todos os dias.",
-    reasons100:"Seu sorriso ilumina meus dias.\nVocê torna tudo mais especial.\nEu escolheria você todos os dias.",
-    loveLetter:"Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.",
-    loveSurprise:"Te amo. ❤️",photoData:""
-  };
-  const stored=(()=>{try{return JSON.parse(sessionStorage.getItem("amorEmSitePreview")||"null")}catch(e){return null}})();
-  const data=stored || (isFreePreview ? {...demo,planKey:requestedPlan,plan:requestedPlan} : null);
   if(!data && !paid){ location.href="index.html#planos"; return; }
   const prices={essencial:"R$ 10,90",romantico:"R$ 39,90",premium:"R$ 59,90"};
   const names={essencial:"Essencial",romantico:"Romântico",premium:"Premium"};
@@ -1176,7 +1381,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
   set("reasonText",lines[0]);
   set("reasonCounter",`Motivo 1 de 100`);
-  $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
+  if($("reasonGrid")) $("reasonGrid").innerHTML="";
 
   let reasonIndex=0;
   $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
@@ -1237,9 +1442,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   $("premiumLetter").innerHTML=esc(letter).replace(/\n/g,"<br>");
   set("premiumSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
-  if($("premiumReasonGrid")){
-    $("premiumReasonGrid").innerHTML=lines.map((r,i)=>`<div class="px-reason-item"><b>${String(i+1).padStart(2,"0")}</b><span>${esc(r)}</span></div>`).join("");
-  }
+  if($("premiumReasonGrid")) $("premiumReasonGrid").innerHTML="";
 
   let premiumReasonIndex=0;
   const showPremiumReason=()=>{
@@ -1283,5 +1486,16 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
 })();
 </script>
+
+<style id="single-reason-only">
+/* Apenas um motivo visível por vez. A lista completa continua existindo nos dados
+   para o botão "Revelar outro motivo", mas não é exibida como uma grade. */
+#motivos .reason-grid,
+#premium-motivos .px-reason-grid,
+#premiumReasonGrid {
+  display: none !important;
+}
+</style>
+
 </body>
 </html>

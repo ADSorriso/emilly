@@ -12,16 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css?v=4">
-<style>
-.plan-actions{display:grid;gap:10px;margin-top:18px}
-.plan-actions a{width:100%;text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;padding:0 18px;font-weight:800;transition:.25s}
-.plan-preview-btn{border:1px solid rgba(255,49,88,.45);color:#ff6680;background:rgba(255,49,88,.07)}
-.plan-preview-btn:hover{background:rgba(255,49,88,.14);transform:translateY(-2px)}
-.plan-buy-btn{background:linear-gradient(135deg,#ff3158,#c90045);color:#fff;box-shadow:0 12px 28px rgba(255,49,88,.18)}
-.plan-buy-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(255,49,88,.25)}
-.navcta{white-space:nowrap}
-@media(max-width:600px){.plan-actions a{min-height:46px;font-size:14px}}
-</style>
 </head>
 
 <body>
@@ -35,7 +25,7 @@
     <a href="#planos">Planos</a>
   </nav>
 
-  <a class="navcta" href="#teste">✨ Prévia grátis</a>
+  <a class="navcta" href="#teste">Testar agora ♥</a>
 </header>
 
 <main>
@@ -56,7 +46,7 @@
     </p>
 
     <div class="actions">
-      <a class="btn" href="#teste">✨ Prévia grátis</a>
+      <a class="btn" href="#teste">Criar meu teste ♥</a>
       <a class="link" href="#como-funciona">Ver como funciona ↓</a>
     </div>
 
@@ -752,10 +742,12 @@
         <li>✓ 🎵 Escolha 1 de 2 músicas</li>
       </ul>
 
-      <div class="plan-actions">
-        <a class="plan-preview-btn" href="site.html?preview=1&plan=essencial" data-preview-plan="essencial">✨ Prévia grátis</a>
-        <a class="plan-buy-btn" href="#pedido" data-plan-id="essencial">Criar meu site ♥</a>
-      </div>
+      <a
+        href="#pedido"
+        data-plan-id="essencial"
+      >
+        Quero esse
+      </a>
 
     </article>
 
@@ -787,10 +779,12 @@
         <li>✓ Surpresa final</li>
       </ul>
 
-      <div class="plan-actions">
-        <a class="plan-preview-btn" href="site.html?preview=1&plan=romantico" data-preview-plan="romantico">✨ Prévia grátis</a>
-        <a class="plan-buy-btn" href="#pedido" data-plan-id="romantico">Criar meu site ♥</a>
-      </div>
+      <a
+        href="#pedido"
+        data-plan-id="romantico"
+      >
+        Quero esse ♥
+      </a>
 
     </article>
 
@@ -801,7 +795,7 @@
       </label>
 
       <h3>
-        Feito nos mínimos detalhes
+        Um design exclusivo
       </h3>
 
       <strong>
@@ -809,26 +803,29 @@
       </strong>
 
       <ul>
-        <li>✓ Tudo do Romântico</li>
-        <li>✓ 🎵 Escolha sua música</li>
-        <li>✓ ❤️ Mais opções de coração</li>
-        <li>✓ 📸 Edição e estilos de fotos</li>
-        <li>✓ 🎨 Mais designs e fontes</li>
-        <li>✓ ✨ Mais animações e efeitos</li>
-        <li>✓ 🛠️ Personalização detalhada</li>
+        <li>✓ Design Premium exclusivo</li>
+        <li>✓ 🎵 Música escolhida</li>
+        <li>✓ ❤️ 100 motivos</li>
+        <li>✓ 💌 Carta interativa</li>
+        <li>✓ 📖 Nossa história</li>
+        <li>✓ 📸 Composição avançada de fotos</li>
+        <li>✓ 🎨 Mais temas, fontes e efeitos</li>
+        <li>✓ ✨ Animações e personalização Premium</li>
       </ul>
 
-      <div class="plan-actions">
-        <a class="plan-preview-btn" href="site.html?preview=1&plan=premium" data-preview-plan="premium">✨ Prévia grátis</a>
-        <a class="plan-buy-btn" href="#pedido" data-plan-id="premium">Criar meu site ♥</a>
-      </div>
+      <a
+        href="#pedido"
+        data-plan-id="premium"
+      >
+        Quero esse
+      </a>
 
     </article>
 
   </div>
 
   <p class="note">
-    ✨ Teste a prévia grátis e veja a experiência antes de comprar.
+    Você pode testar a prévia antes de escolher qualquer plano.
   </p>
 
 </section>
@@ -940,25 +937,5 @@
 </script>
 
 
-<script>
-(function(){
-  const demo={
-    loveName:"meu amor",yourName:"",
-    loveMessage:"Eu fiz esse cantinho especialmente para você. ❤️",
-    loveDate:"",loveMusic:"Love Me Like You Do",
-    loveStory:"Uma história feita de pequenos momentos que se tornaram algo enorme.",
-    reason1:"Seu sorriso ilumina meus dias.",reason2:"Você torna tudo mais especial.",reason3:"Eu escolheria você todos os dias.",
-    reasons100:"Seu sorriso ilumina meus dias.\nVocê torna tudo mais especial.\nEu escolheria você todos os dias.",
-    loveLetter:"Talvez eu não consiga colocar em palavras tudo aquilo que sinto por você.",
-    loveSurprise:"Te amo. ❤️",photoData:""
-  };
-  document.querySelectorAll("[data-preview-plan]").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const plan=btn.dataset.previewPlan||"romantico";
-      sessionStorage.setItem("amorEmSitePreview",JSON.stringify({...demo,planKey:plan,plan}));
-    });
-  });
-})();
-</script>
 </body>
 </html>
