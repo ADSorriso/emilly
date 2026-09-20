@@ -875,71 +875,22 @@
 
 <script src="script.js?v=7"></script>
 
-<script>
-/*
-  Corrige o retorno da prévia:
-  quando o navegador restaura a página pelo botão "Voltar",
-  ele pode trazer o botão/formulário no estado visual de carregamento.
-  Nesse caso, recarregamos a página para reinicializar o script.js
-  e deixar o usuário gerar uma nova prévia normalmente.
-*/
-(function () {
-  function resetPreviewUI() {
-    const selectors = [
-      "#generatePreviewButton",
-      "#openPreviewButton",
-      "#previewButton",
-      "#createPreviewButton",
-      "[data-preview-open]",
-      "[data-action='preview']"
-    ];
+<script id="preview-date-memory-fix">
+/* Guarda a data escolhida antes da navegação para site.html.
+   Assim, se o objeto principal da prévia não trouxer a data,
+   a página final ainda consegue exibi-la. */
+(function(){
+  const dateInput = document.getElementById("loveDate");
+  const previewButton = document.getElementById("generatePreviewButton");
 
-    selectors.forEach((selector) => {
-      document.querySelectorAll(selector).forEach((button) => {
-        button.disabled = false;
-        button.removeAttribute("aria-busy");
-        button.classList.remove("loading", "is-loading", "loading-state");
-        button.style.pointerEvents = "";
-        button.style.opacity = "";
-      });
-    });
-
-    document.querySelectorAll("button, input[type='submit']").forEach((button) => {
-      const text = (button.textContent || "").trim().toLowerCase();
-
-      if (
-        text.includes("carregando") ||
-        text.includes("gerando prévia") ||
-        text.includes("abrindo prévia")
-      ) {
-        button.disabled = false;
-        button.removeAttribute("aria-busy");
-        button.classList.remove("loading", "is-loading", "loading-state");
-        button.style.pointerEvents = "";
-        button.style.opacity = "";
-
-        if (text.includes("premium")) {
-          button.textContent = "Abrir prévia — Premium";
-        } else {
-          button.textContent = "Abrir prévia";
-        }
-      }
-    });
+  function rememberPreviewDate(){
+    if(dateInput && dateInput.value){
+      sessionStorage.setItem("amorEmSitePreviewDate", dateInput.value);
+    }
   }
 
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
-      window.location.reload();
-      return;
-    }
-
-    resetPreviewUI();
-  });
-
-  window.addEventListener("focus", resetPreviewUI);
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) resetPreviewUI();
-  });
+  dateInput?.addEventListener("change", rememberPreviewDate);
+  previewButton?.addEventListener("click", rememberPreviewDate, true);
 })();
 </script>
 
@@ -1005,6 +956,278 @@
 })();
 </script>
 
+
+
+<script id="preview-reopen-fix">
+/*
+  CORREÇÃO FINAL DO FLUXO DA PRÉVIA
+  ---------------------------------
+  O botão "Abrir prévia — ..." é criado pelo script da página
+  depois que o formulário é aberto. Ao voltar pelo histórico do
+  navegador, esse botão pode ficar sem o handler original ou
+  permanecer desabilitado.
+
+  Este bloco:
+  - observa botões criados dinamicamente;
+  - reativa botões que ficaram presos em "carregando";
+  - intercepta o clique do botão de abrir a prévia;
+  - monta novamente os dados atuais do formulário;
+  - salva tudo em sessionStorage;
+  - abre site.html?preview=1.
+*/
+(function () {
+  const PREVIEW_KEY = "amorEmSitePreview";
+  const DATE_KEY = "amorEmSitePreviewDate";
+
+  const byId = (id) => document.getElementById(id);
+
+  function value(id) {
+    const el = byId(id);
+    return el && typeof el.value === "string" ? el.value.trim() : "";
+  }
+
+  function getVisiblePreviewButton() {
+    const buttons = Array.from(document.querySelectorAll("button"));
+    return buttons.find((button) => {
+      const text = (button.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+      const style = window.getComputedStyle(button);
+      return (
+        text.includes("abrir prévia") &&
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        button.offsetParent !== null
+      );
+    }) || null;
+  }
+
+  function clearLoadingState(button) {
+    if (!button) return;
+
+    button.disabled = false;
+    button.removeAttribute("disabled");
+    button.removeAttribute("aria-busy");
+
+    button.classList.remove(
+      "loading",
+      "is-loading",
+      "loading-state",
+      "loading-preview",
+      "generating",
+      "busy"
+    );
+
+    button.style.pointerEvents = "";
+    button.style.opacity = "";
+  }
+
+  function inferPlan(button) {
+    const buttonText = (button?.textContent || "").toLowerCase();
+    const pageText = document.body.innerText.toLowerCase();
+
+    if (buttonText.includes("premium")) return "premium";
+    if (buttonText.includes("romântico") || buttonText.includes("romantico")) return "romantico";
+    if (buttonText.includes("essencial")) return "essencial";
+
+    const premium = document.querySelector('[data-plan-id="premium"]');
+    const romantico = document.querySelector('[data-plan-id="romantico"]');
+    const essencial = document.querySelector('[data-plan-id="essencial"]');
+
+    if (premium?.classList.contains("selected") || premium?.getAttribute("aria-selected") === "true") return "premium";
+    if (romantico?.classList.contains("selected") || romantico?.getAttribute("aria-selected") === "true") return "romantico";
+    if (essencial?.classList.contains("selected") || essencial?.getAttribute("aria-selected") === "true") return "essencial";
+
+    const remembered = sessionStorage.getItem("amorEmSitePlan");
+    if (/premium|romantico|essencial/i.test(remembered || "")) {
+      if (/premium/i.test(remembered || "")) return "premium";
+      if (/essencial/i.test(remembered || "")) return "essencial";
+      return "romantico";
+    }
+
+    // Pelo comportamento já usado na página, Romântico é o padrão.
+    return "romantico";
+  }
+
+  function readPhotoData() {
+    const preview = byId("previewPhotoImage");
+    if (preview?.src && preview.src.startsWith("data:image/")) {
+      return Promise.resolve(preview.src);
+    }
+
+    const input = byId("lovePhoto");
+    const file = input?.files?.[0];
+
+    if (!file) return Promise.resolve("");
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : "");
+      reader.onerror = () => resolve("");
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function collectDynamicCustomization() {
+    const customization = {};
+    const modalLike = Array.from(document.querySelectorAll("body *")).filter((el) => {
+      const text = (el.textContent || "").toLowerCase();
+      return (
+        text.includes("personalização premium") ||
+        text.includes("personalizacao premium")
+      );
+    });
+
+    const roots = modalLike.length
+      ? modalLike.slice(-1)
+      : [document];
+
+    roots.forEach((root) => {
+      root.querySelectorAll?.("select[id], input[id], textarea[id]").forEach((el) => {
+        const id = el.id;
+        if (!id || [
+          "loveName",
+          "yourName",
+          "loveMessage",
+          "loveDate",
+          "lovePhoto",
+          "loveMusic",
+          "loveStory",
+          "reason1",
+          "reason2",
+          "reason3",
+          "generatePreviewButton"
+        ].includes(id)) return;
+
+        if (el.type === "file") return;
+        customization[id] = el.value ?? "";
+      });
+    });
+
+    return customization;
+  }
+
+  async function openPreviewAgain(button) {
+    clearLoadingState(button);
+
+    const planKey = inferPlan(button);
+    const price = {
+      essencial: "R$ 10,90",
+      romantico: "R$ 39,90",
+      premium: "R$ 59,90"
+    }[planKey];
+
+    const reasons = [];
+    for (let i = 1; i <= 100; i++) {
+      const el = byId("reason" + i);
+      if (el?.value?.trim()) reasons.push(el.value.trim());
+    }
+
+    const reason1 = value("reason1");
+    const reason2 = value("reason2");
+    const reason3 = value("reason3");
+
+    if (!reasons.length) {
+      [reason1, reason2, reason3].filter(Boolean).forEach((r) => reasons.push(r));
+    }
+
+    const photoData = await readPhotoData();
+
+    const data = {
+      plan: `${planKey === "essencial" ? "Essencial" : planKey === "premium" ? "Premium" : "Romântico"} — ${price}`,
+      planKey,
+
+      loveName: value("loveName"),
+      yourName: value("yourName"),
+      loveMessage: value("loveMessage"),
+      loveDate: value("loveDate"),
+      loveMusic: byId("loveMusic")?.value || "",
+      loveStory: value("loveStory"),
+
+      reason1: reason1 || reasons[0] || "",
+      reason2: reason2 || reasons[1] || "",
+      reason3: reason3 || reasons[2] || "",
+      reasons100: reasons.join("\n"),
+
+      loveLetter: value("loveLetter"),
+      loveSurprise: value("loveSurprise"),
+
+      photoData,
+      customization: collectDynamicCustomization()
+    };
+
+    sessionStorage.setItem(PREVIEW_KEY, JSON.stringify(data));
+    sessionStorage.setItem("amorEmSitePlan", planKey);
+
+    if (data.loveDate) {
+      sessionStorage.setItem(DATE_KEY, data.loveDate);
+    }
+
+    // Garante que a foto/data estejam no estado certo antes de sair.
+    try {
+      const previewImage = byId("previewPhotoImage");
+      if (previewImage && data.photoData) {
+        previewImage.src = data.photoData;
+      }
+    } catch (_) {}
+
+    window.location.href = "site.html?preview=1";
+  }
+
+  function preparePreviewButton(button) {
+    clearLoadingState(button);
+
+    if (!button.dataset.previewRepairBound) {
+      button.dataset.previewRepairBound = "1";
+    }
+  }
+
+  // Repara imediatamente os botões que já existirem.
+  document.querySelectorAll("button").forEach((button) => {
+    const text = (button.textContent || "").toLowerCase();
+    if (text.includes("abrir prévia")) preparePreviewButton(button);
+  });
+
+  // Repara o botão quando o modal for criado novamente.
+  const observer = new MutationObserver(() => {
+    const button = getVisiblePreviewButton();
+    if (button) preparePreviewButton(button);
+  });
+
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ["disabled", "class", "style"]
+  });
+
+  // Corrige retorno pelo botão "Voltar" do navegador.
+  window.addEventListener("pageshow", () => {
+    setTimeout(() => {
+      const button = getVisiblePreviewButton();
+      if (button) clearLoadingState(button);
+    }, 0);
+  });
+
+  // Intercepta o clique ANTES de handlers antigos da página.
+  document.addEventListener("click", (event) => {
+    const button = event.target?.closest?.("button");
+
+    if (!button) return;
+
+    const text = (button.textContent || "").replace(/\s+/g, " ").trim().toLowerCase();
+
+    if (!text.includes("abrir prévia")) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    openPreviewAgain(button).catch((error) => {
+      console.error("Erro ao reabrir a prévia:", error);
+      clearLoadingState(button);
+      alert("Não foi possível abrir a prévia. Tente novamente.");
+    });
+  }, true);
+})();
+</script>
 
 </body>
 </html>
