@@ -999,6 +999,107 @@ body.preview-mode:not(.premium-mode) .future-section{
 }
 </style>
 
+
+<style id="essential-lock-polish-v3">
+/* BLOQUEIOS DO ESSENCIAL — visual uniforme e limpo */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked{
+  position:relative !important;
+  overflow:hidden !important;
+}
+
+/* Não deixa o conteúdo bloqueado aparecer/borrar atrás do card. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked > *:not(.locked-overlay){
+  visibility:hidden !important;
+  opacity:0 !important;
+  filter:none !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
+  visibility:visible !important;
+  opacity:1 !important;
+  filter:none !important;
+  display:flex !important;
+  position:absolute !important;
+  inset:0 !important;
+  padding:30px 22px !important;
+  background:rgba(5,2,4,.92) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
+  width:min(500px,92vw) !important;
+  min-height:220px !important;
+  padding:30px 28px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid rgba(255,49,88,.42) !important;
+  border-radius:24px !important;
+  background:linear-gradient(145deg,rgba(31,7,14,.98),rgba(10,3,7,.98)) !important;
+  box-shadow:0 24px 70px rgba(0,0,0,.52),0 0 45px rgba(255,49,88,.08) !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box .lock-icon{
+  font-size:28px !important;
+  line-height:1 !important;
+  margin-bottom:13px !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
+  font-size:20px !important;
+  line-height:1.2 !important;
+  margin-bottom:10px !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box p{
+  max-width:390px !important;
+  margin:0 0 20px !important;
+  color:rgba(255,255,255,.62) !important;
+  font-size:13px !important;
+  line-height:1.6 !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button{
+  padding:13px 21px !important;
+  border-radius:999px !important;
+  font-size:12px !important;
+}
+
+/* História: card com presença, sem ficar pequeno. */
+body.preview-mode:not(.premium-mode) #storySection{
+  min-height:330px !important;
+  border:1px solid rgba(255,49,88,.18) !important;
+  border-radius:26px !important;
+  background:rgba(12,4,8,.72) !important;
+}
+
+/* Motivos: mantém a seção elegante, mas sem deixar o título antigo aparecendo. */
+body.preview-mode:not(.premium-mode) #motivos{
+  min-height:500px !important;
+  border-top:1px solid rgba(255,49,88,.06) !important;
+  border-bottom:1px solid rgba(255,49,88,.06) !important;
+}
+
+@media(max-width:600px){
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
+    padding:22px 16px !important;
+  }
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
+    min-height:205px !important;
+    padding:25px 19px !important;
+    border-radius:21px !important;
+  }
+  body.preview-mode:not(.premium-mode) #storySection{
+    min-height:300px !important;
+  }
+  body.preview-mode:not(.premium-mode) #motivos{
+    min-height:430px !important;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
