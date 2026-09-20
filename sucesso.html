@@ -93,8 +93,18 @@
     $("spinner").classList.remove("hidden");
   }
 
+  function buildSiteUrl(o){
+    if(!o.site_slug) return "";
+
+    const basePath = location.pathname.replace(/sucesso\.html$/i, "");
+    return `${location.origin}${basePath}site.html?pedido=${encodeURIComponent(o.site_slug)}`;
+  }
+
   function showFinal(o){
-    const siteUrl=o.site_url || `${location.origin}${location.pathname.replace(/sucesso\.html$/,"site.html")}?pedido=${encodeURIComponent(o.site_slug||"")}`;
+    // Usa o endereço do GitHub Pages atual + site.html.
+    // Isso evita que um site_url antigo salvo no banco leve para /amor-em-site/.
+    const siteUrl=buildSiteUrl(o) || o.site_url || "";
+
     $("icon").textContent="✓";
     $("eyebrow").textContent="PAGAMENTO CONFIRMADO";
     $("title").innerHTML="Seu site está <em>pronto.</em> ❤️";
@@ -110,10 +120,17 @@
     $("siteLink").textContent=siteUrl;
     $("openSite").href=siteUrl;
     $("muted").textContent="Guarde este link. Você pode enviar para quem quiser e abrir em qualquer dispositivo.";
+
     $("copyLink").onclick=async()=>{
-      try{await navigator.clipboard.writeText(siteUrl);$("copyLink").textContent="LINK COPIADO ✓";setTimeout(()=>$("copyLink").textContent="COPIAR LINK",1800)}
-      catch(e){alert(siteUrl)}
+      try{
+        await navigator.clipboard.writeText(siteUrl);
+        $("copyLink").textContent="LINK COPIADO ✓";
+        setTimeout(()=>$("copyLink").textContent="COPIAR LINK",1800);
+      }catch(e){
+        alert(siteUrl);
+      }
     };
+
     if(timer)clearTimeout(timer);
   }
 
@@ -137,16 +154,38 @@
   }
 
   async function check(){
-    if(!order){showFailure("O identificador do pedido não foi encontrado nesta página.");return}
-    if(forcedStatus==="cancelled"){showFailure("O checkout foi cancelado. Nenhum site foi liberado.");return}
-    if(forcedStatus==="expired"){showFailure("O checkout expirou. Nenhum site foi liberado.");return}
+    if(!order){
+      showFailure("O identificador do pedido não foi encontrado nesta página.");
+      return;
+    }
+
+    if(forcedStatus==="cancelled"){
+      showFailure("O checkout foi cancelado. Nenhum site foi liberado.");
+      return;
+    }
+
+    if(forcedStatus==="expired"){
+      showFailure("O checkout expirou. Nenhum site foi liberado.");
+      return;
+    }
 
     attempts++;
+
     try{
-      const r=await fetch(`${API_URL}/api/get-order?order=${encodeURIComponent(order)}`,{cache:"no-store"});
+      const r=await fetch(
+        `${API_URL}/api/get-order?order=${encodeURIComponent(order)}`,
+        {cache:"no-store"}
+      );
+
       const j=await r.json().catch(()=>({}));
-      if(r.ok&&j.ok&&j.order&&j.order.status==="PAID"&&j.order.site_slug){showFinal(j.order);return}
-    }catch(e){console.error(e)}
+
+      if(r.ok && j.ok && j.order && j.order.status==="PAID" && j.order.site_slug){
+        showFinal(j.order);
+        return;
+      }
+    }catch(e){
+      console.error(e);
+    }
 
     if(attempts>=maxAttempts){
       showWaiting();
@@ -158,7 +197,16 @@
     timer=setTimeout(check,2000);
   }
 
-  $("retry").onclick=()=>{attempts=0;$("retryActions").classList.add("hidden");setLoading("Estamos preparando <em>seu site.</em>","Estamos confirmando o pagamento e buscando os dados da sua compra.");check()};
+  $("retry").onclick=()=>{
+    attempts=0;
+    $("retryActions").classList.add("hidden");
+    setLoading(
+      "Estamos preparando <em>seu site.</em>",
+      "Estamos confirmando o pagamento e buscando os dados da sua compra."
+    );
+    check();
+  };
+
   check();
 })();
 </script>
