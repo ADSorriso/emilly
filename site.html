@@ -471,7 +471,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 <style id="premium-exclusive-css">
 .premium-preview{display:none}
 body.premium-mode .premium-preview{display:block}
-body:not(.premium-mode) .premium-preview{display:none !important}
 body.premium-mode > .standard-preview,
 body.premium-mode main > .standard-preview{display:none !important}
 
@@ -694,366 +693,344 @@ body.premium-mode main > .standard-preview{display:none !important}
 </style>
 
 
-<style id="standard-photo-date-fix">
-/* ESSENCIAL + ROMÂNTICO:
-   a foto é enquadrada inteira, sem crop/corte.
-   O Premium mantém o layout próprio. */
-body.preview-mode:not(.premium-mode) .hero-photo{
-  width:min(380px,86vw) !important;
-  aspect-ratio:auto !important;
-  height:auto !important;
-  min-height:0 !important;
-  max-height:none !important;
-  padding:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  overflow:hidden !important;
+<style id="premium-customization-css">
+/* =========================================================
+   PERSONALIZAÇÃO PREMIUM
+   As escolhas do formulário são aplicadas ao site da prévia.
+   ========================================================= */
+
+.premium-preview{
+  --custom-accent: var(--p-red);
+  --custom-soft: var(--p-soft);
+  --custom-paper: var(--p-paper);
+  --custom-ink: var(--p-ink);
+  --custom-bg:#030303;
+  --custom-card:rgba(8,5,6,.86);
+  --custom-filter:none;
+  --custom-body-font:inherit;
+  --custom-display-font:Georgia,"Times New Roman",serif;
+  --custom-script-font:"Great Vibes",cursive;
+  --custom-radius:18px;
+  position:relative;
+  isolation:isolate;
 }
 
-body.preview-mode:not(.premium-mode) .hero-photo img{
-  width:100% !important;
-  height:auto !important;
-  max-width:none !important;
-  max-height:580px !important;
-  object-fit:contain !important;
-  object-position:center center !important;
-  transform:none !important;
+/* ---------- TEMAS ---------- */
+body.premium-custom-theme-noite .premium-preview{
+  --p-red:#9b7cff;
+  --p-soft:#c0b2ff;
+  --p-paper:#e9e5f3;
+  --p-ink:#171426;
+  --custom-bg:#05040c;
+  --custom-card:rgba(13,10,27,.9);
+}
+body.premium-custom-theme-creme .premium-preview{
+  --p-red:#b94f62;
+  --p-soft:#d48695;
+  --p-paper:#f5eee5;
+  --p-ink:#2b2021;
+  --custom-bg:#100c0b;
+  --custom-card:rgba(35,25,24,.9);
+}
+body.premium-custom-theme-lavanda .premium-preview{
+  --p-red:#b78cff;
+  --p-soft:#d6c2ff;
+  --p-paper:#f1ecfb;
+  --p-ink:#251d30;
+  --custom-bg:#090611;
+  --custom-card:rgba(20,13,31,.9);
+}
+body.premium-custom-theme-noite .premium-preview,
+body.premium-custom-theme-creme .premium-preview,
+body.premium-custom-theme-lavanda .premium-preview{
+  background:var(--custom-bg);
+}
+body.premium-custom-theme-noite .premium-preview .px-hero,
+body.premium-custom-theme-creme .premium-preview .px-hero,
+body.premium-custom-theme-lavanda .premium-preview .px-hero,
+body.premium-custom-theme-noite .premium-preview .px-section,
+body.premium-custom-theme-creme .premium-preview .px-section,
+body.premium-custom-theme-lavanda .premium-preview .px-section{
+  background:var(--custom-bg);
 }
 
-/* A data sempre ocupa um espaço visível e legível nos planos básicos. */
-body.preview-mode:not(.premium-mode) .preview-date{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  gap:14px !important;
-  min-height:18px !important;
-  margin:14px auto 0 !important;
-  padding:6px 12px !important;
-  color:rgba(255,255,255,.62) !important;
-  font-size:10px !important;
-  font-weight:700 !important;
-  letter-spacing:2.5px !important;
-  line-height:1 !important;
-  text-align:center !important;
-  visibility:visible !important;
-  opacity:1 !important;
+/* ---------- FONTES ---------- */
+body.premium-custom-font-moderna .premium-preview{
+  --custom-body-font:Arial,Helvetica,sans-serif;
+  --custom-display-font:Arial,Helvetica,sans-serif;
+  --custom-script-font:Arial,Helvetica,sans-serif;
+}
+body.premium-custom-font-romantica .premium-preview{
+  --custom-body-font:Georgia,"Times New Roman",serif;
+  --custom-display-font:Georgia,"Times New Roman",serif;
+  --custom-script-font:"Great Vibes",cursive;
+}
+body.premium-custom-font-classica .premium-preview{
+  --custom-body-font:"Times New Roman",Times,serif;
+  --custom-display-font:"Times New Roman",Times,serif;
+  --custom-script-font:"Times New Roman",Times,serif;
+}
+body.premium-custom-font-elegante .premium-preview{
+  --custom-body-font:inherit;
+  --custom-display-font:Georgia,"Times New Roman",serif;
+  --custom-script-font:"Great Vibes",cursive;
+}
+body[class*="premium-custom-font-"] .premium-preview .px-copy h1,
+body[class*="premium-custom-font-"] .premium-preview .px-heading h2,
+body[class*="premium-custom-font-"] .premium-preview .px-card h3,
+body[class*="premium-custom-font-"] .premium-preview .px-future h2,
+body[class*="premium-custom-font-"] .premium-preview .px-surprise h2{
+  font-family:var(--custom-display-font);
+}
+body[class*="premium-custom-font-"] .premium-preview .px-copy p,
+body[class*="premium-custom-font-"] .premium-preview .px-story-card p,
+body[class*="premium-custom-font-"] .premium-preview .px-feature-grid p,
+body[class*="premium-custom-font-"] .premium-preview .px-checkout p{
+  font-family:var(--custom-body-font);
+}
+body.premium-custom-font-moderna .premium-preview em,
+body.premium-custom-font-classica .premium-preview em{
+  font-family:var(--custom-script-font);
 }
 
-body.preview-mode:not(.premium-mode) .preview-date::before,
-body.preview-mode:not(.premium-mode) .preview-date::after{
-  content:"" !important;
-  width:25px !important;
-  height:1px !important;
-  flex:0 0 25px !important;
-  background:linear-gradient(90deg,transparent,rgba(255,49,88,.78)) !important;
+/* ---------- ESTILO DAS FOTOS ---------- */
+body.premium-custom-photo-natural .premium-preview .px-photo img{filter:none;}
+body.premium-custom-photo-brilho .premium-preview .px-photo img{
+  filter:brightness(1.08) contrast(1.04) saturate(1.08);
+}
+body.premium-custom-photo-vintage .premium-preview .px-photo img{
+  filter:sepia(.32) saturate(.82) contrast(.96) brightness(1.02);
+}
+body.premium-custom-photo-pb .premium-preview .px-photo img{
+  filter:grayscale(1) contrast(1.06);
 }
 
-body.preview-mode:not(.premium-mode) .preview-date::after{
-  background:linear-gradient(90deg,rgba(255,49,88,.78),transparent) !important;
-}
-
-@media(max-width:600px){
-  body.preview-mode:not(.premium-mode) .hero-photo{
-    width:min(335px,88vw) !important;
-  }
-
-  body.preview-mode:not(.premium-mode) .hero-photo img{
-    width:100% !important;
-    max-height:500px !important;
-  }
-  body.preview-mode:not(.premium-mode) .preview-date{
-    gap:8px !important;
-    font-size:8px !important;
-    letter-spacing:2px !important;
-  }
-  body.preview-mode:not(.premium-mode) .preview-date::before,
-  body.preview-mode:not(.premium-mode) .preview-date::after{
-    width:16px !important;
-    flex-basis:16px !important;
-  }
-}
-</style>
-
-
-<style id="romantic-functions-fix">
-/* CORREÇÃO — PLANO ROMÂNTICO
-   Os recursos ficam realmente visíveis e interativos na prévia. */
-
-/* História não pode ficar vazia quando ainda não existe texto/foto. */
-body.preview-mode:not(.premium-mode) #storySection{
-  min-height:150px !important;
-  display:block !important;
-}
-body.preview-mode:not(.premium-mode) #storySection .timeline-item{
-  opacity:1 !important;
-  filter:none !important;
-}
-
-/* Coração de fotos: placeholders elegantes até o cliente enviar a foto. */
-body.preview-mode:not(.premium-mode) #momentsSection .heart-photo{
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255,49,88,.28), rgba(255,49,88,.04) 48%, rgba(255,255,255,.025) 49%, rgba(0,0,0,0) 70%),
-    #16070c !important;
-  border:1px solid rgba(255,49,88,.20);
+/* ---------- FORMATO DA GALERIA ---------- */
+body.premium-custom-layout-colagem .premium-preview .px-collage{
   display:grid;
-  place-items:center;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:repeat(2,1fr);
+  gap:18px;
+  padding:25px;
+  min-height:570px;
 }
-body.preview-mode:not(.premium-mode) #momentsSection .heart-photo::after{
-  content:"♥";
-  color:rgba(255,79,112,.55);
-  font-size:28px;
-  text-shadow:0 0 25px rgba(255,49,88,.35);
+body.premium-custom-layout-colagem .premium-preview .px-collage .px-photo{
+  position:relative;left:auto;right:auto;top:auto;bottom:auto;
+  width:100%;max-width:none;transform:none!important;z-index:auto;
+  align-self:stretch;
 }
-body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img{
-  min-width:100%;
-  min-height:100%;
-  object-fit:cover;
+body.premium-custom-layout-colagem .premium-preview .px-collage .px-photo img{
+  width:100%!important;height:100%!important;max-height:235px!important;
+  object-fit:cover!important;
 }
-body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img[src=""]{
-  display:none !important;
+body.premium-custom-layout-coracao-grande .premium-preview .px-collage{
+  transform:scale(1.05);
+}
+body.premium-custom-layout-coracao-grande .premium-preview .px-photo{
+  box-shadow:0 28px 80px rgba(255,49,88,.18),0 24px 60px rgba(0,0,0,.6);
+}
+body.premium-custom-layout-polaroid .premium-preview .px-photo{
+  padding:11px 11px 28px;
+  background:#fff;
+  color:#251b1f;
+  border:0;
+  border-radius:2px;
+}
+body.premium-custom-layout-polaroid .premium-preview .px-photo img{
+  filter:none;
+}
+body.premium-custom-layout-polaroid .premium-preview .px-photo figcaption{
+  font-size:24px;
+  color:#7e3547;
+}
+body.premium-custom-layout-polaroid .premium-preview .px-photo::after{
+  content:"";
+  position:absolute;left:12px;right:12px;bottom:10px;height:1px;
+  background:rgba(126,53,71,.12);
 }
 
-/* Galeria de momentos */
-body.preview-mode:not(.premium-mode) #photoGridSection .photo-card{
-  min-height:210px;
+/* ---------- ESTILO DO CORAÇÃO ---------- */
+body.premium-custom-heart-duplo .premium-preview .px-envelope-seal,
+body.premium-custom-heart-duplo .premium-preview .px-big-heart{
+  border-radius:50%;
+  transform:scale(1.08);
+  text-shadow:14px 0 0 rgba(255,49,88,.28);
+}
+body.premium-custom-heart-colagem .premium-preview .px-envelope-seal{
+  border-radius:14px;
+  transform:rotate(-8deg);
+}
+body.premium-custom-heart-colagem .premium-preview .px-big-heart{
+  transform:rotate(-8deg) scale(1.08);
+}
+body.premium-custom-heart-moldura .premium-preview .px-envelope-seal{
+  background:transparent;
+  border:2px solid var(--p-red);
+  box-shadow:0 0 0 8px rgba(255,49,88,.07),0 0 35px rgba(255,49,88,.25);
+}
+body.premium-custom-heart-moldura .premium-preview .px-big-heart{
+  padding:16px 28px;
+  border:2px solid var(--p-red);
+  border-radius:999px;
+  display:inline-block;
+}
+
+/* ---------- ANIMAÇÕES ---------- */
+body.premium-custom-animation-suave .premium-preview .px-photo{
+  transition:transform .5s ease,filter .5s ease,box-shadow .5s ease;
+}
+body.premium-custom-animation-suave .premium-preview .px-photo:hover{
+  transform:translateY(-5px) rotate(0deg)!important;
+}
+body.premium-custom-animation-cinematic .premium-preview .px-photo{
+  animation:premiumPhotoCinematic 1s both;
+}
+@keyframes premiumPhotoCinematic{
+  from{opacity:0;transform:scale(.92) translateY(28px)}
+  to{opacity:1}
+}
+body.premium-custom-animation-romantica .premium-preview .px-photo{
+  animation:premiumPhotoRomantica 4s ease-in-out infinite alternate;
+}
+@keyframes premiumPhotoRomantica{
+  from{filter:brightness(1);transform:translateY(0)}
+  to{filter:brightness(1.08);transform:translateY(-7px)}
+}
+body.premium-custom-animation-coracoes .premium-preview::before{
+  content:"♥  ♥  ♥  ♥  ♥";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  color:rgba(255,49,88,.18);
+  font-size:22px;
+  letter-spacing:13vw;
+  line-height:2.7;
+  overflow:hidden;
+  animation:premiumHeartsFloat 8s linear infinite;
+}
+@keyframes premiumHeartsFloat{
+  from{transform:translateY(8vh)}
+  to{transform:translateY(-18vh)}
+}
+body.premium-custom-animation-coracoes .premium-preview > *{position:relative;z-index:1}
+
+/* ---------- EFEITOS EXTRAS ---------- */
+body.premium-custom-effects-brilhos .premium-preview::after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;z-index:20;
+  background-image:
+    radial-gradient(circle at 12% 22%,rgba(255,255,255,.75) 0 1px,transparent 2px),
+    radial-gradient(circle at 78% 31%,rgba(255,255,255,.7) 0 1px,transparent 2px),
+    radial-gradient(circle at 55% 72%,rgba(255,255,255,.65) 0 1px,transparent 2px),
+    radial-gradient(circle at 88% 84%,rgba(255,255,255,.55) 0 1px,transparent 2px);
+  animation:premiumSparkles 3s ease-in-out infinite alternate;
+}
+@keyframes premiumSparkles{from{opacity:.35}to{opacity:1}}
+body.premium-custom-effects-bokeh .premium-preview::after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;z-index:20;
   background:
-    radial-gradient(circle, rgba(255,49,88,.18), transparent 58%),
-    #12070b !important;
-  border:1px solid rgba(255,49,88,.18);
-  display:grid;
-  place-items:center;
+    radial-gradient(circle at 15% 25%,rgba(255,120,150,.12) 0 35px,transparent 36px),
+    radial-gradient(circle at 82% 35%,rgba(255,180,200,.1) 0 50px,transparent 51px),
+    radial-gradient(circle at 65% 80%,rgba(255,100,140,.1) 0 42px,transparent 43px);
+  filter:blur(3px);
+  animation:premiumBokeh 7s ease-in-out infinite alternate;
 }
-body.preview-mode:not(.premium-mode) #photoGridSection .photo-card::after{
-  content:"♥";
-  color:rgba(255,79,112,.45);
-  font-size:32px;
+@keyframes premiumBokeh{from{transform:scale(.96)}to{transform:scale(1.04)}}
+body.premium-custom-effects-coracoes .premium-preview::after{
+  content:"♥   ✦   ♥   ✦   ♥   ✦";
+  position:absolute;inset:0;pointer-events:none;z-index:20;
+  color:rgba(255,49,88,.14);
+  font-size:18px;
+  letter-spacing:9vw;
+  line-height:5;
+  overflow:hidden;
+  animation:premiumEffectsHearts 6s linear infinite;
 }
+@keyframes premiumEffectsHearts{from{transform:translateY(8%)}to{transform:translateY(-8%)}}
 
-/* A surpresa precisa aparecer na prévia Romântica. */
-body.preview-mode:not(.premium-mode) #surpresa #surpriseBefore{
-  opacity:1 !important;
-  visibility:visible !important;
-  transform:none !important;
-}
-body.preview-mode:not(.premium-mode) #surpresa #surpriseAfter.hidden{
-  display:none !important;
-}
-
-/* Quando o cliente tiver foto, ela continua prevalecendo sobre o placeholder. */
-body.preview-mode:not(.premium-mode) #momentsSection .heart-photo:has(img[src]:not([src=""])){
-  background:#16070c !important;
-}
-body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:not([src=""])){
-  background:#12070b !important;
+/* Reduz efeitos se o visitante preferir animação suave. */
+@media(prefers-reduced-motion:reduce){
+  body[class*="premium-custom-animation-"] .premium-preview *,
+  body[class*="premium-custom-effects-"] .premium-preview::after,
+  body.premium-custom-animation-coracoes .premium-preview::before{
+    animation:none!important;
+    transition:none!important;
+  }
 }
 </style>
 
+<script id="premium-customization-runtime">
+(function(){
+  try{
+    const data = JSON.parse(sessionStorage.getItem("amorEmSitePreview") || "null");
+    if(!data || !/premium/i.test(String(data.planKey || data.plan || ""))) return;
 
-<style id="locked-preview-refinement">
-/* Prévia do Essencial: mostrar o conteúdo real dos recursos bloqueados,
-   com desfoque leve e escurecimento suave, sem esconder a experiência. */
-.preview-lock.is-locked {
-  position: relative !important;
-  overflow: hidden !important;
-  border-radius: 28px !important;
-  border: 1px solid rgba(255,49,88,.20) !important;
-  background: radial-gradient(circle at 50% 35%, rgba(82,8,28,.20), rgba(5,2,5,.92) 72%) !important;
-  box-shadow: inset 0 0 80px rgba(255,49,88,.035), 0 24px 80px rgba(0,0,0,.24) !important;
-}
+    const c = data.customization || {};
+    const body = document.body;
 
-.preview-lock.is-locked > *:not(.locked-overlay) {
-  opacity: .68 !important;
-  filter: blur(2.4px) !important;
-  transform: scale(.992) !important;
-  transform-origin: center !important;
-}
+    const apply = (prefix, value) => {
+      if(!value) return;
+      body.classList.remove(...Array.from(body.classList).filter(x => x.indexOf(prefix) === 0));
+      body.classList.add(prefix + value);
+    };
 
-.preview-lock.is-locked .locked-overlay {
-  display: flex !important;
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 30 !important;
-  padding: 28px !important;
-  background: rgba(4,1,4,.20) !important;
-  backdrop-filter: blur(2.8px) saturate(.82) !important;
-  -webkit-backdrop-filter: blur(2.8px) saturate(.82) !important;
-}
+    apply("premium-custom-heart-", c.heartStyle || "classico");
+    apply("premium-custom-photo-", c.photoStyle || "natural");
+    apply("premium-custom-layout-", c.photoLayout || "coracao");
+    apply("premium-custom-animation-", c.animation || "suave");
+    apply("premium-custom-font-", c.fontStyle || "elegante");
+    apply("premium-custom-theme-", c.theme || "rose");
+    apply("premium-custom-effects-", c.effects || "essencial");
 
-.preview-lock.is-locked .locked-box {
-  width: min(460px, calc(100% - 32px)) !important;
-  min-height: 220px !important;
-  padding: 30px 28px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 1px solid rgba(255,49,88,.46) !important;
-  border-radius: 26px !important;
-  background: linear-gradient(145deg, rgba(38,7,15,.91), rgba(10,3,7,.92)) !important;
-  box-shadow: 0 22px 70px rgba(0,0,0,.50), 0 0 50px rgba(255,49,88,.10) !important;
-}
+    const premium = document.getElementById("premiumPreview");
+    if(premium){
+      premium.dataset.heartStyle = c.heartStyle || "classico";
+      premium.dataset.photoStyle = c.photoStyle || "natural";
+      premium.dataset.photoLayout = c.photoLayout || "coracao";
+      premium.dataset.animation = c.animation || "suave";
+      premium.dataset.fontStyle = c.fontStyle || "elegante";
+      premium.dataset.theme = c.theme || "rose";
+      premium.dataset.effects = c.effects || "essencial";
+    }
 
-.preview-lock.is-locked .locked-box .lock-icon {
-  width: 58px !important;
-  height: 58px !important;
-  display: grid !important;
-  place-items: center !important;
-  margin-bottom: 14px !important;
-  border: 1px solid rgba(255,49,88,.45) !important;
-  border-radius: 50% !important;
-  background: rgba(255,49,88,.07) !important;
-  font-size: 27px !important;
-}
+    // O estilo escolhido também aparece nos cartões/fotos da galeria.
+    if(c.photoStyle === "pb"){
+      document.querySelectorAll("#premiumPreview img").forEach(img => img.style.filter="grayscale(1) contrast(1.06)");
+    }
 
-.preview-lock.is-locked .locked-box strong {
-  font-size: 19px !important;
-  margin-bottom: 8px !important;
-}
-
-.preview-lock.is-locked .locked-box p {
-  max-width: 420px !important;
-  margin: 0 0 18px !important;
-  color: #c3b4b9 !important;
-  line-height: 1.65 !important;
-  font-size: 13px !important;
-}
-
-.preview-lock.is-locked .locked-box button {
-  min-height: 46px !important;
-  padding: 13px 22px !important;
-  border-radius: 999px !important;
-  white-space: normal !important;
-  line-height: 1.25 !important;
-}
-
-/* História: conteúdo de exemplo visível atrás do bloqueio. */
-#storySection {
-  min-height: 500px !important;
-  padding: 48px 58px !important;
-}
-.preview-story-demo {
-  max-width: 760px;
-  margin: 0 auto;
-  display: grid;
-  gap: 18px;
-}
-.preview-story-card {
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  gap: 20px;
-  align-items: start;
-  padding: 22px 24px;
-  border: 1px solid rgba(255,49,88,.18);
-  border-radius: 20px;
-  background: rgba(255,255,255,.025);
-  box-shadow: inset 0 0 45px rgba(255,49,88,.025);
-}
-.preview-story-card > span {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255,49,88,.30);
-  color: #ff5574;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-.preview-story-card small {
-  color: #ff5574;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 3px;
-}
-.preview-story-card h3 {
-  margin: 7px 0 6px;
-  font-size: 20px;
-}
-.preview-story-card p {
-  margin: 0;
-  color: #9c8e93;
-  line-height: 1.65;
-  font-size: 12px;
-}
-
-/* Motivos: mostrar parte real da experiência por trás do bloqueio. */
-#motivos {
-  min-height: 650px !important;
-}
-#motivos .reason-grid {
-  display: grid !important;
-  max-height: 230px;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-}
-#motivos .reason-grid .reason-item:nth-child(n+7) {
-  display: none !important;
-}
-
-/* Carta: deixar o envelope realmente reconhecível no fundo. */
-#carta {
-  min-height: 560px !important;
-}
-#carta .envelope {
-  transform: scale(1.05);
-  transform-origin: center;
-}
-
-/* Surpresa: mostrar a estrutura da surpresa atrás do bloqueio. */
-#surpresa {
-  min-height: 500px !important;
-}
-
-/* Galeria: manter os espaços das fotos visíveis, sem usar nenhuma foto nova. */
-#photoGridSection {
-  min-height: 430px !important;
-}
-
-@media (max-width: 700px) {
-  .preview-lock.is-locked .locked-overlay {
-    padding: 18px !important;
+    // Atualiza o texto da prévia para deixar a escolha do Premium perceptível.
+    const featureCopy = document.querySelector("#premiumPreview .px-feature-copy p");
+    if(featureCopy){
+      const labels = {
+        heartStyle:{classico:"coração clássico",duplo:"coração duplo",colagem:"colagem romântica",moldura:"coração em moldura"},
+        photoStyle:{natural:"fotos naturais",brilho:"fotos com brilho suave",vintage:"fotos vintage",pb:"fotos em preto e branco"},
+        photoLayout:{coracao:"galeria em coração", "coracao-grande":"coração grande",colagem:"galeria em colagem",polaroid:"galeria Polaroid"},
+        animation:{suave:"animações suaves",coracoes:"corações flutuando",cinematic:"animações cinematográficas",romantica:"animações românticas"},
+        fontStyle:{elegante:"tipografia elegante",romantica:"tipografia romântica",moderna:"tipografia moderna",classica:"tipografia clássica"},
+        theme:{rose:"tema rosa romântico",noite:"tema noite apaixonada",creme:"tema creme elegante",lavanda:"tema lavanda"},
+        effects:{essencial:"sem efeitos extras",brilhos:"brilhos e partículas",bokeh:"bokeh romântico",coracoes:"corações e brilhos"}
+      };
+      const selected = [
+        labels.heartStyle?.[c.heartStyle],
+        labels.photoStyle?.[c.photoStyle],
+        labels.photoLayout?.[c.photoLayout],
+        labels.animation?.[c.animation],
+        labels.fontStyle?.[c.fontStyle],
+        labels.theme?.[c.theme],
+        labels.effects?.[c.effects]
+      ].filter(Boolean);
+      if(selected.length){
+        featureCopy.dataset.originalText ||= featureCopy.textContent;
+        featureCopy.textContent = "Seu Premium foi personalizado com " + selected.join(", ") + ".";
+      }
+    }
+  }catch(error){
+    console.warn("Personalização Premium não pôde ser aplicada:", error);
   }
-  .preview-lock.is-locked .locked-box {
-    width: min(440px, calc(100% - 12px)) !important;
-    min-height: 205px !important;
-    padding: 25px 19px !important;
-  }
-  #storySection {
-    min-height: 520px !important;
-    padding: 30px 18px !important;
-  }
-  .preview-story-card {
-    grid-template-columns: 42px 1fr;
-    gap: 13px;
-    padding: 17px;
-  }
-  .preview-story-card > span {
-    width: 38px;
-    height: 38px;
-  }
-  .preview-story-card h3 {
-    font-size: 17px;
-  }
-  #motivos { min-height: 590px !important; }
-  #carta { min-height: 500px !important; }
-}
-</style>
-
-
-<style>
-/* Motivos: mostrar apenas um motivo por vez.
-   O botão "Revelar outro motivo" continua trocando o conteúdo. */
-#motivos .reason-grid{
-  display:none !important;
-}
-#motivos #reasonCounter{
-  display:block;
-  margin-top:14px;
-}
-</style>
+})();
+</script>
 
 </head>
 <body class="preview-mode">
@@ -1069,7 +1046,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 </header>
 
 <main>
-<div class="standard-preview">
   <section class="hero" id="inicio">
     <div class="hero-glow"></div>
     <div class="hero-content hero-data">
@@ -1088,20 +1064,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
     <div class="timeline-preview preview-lock" id="storySection">
-      <div class="preview-story-demo" aria-hidden="true">
-        <article class="preview-story-card">
-          <span>01</span>
-          <div><small>O COMEÇO</small><h3>Quando tudo começou</h3><p>Um primeiro encontro, uma conversa especial e uma história começando a nascer.</p></div>
-        </article>
-        <article class="preview-story-card">
-          <span>02</span>
-          <div><small>OS MOMENTOS</small><h3>Pequenas lembranças</h3><p>Risadas, abraços, passeios e todos aqueles momentos que ficaram na memória.</p></div>
-        </article>
-        <article class="preview-story-card">
-          <span>03</span>
-          <div><small>CONTINUAÇÃO</small><h3>E ainda tem muito pela frente</h3><p>Uma história feita para continuar sendo escrita por vocês.</p></div>
-        </article>
-      </div>
+      
       <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
@@ -1133,7 +1096,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    
+    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -1152,8 +1115,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   </section>
 
   <section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
-
-</div>
 
 <section class="premium-preview" id="premiumPreview">
   <section class="px-hero" id="premium-inicio">
@@ -1234,6 +1195,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
+    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
@@ -1354,13 +1316,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   set("loveMessage",current.loveMessage);
   set("musicName",current.loveMusic||"Nossa música");
   set("loveStory",current.loveStory);
-  const previewDateFallback = current.loveDate || sessionStorage.getItem("amorEmSitePreviewDate") || "";
-  if(previewDateFallback){
-    const d=new Date(previewDateFallback+"T00:00:00");
-    if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));
-  }else{
-    set("loveDate","Nossa data especial");
-  }
+  if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
   set("surpriseText",current.loveSurprise);
   set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
@@ -1381,7 +1337,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
   set("reasonText",lines[0]);
   set("reasonCounter",`Motivo 1 de 100`);
-  if($("reasonGrid")) $("reasonGrid").innerHTML="";
+  $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
 
   let reasonIndex=0;
   $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
@@ -1442,7 +1398,9 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   $("premiumLetter").innerHTML=esc(letter).replace(/\n/g,"<br>");
   set("premiumSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
-  if($("premiumReasonGrid")) $("premiumReasonGrid").innerHTML="";
+  if($("premiumReasonGrid")){
+    $("premiumReasonGrid").innerHTML=lines.map((r,i)=>`<div class="px-reason-item"><b>${String(i+1).padStart(2,"0")}</b><span>${esc(r)}</span></div>`).join("");
+  }
 
   let premiumReasonIndex=0;
   const showPremiumReason=()=>{
@@ -1486,16 +1444,5 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
 })();
 </script>
-
-<style id="single-reason-only">
-/* Apenas um motivo visível por vez. A lista completa continua existindo nos dados
-   para o botão "Revelar outro motivo", mas não é exibida como uma grade. */
-#motivos .reason-grid,
-#premium-motivos .px-reason-grid,
-#premiumReasonGrid {
-  display: none !important;
-}
-</style>
-
 </body>
 </html>
