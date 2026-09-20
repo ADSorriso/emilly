@@ -418,6 +418,55 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 }
 </style>
 
+
+<style>
+/* 100 motivos — grade limpa e elegante */
+#motivos .reason-grid{
+  width:min(920px,100%);
+  margin:34px auto 0 !important;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  text-align:left;
+}
+
+#motivos .reason-grid .reason-item{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  border:1px solid rgba(255,49,88,.13);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  color:rgba(255,255,255,.78);
+  font-size:12px;
+  line-height:1.45;
+  transition:.25s ease;
+}
+
+#motivos .reason-grid .reason-item:hover{
+  border-color:rgba(255,49,88,.35);
+  background:rgba(255,49,88,.055);
+  transform:translateY(-1px);
+}
+
+#motivos .reason-grid .reason-item > span{
+  flex:0 0 28px;
+  color:#ff3158;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1px;
+}
+
+@media(max-width:700px){
+  #motivos .reason-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -482,6 +531,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
+    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -563,7 +613,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   if(lines.length){
     set("reasonText",lines[0]);set("reasonCounter",`Motivo 1 de ${lines.length}`);
-    // A lista visual de motivos foi removida da prévia; os motivos continuam no card principal.
+    $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
   }
 
   let reasonIndex=0;
