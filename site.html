@@ -1042,6 +1042,19 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
+
+<style>
+/* Motivos: mostrar apenas um motivo por vez.
+   O botão "Revelar outro motivo" continua trocando o conteúdo. */
+#motivos .reason-grid{
+  display:none !important;
+}
+#motivos #reasonCounter{
+  display:block;
+  margin-top:14px;
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -1369,7 +1382,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
   set("reasonText",lines[0]);
   set("reasonCounter",`Motivo 1 de 100`);
-  $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
+  $("reasonGrid").innerHTML="";
 
   let reasonIndex=0;
   $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
