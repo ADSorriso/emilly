@@ -876,6 +876,75 @@
 <script src="script.js?v=7"></script>
 
 <script>
+/*
+  Corrige o retorno da prévia:
+  quando o navegador restaura a página pelo botão "Voltar",
+  ele pode trazer o botão/formulário no estado visual de carregamento.
+  Nesse caso, recarregamos a página para reinicializar o script.js
+  e deixar o usuário gerar uma nova prévia normalmente.
+*/
+(function () {
+  function resetPreviewUI() {
+    const selectors = [
+      "#generatePreviewButton",
+      "#openPreviewButton",
+      "#previewButton",
+      "#createPreviewButton",
+      "[data-preview-open]",
+      "[data-action='preview']"
+    ];
+
+    selectors.forEach((selector) => {
+      document.querySelectorAll(selector).forEach((button) => {
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+        button.classList.remove("loading", "is-loading", "loading-state");
+        button.style.pointerEvents = "";
+        button.style.opacity = "";
+      });
+    });
+
+    document.querySelectorAll("button, input[type='submit']").forEach((button) => {
+      const text = (button.textContent || "").trim().toLowerCase();
+
+      if (
+        text.includes("carregando") ||
+        text.includes("gerando prévia") ||
+        text.includes("abrindo prévia")
+      ) {
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+        button.classList.remove("loading", "is-loading", "loading-state");
+        button.style.pointerEvents = "";
+        button.style.opacity = "";
+
+        if (text.includes("premium")) {
+          button.textContent = "Abrir prévia — Premium";
+        } else {
+          button.textContent = "Abrir prévia";
+        }
+      }
+    });
+  }
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      window.location.reload();
+      return;
+    }
+
+    resetPreviewUI();
+  });
+
+  window.addEventListener("focus", resetPreviewUI);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) resetPreviewUI();
+  });
+})();
+</script>
+
+
+<script>
 (function () {
   const API_URL = "https://amor-em-site-backend.vercel.app";
   const params = new URLSearchParams(window.location.search);
@@ -936,24 +1005,6 @@
 })();
 </script>
 
-
-
-<script id="preview-date-memory-fix">
-(function () {
-  const dateInput = document.getElementById("loveDate");
-  const previewButton = document.getElementById("generatePreviewButton");
-
-  function rememberDate() {
-    const value = dateInput?.value;
-    if (value) {
-      sessionStorage.setItem("amorEmSitePreviewDate", value);
-    }
-  }
-
-  dateInput?.addEventListener("change", rememberDate);
-  previewButton?.addEventListener("click", rememberDate, true);
-})();
-</script>
 
 </body>
 </html>
