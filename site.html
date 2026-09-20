@@ -471,6 +471,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 <style id="premium-exclusive-css">
 .premium-preview{display:none}
 body.premium-mode .premium-preview{display:block}
+body:not(.premium-mode) .premium-preview{display:none !important}
 body.premium-mode > .standard-preview,
 body.premium-mode main > .standard-preview{display:none !important}
 
@@ -862,6 +863,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 </header>
 
 <main>
+<div class="standard-preview">
   <section class="hero" id="inicio">
     <div class="hero-glow"></div>
     <div class="hero-content hero-data">
@@ -931,6 +933,8 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   </section>
 
   <section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
+
+</div>
 
 <section class="premium-preview" id="premiumPreview">
   <section class="px-hero" id="premium-inicio">
