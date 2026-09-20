@@ -775,11 +775,39 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
 </style>
 
 
-<style>
-/* Os motivos individuais não ficam listados na tela.
-   O usuário navega por eles apenas pelo botão "Revelar outro motivo". */
-#motivos .reason-grid {
-  display: none !important;
+<style id="premium-isolated-layout">
+/* PREMIUM = experiência visual própria.
+   Não mistura o layout Romântico com o layout Premium. */
+body.premium-mode main > :not(.premium-preview){
+  display:none !important;
+}
+
+body:not(.premium-mode) .premium-preview{
+  display:none !important;
+}
+
+/* A prévia Premium começa limpa, sem o hero/layout do Romântico. */
+body.premium-mode .navbar{
+  background:rgba(18,11,13,.88);
+  border-bottom-color:rgba(255,255,255,.08);
+}
+
+body.premium-mode .navbar .logo{
+  color:#fff;
+}
+
+body.premium-mode .premium-preview{
+  display:block !important;
+  padding-top:74px;
+}
+
+body.premium-mode .px-checkout{
+  margin-bottom:0;
+}
+
+/* Os motivos continuam sendo revelados pelo botão, sem grade de caixas. */
+body.premium-mode #premiumReasonGrid{
+  display:none !important;
 }
 </style>
 
@@ -833,7 +861,7 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
     <div class="section-heading reveal"><span class="eyebrow">FOTOS</span><h2>Momentos que <em>ficam.</em></h2></div>
     <div class="preview-photo-grid preview-lock" id="photoGridSection">
       <div class="photo-card"><img id="gridPhoto1" alt="Momento"></div><div class="photo-card"><img id="gridPhoto2" alt="Momento"></div><div class="photo-card"><img id="gridPhoto3" alt="Momento"></div>
-      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>As opções completas de fotos fazem parte dos planos Romântico e Premium.</p><button data-upgrade="romantico">Ver plano Romântico</button></div></div>
+      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>A experiência Premium traz uma composição visual exclusiva para suas fotos.</p></div></div>
     </div>
   </section>
 
@@ -945,7 +973,6 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
-    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
