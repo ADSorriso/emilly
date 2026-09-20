@@ -20,7 +20,7 @@
   <a class="brand" href="#inicio">Amor <span>em Site</span> ♥</a>
 
   <nav>
-    <a href="#planos">Teste grátis</a>
+    <a href="#teste">Teste grátis</a>
     <a href="#recursos">O que recebe</a>
     <a href="#planos">Planos</a>
   </nav>
@@ -46,7 +46,7 @@
     </p>
 
     <div class="actions">
-      <a class="btn" href="#planos">Criar meu teste ♥</a>
+      <a class="btn" href="#teste">Criar meu teste ♥</a>
       <a class="link" href="#como-funciona">Ver como funciona ↓</a>
     </div>
 
@@ -874,48 +874,7 @@
 
 </footer>
 
-<script src="script.js?v=7"></script>
-<script id="free-preview-same-page-fix">
-/*
- * PRÉVIA GRATUITA — permanece na página inicial.
- *
- * O script.js original redireciona para site.html?preview=1
- * quando nenhum plano foi escolhido. Aqui interceptamos apenas
- * esse clique e deixamos a prévia que já existe nesta página
- * continuar sendo atualizada.
- */
-(function () {
-  document.addEventListener("click", function (event) {
-    const target = event.target instanceof Element
-      ? event.target.closest("#generatePreviewButton")
-      : null;
-
-    if (!target) return;
-
-    // Impede o listener antigo do script.js de redirecionar.
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    // Atualiza/anima a prévia que já está nesta mesma página.
-    if (typeof window.generatePreview === "function") {
-      window.generatePreview();
-    } else {
-      document.querySelectorAll(
-        "#loveName, #yourName, #loveMessage, #loveDate, #loveMusic, #loveStory, #reason1, #reason2, #reason3"
-      ).forEach(function (field) {
-        field.dispatchEvent(new Event("input", { bubbles: true }));
-      });
-    }
-
-    // Leva o usuário até a prévia, sem abrir outra página.
-    document.getElementById("lovePreview")?.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
-  }, true);
-})();
-</script>
-
+<script src="script.js?v=8"></script>
 <script>
 (function () {
   const API_URL = "https://amor-em-site-backend.vercel.app";

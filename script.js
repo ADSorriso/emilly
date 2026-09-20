@@ -706,14 +706,12 @@ generatePreviewButton?.addEventListener(
   async (event) => {
     event.preventDefault();
 
-    // Sem plano selecionado, abre a prévia Romântica como padrão.
-    if (!selectedPlan) {
-      await openPreviewForPlan("romantico");
-      return;
-    }
+    // Este botão é SOMENTE para gerar a prévia.
+    // O checkout continua no botão de pagamento.
+    const key = getPlanKey() || "romantico";
 
-    // Com plano selecionado: valida as regras daquele plano,
-    // cria o pedido e leva o cliente ao pagamento.
+    if (!PLAN_RULES[key]) return;
+
     if (!validatePlanPersonalization()) return;
 
     if (form && !form.checkValidity()) {
@@ -721,8 +719,7 @@ generatePreviewButton?.addEventListener(
       return;
     }
 
-    updatePreview();
-    await startCheckout();
+    await openPreviewForPlan(key);
   }
 );
 
@@ -1075,11 +1072,17 @@ Seu jeito de me apoiar"></textarea>
   `;
   document.body.appendChild(modal);
 
-  const close = () => {
+  const close = (resetSelection = false) => {
     // Fecha de forma explícita para não depender apenas da classe CSS.
     modal.classList.remove("is-open");
     modal.style.display = "none";
     document.body.style.overflow = "";
+
+    if (resetSelection) {
+      selectedPlan = "";
+      window.amorEmSiteCustomization = {};
+      updateCheckoutButton();
+    }
   };
 
   const musicOptions = {
@@ -1123,7 +1126,7 @@ Seu jeito de me apoiar"></textarea>
   }
 
   document.getElementById("pemClose")?.addEventListener("click", close);
-  document.getElementById("pemCancel")?.addEventListener("click", close);
+  document.getElementById("pemCancel")?.addEventListener("click", () => close(true));
   modal.addEventListener("click", (event) => {
     if (event.target === modal) close();
   });
@@ -1134,10 +1137,16 @@ Seu jeito de me apoiar"></textarea>
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
 
-    if (target.closest("#pemClose") || target.closest("#pemCancel")) {
+    if (target.closest("#pemClose")) {
       event.preventDefault();
       event.stopPropagation();
-      close();
+      close(false);
+    }
+
+    if (target.closest("#pemCancel")) {
+      event.preventDefault();
+      event.stopPropagation();
+      close(true);
     }
   }, true);
 
@@ -1611,6 +1620,27 @@ planButtons.forEach((button) => {
     openPlanPersonalization(planKey);
   });
 });
+
+// Quando o usuário volta da prévia usando a seta do navegador, o Firefox/Chrome
+// pode restaurar a página pelo bfcache. Nesse caso as variáveis JS podem voltar
+// vazias mesmo com o modal ainda aberto. Reconstruímos o plano pelo modal.
+window.addEventListener("pageshow", () => {
+  const modal = document.getElementById("planPersonalizationModal");
+  if (!modal || !modal.classList.contains("is-open")) return;
+
+  const key = modal.dataset.planKey || "";
+  if (!PLAN_RULES[key]) return;
+
+  selectedPlan = `${PLAN_NAMES[key]} — ${PLAN_PRICES[key]}`;
+  updateCheckoutButton();
+
+  const submit = document.getElementById("pemSubmit");
+  if (submit) {
+    submit.disabled = false;
+    submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key]}`;
+  }
+});
+
 
 function updateCheckoutButton() {
   if (!checkoutButton) return;
