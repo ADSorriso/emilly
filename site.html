@@ -107,10 +107,6 @@
 .timeline-item p{white-space:pre-wrap}
 .heart-section .section-heading{margin-bottom:48px}
 .heart-gallery img{cursor:zoom-in}
-.reason-grid{
-  max-width:900px;margin:36px auto 0;
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
-}
 .reason-item{
   padding:16px 17px;
   border:1px solid rgba(255,49,88,.16);
@@ -154,7 +150,6 @@
 section[id],.checkout-final{scroll-margin-top:92px}
 @media(max-width:800px){
   .preview-plan-chip{font-size:8px;padding:7px 11px}
-  .reason-grid{grid-template-columns:1fr}
   .preview-photo-grid{grid-template-columns:repeat(2,1fr)}
   .preview-photo-grid .photo-card{height:230px}
   .hero-photo{width:min(310px,82vw)}
@@ -200,7 +195,6 @@ section[id],.checkout-final{scroll-margin-top:92px}
 .reason-number{font-size:96px !important}
 .reason-card{width:min(720px,100%) !important;min-height:125px !important;padding:28px 34px !important;margin-bottom:22px !important}
 .reason-card p{font-size:36px !important;line-height:1.15 !important}
-.reason-grid{margin-top:30px !important}
 
 /* Navegação e âncoras */
 .navbar{height:68px !important}
@@ -329,10 +323,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   letter-spacing:1.5px;
 }
 
-#motivos .reason-grid{
-  width:min(900px,100%);
-  margin:34px auto 0 !important;
-}
 
 @media(max-width:600px){
   #motivos h2{
@@ -390,11 +380,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 #motivos .reason-card{
   margin-top:0 !important;
 }
-#motivos .reason-grid .reason-item{
-  display:flex;
-  align-items:center;
-  min-height:54px;
-}
 @media(max-width:600px){
   .hero .preview-date{
     gap:9px;
@@ -430,20 +415,6 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   text-align:left;
 }
 
-#motivos .reason-grid .reason-item{
-  min-height:52px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:14px 16px;
-  border:1px solid rgba(255,49,88,.13);
-  border-radius:14px;
-  background:rgba(255,255,255,.025);
-  color:rgba(255,255,255,.78);
-  font-size:12px;
-  line-height:1.45;
-  transition:.25s ease;
-}
 
 #motivos .reason-grid .reason-item:hover{
   border-color:rgba(255,49,88,.35);
@@ -471,6 +442,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 <style id="premium-exclusive-css">
 .premium-preview{display:none}
 body.premium-mode .premium-preview{display:block}
+body:not(.premium-mode) .premium-preview{display:none !important}
 body.premium-mode > .standard-preview,
 body.premium-mode main > .standard-preview{display:none !important}
 
@@ -690,192 +662,368 @@ body.premium-mode main > .standard-preview{display:none !important}
   .px-feature-grid{grid-template-columns:1fr}
   .px-checkout{grid-template-columns:1fr;text-align:center;padding:27px 20px}.px-checkout-action{min-width:0}
 }
+</style>
 
-/* =========================================================
-   PREMIUM — somente a experiência Premium
-   ========================================================= */
-body.premium-mode main > :not(.premium-preview){
-  display:none !important;
+
+<style id="standard-photo-date-fix">
+/* ESSENCIAL + ROMÂNTICO:
+   a foto é enquadrada inteira, sem crop/corte.
+   O Premium mantém o layout próprio. */
+body.preview-mode:not(.premium-mode) .hero-photo{
+  width:min(380px,86vw) !important;
+  aspect-ratio:auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  padding:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
 }
-body.premium-mode .premium-preview{
+
+body.preview-mode:not(.premium-mode) .hero-photo img{
+  width:100% !important;
+  height:auto !important;
+  max-width:none !important;
+  max-height:580px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+
+/* A data sempre ocupa um espaço visível e legível nos planos básicos. */
+body.preview-mode:not(.premium-mode) .preview-date{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:14px !important;
+  min-height:18px !important;
+  margin:14px auto 0 !important;
+  padding:6px 12px !important;
+  color:rgba(255,255,255,.62) !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  letter-spacing:2.5px !important;
+  line-height:1 !important;
+  text-align:center !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-date::before,
+body.preview-mode:not(.premium-mode) .preview-date::after{
+  content:"" !important;
+  width:25px !important;
+  height:1px !important;
+  flex:0 0 25px !important;
+  background:linear-gradient(90deg,transparent,rgba(255,49,88,.78)) !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-date::after{
+  background:linear-gradient(90deg,rgba(255,49,88,.78),transparent) !important;
+}
+
+@media(max-width:600px){
+  body.preview-mode:not(.premium-mode) .hero-photo{
+    width:min(335px,88vw) !important;
+  }
+
+  body.preview-mode:not(.premium-mode) .hero-photo img{
+    width:100% !important;
+    max-height:500px !important;
+  }
+  body.preview-mode:not(.premium-mode) .preview-date{
+    gap:8px !important;
+    font-size:8px !important;
+    letter-spacing:2px !important;
+  }
+  body.preview-mode:not(.premium-mode) .preview-date::before,
+  body.preview-mode:not(.premium-mode) .preview-date::after{
+    width:16px !important;
+    flex-basis:16px !important;
+  }
+}
+</style>
+
+
+<style id="romantic-functions-fix">
+/* CORREÇÃO — PLANO ROMÂNTICO
+   Os recursos ficam realmente visíveis e interativos na prévia. */
+
+/* História não pode ficar vazia quando ainda não existe texto/foto. */
+body.preview-mode:not(.premium-mode) #storySection{
+  min-height:150px !important;
   display:block !important;
 }
-
-/* Temas */
-body.premium-mode.px-theme-rose .premium-preview{
-  --p-red:#ff3158;
-  --p-soft:#ff7188;
-  --p-paper:#f1ebe5;
-  --p-ink:#28191d;
-}
-body.premium-mode.px-theme-noite .premium-preview{
-  --p-red:#8b7cff;
-  --p-soft:#b6adff;
-  --p-paper:#e8e5f2;
-  --p-ink:#19172a;
-  background:#02030a;
-}
-body.premium-mode.px-theme-creme .premium-preview{
-  --p-red:#c47a5a;
-  --p-soft:#e2ad8f;
-  --p-paper:#f5eadc;
-  --p-ink:#2d211b;
-  background:#0b0806;
-}
-body.premium-mode.px-theme-lavanda .premium-preview{
-  --p-red:#b982ff;
-  --p-soft:#d0adff;
-  --p-paper:#eee7f7;
-  --p-ink:#21182b;
-  background:#07040d;
+body.preview-mode:not(.premium-mode) #storySection .timeline-item{
+  opacity:1 !important;
+  filter:none !important;
 }
 
-/* Estilos das fotos */
-body.premium-mode.px-photo-brilho .px-photo img{
-  filter:brightness(1.08) saturate(1.08) contrast(1.03);
-}
-body.premium-mode.px-photo-vintage .px-photo img{
-  filter:sepia(.28) saturate(.78) contrast(.96);
-}
-body.premium-mode.px-photo-pb .px-photo img{
-  filter:grayscale(1) contrast(1.08);
-}
-
-/* Fontes */
-body.premium-mode.px-font-elegante .px-copy h1,
-body.premium-mode.px-font-elegante .px-heading h2,
-body.premium-mode.px-font-elegante .px-card h3,
-body.premium-mode.px-font-elegante .px-future h2,
-body.premium-mode.px-font-elegante .px-surprise h2{
-  font-family:Georgia,"Times New Roman",serif;
-}
-body.premium-mode.px-font-moderna .px-copy h1,
-body.premium-mode.px-font-moderna .px-heading h2,
-body.premium-mode.px-font-moderna .px-card h3,
-body.premium-mode.px-font-moderna .px-future h2,
-body.premium-mode.px-font-moderna .px-surprise h2{
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  letter-spacing:-2px;
-}
-body.premium-mode.px-font-classica .px-copy h1,
-body.premium-mode.px-font-classica .px-heading h2,
-body.premium-mode.px-font-classica .px-card h3,
-body.premium-mode.px-font-classica .px-future h2,
-body.premium-mode.px-font-classica .px-surprise h2{
-  font-family:"Times New Roman",Georgia,serif;
-}
-body.premium-mode.px-font-romantica .px-copy h1,
-body.premium-mode.px-font-romantica .px-heading h2,
-body.premium-mode.px-font-romantica .px-card h3,
-body.premium-mode.px-font-romantica .px-future h2,
-body.premium-mode.px-font-romantica .px-surprise h2{
-  font-family:"Great Vibes",cursive;
-  font-weight:400;
-}
-
-/* Layout da galeria */
-body.premium-mode.px-layout-polaroid .px-photo{
-  border-radius:0;
-  padding:10px 10px 22px;
-}
-body.premium-mode.px-layout-polaroid .px-photo figcaption{
-  font-family:"Great Vibes",cursive;
-}
-body.premium-mode.px-layout-colagem .px-photo{
-  border-radius:12px;
-}
-body.premium-mode.px-layout-coracao-grande .px-collage{
-  transform:scale(1.06);
-  transform-origin:center;
-}
-
-/* Estilos do coração */
-body.premium-mode.px-heart-duplo .px-big-heart::before{
-  content:"♥";
-  margin-right:10px;
-}
-body.premium-mode.px-heart-colagem .px-big-heart{
-  text-shadow:0 0 25px var(--p-red),0 0 70px var(--p-soft);
-}
-body.premium-mode.px-heart-moldura .px-big-heart{
-  display:inline-grid;
+/* Coração de fotos: placeholders elegantes até o cliente enviar a foto. */
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo{
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,49,88,.28), rgba(255,49,88,.04) 48%, rgba(255,255,255,.025) 49%, rgba(0,0,0,0) 70%),
+    #16070c !important;
+  border:1px solid rgba(255,49,88,.20);
+  display:grid;
   place-items:center;
-  width:130px;
-  height:130px;
-  border:2px solid var(--p-red);
-  border-radius:50%;
 }
-
-/* Animações */
-@keyframes pxFloatHeart {
-  0%,100%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-9px) scale(1.035)}
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo::after{
+  content:"♥";
+  color:rgba(255,79,112,.55);
+  font-size:28px;
+  text-shadow:0 0 25px rgba(255,49,88,.35);
 }
-@keyframes pxCinematicGlow {
-  0%,100%{box-shadow:0 24px 60px rgba(0,0,0,.6)}
-  50%{box-shadow:0 24px 75px rgba(255,49,88,.18)}
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img{
+  min-width:100%;
+  min-height:100%;
+  object-fit:cover;
 }
-body.premium-mode.px-animation-suave .premium-preview .px-photo{
-  animation:pxFloatHeart 5s ease-in-out infinite;
-}
-body.premium-mode.px-animation-cinematic .premium-preview .px-photo{
-  animation:pxCinematicGlow 4s ease-in-out infinite;
-}
-body.premium-mode.px-animation-coracoes .premium-preview .px-photo{
-  animation:pxFloatHeart 4s ease-in-out infinite;
-}
-body.premium-mode.px-animation-romantica .premium-preview .px-photo{
-  animation:pxFloatHeart 3.2s ease-in-out infinite;
-}
-
-/* Efeitos extras */
-body.premium-mode.px-effects-brilhos .premium-preview::before,
-body.premium-mode.px-effects-bokeh .premium-preview::before,
-body.premium-mode.px-effects-coracoes .premium-preview::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:999;
-  opacity:.25;
-}
-body.premium-mode.px-effects-brilhos .premium-preview::before{
-  background-image:radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 2px);
-  background-size:70px 70px;
-  animation:pxSparkle 8s linear infinite;
-}
-body.premium-mode.px-effects-bokeh .premium-preview::before{
-  background-image:
-    radial-gradient(circle at 15% 20%,rgba(255,255,255,.22) 0 18px,transparent 19px),
-    radial-gradient(circle at 75% 30%,rgba(255,120,150,.18) 0 25px,transparent 26px),
-    radial-gradient(circle at 40% 80%,rgba(255,255,255,.15) 0 20px,transparent 21px);
-  filter:blur(2px);
-}
-body.premium-mode.px-effects-coracoes .premium-preview::before{
-  content:"♥   ✦   ♥   ✦   ♥   ✦";
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-around;
-  padding-top:8vh;
-  color:var(--p-soft);
-  font-size:22px;
-  text-shadow:0 0 18px var(--p-red);
-  animation:pxHeartRain 7s linear infinite;
-}
-@keyframes pxSparkle{
-  from{transform:translateY(0)}
-  to{transform:translateY(70px)}
-}
-@keyframes pxHeartRain{
-  from{transform:translateY(-10vh)}
-  to{transform:translateY(100vh)}
-}
-
-/* Sem efeitos extras = sem camada */
-body.premium-mode.px-effects-essencial .premium-preview::before{
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img[src=""]{
   display:none !important;
 }
 
+/* Galeria de momentos */
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card{
+  min-height:210px;
+  background:
+    radial-gradient(circle, rgba(255,49,88,.18), transparent 58%),
+    #12070b !important;
+  border:1px solid rgba(255,49,88,.18);
+  display:grid;
+  place-items:center;
+}
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card::after{
+  content:"♥";
+  color:rgba(255,79,112,.45);
+  font-size:32px;
+}
+
+/* A surpresa precisa aparecer na prévia Romântica. */
+body.preview-mode:not(.premium-mode) #surpresa #surpriseBefore{
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:none !important;
+}
+body.preview-mode:not(.premium-mode) #surpresa #surpriseAfter.hidden{
+  display:none !important;
+}
+
+/* Quando o cliente tiver foto, ela continua prevalecendo sobre o placeholder. */
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo:has(img[src]:not([src=""])){
+  background:#16070c !important;
+}
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:not([src=""])){
+  background:#12070b !important;
+}
+</style>
+
+
+<style id="locked-preview-refinement">
+/* Prévia do Essencial: mostrar o conteúdo real dos recursos bloqueados,
+   com desfoque leve e escurecimento suave, sem esconder a experiência. */
+.preview-lock.is-locked {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 28px !important;
+  border: 1px solid rgba(255,49,88,.20) !important;
+  background: radial-gradient(circle at 50% 35%, rgba(82,8,28,.20), rgba(5,2,5,.92) 72%) !important;
+  box-shadow: inset 0 0 80px rgba(255,49,88,.035), 0 24px 80px rgba(0,0,0,.24) !important;
+}
+
+.preview-lock.is-locked > *:not(.locked-overlay) {
+  opacity: .68 !important;
+  filter: blur(2.4px) !important;
+  transform: scale(.992) !important;
+  transform-origin: center !important;
+}
+
+.preview-lock.is-locked .locked-overlay {
+  display: flex !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 30 !important;
+  padding: 28px !important;
+  background: rgba(4,1,4,.20) !important;
+  backdrop-filter: blur(2.8px) saturate(.82) !important;
+  -webkit-backdrop-filter: blur(2.8px) saturate(.82) !important;
+}
+
+.preview-lock.is-locked .locked-box {
+  width: min(460px, calc(100% - 32px)) !important;
+  min-height: 220px !important;
+  padding: 30px 28px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(255,49,88,.46) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(145deg, rgba(38,7,15,.91), rgba(10,3,7,.92)) !important;
+  box-shadow: 0 22px 70px rgba(0,0,0,.50), 0 0 50px rgba(255,49,88,.10) !important;
+}
+
+.preview-lock.is-locked .locked-box .lock-icon {
+  width: 58px !important;
+  height: 58px !important;
+  display: grid !important;
+  place-items: center !important;
+  margin-bottom: 14px !important;
+  border: 1px solid rgba(255,49,88,.45) !important;
+  border-radius: 50% !important;
+  background: rgba(255,49,88,.07) !important;
+  font-size: 27px !important;
+}
+
+.preview-lock.is-locked .locked-box strong {
+  font-size: 19px !important;
+  margin-bottom: 8px !important;
+}
+
+.preview-lock.is-locked .locked-box p {
+  max-width: 420px !important;
+  margin: 0 0 18px !important;
+  color: #c3b4b9 !important;
+  line-height: 1.65 !important;
+  font-size: 13px !important;
+}
+
+.preview-lock.is-locked .locked-box button {
+  min-height: 46px !important;
+  padding: 13px 22px !important;
+  border-radius: 999px !important;
+  white-space: normal !important;
+  line-height: 1.25 !important;
+}
+
+/* História: conteúdo de exemplo visível atrás do bloqueio. */
+#storySection {
+  min-height: 500px !important;
+  padding: 48px 58px !important;
+}
+.preview-story-demo {
+  max-width: 760px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+.preview-story-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 22px 24px;
+  border: 1px solid rgba(255,49,88,.18);
+  border-radius: 20px;
+  background: rgba(255,255,255,.025);
+  box-shadow: inset 0 0 45px rgba(255,49,88,.025);
+}
+.preview-story-card > span {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,49,88,.30);
+  color: #ff5574;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.preview-story-card small {
+  color: #ff5574;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+.preview-story-card h3 {
+  margin: 7px 0 6px;
+  font-size: 20px;
+}
+.preview-story-card p {
+  margin: 0;
+  color: #9c8e93;
+  line-height: 1.65;
+  font-size: 12px;
+}
+
+/* Motivos: mostrar parte real da experiência por trás do bloqueio. */
+#motivos {
+  min-height: 650px !important;
+}
+#motivos .reason-grid {
+  display: grid !important;
+  max-height: 230px;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+#motivos .reason-grid .reason-item:nth-child(n+7) {
+  display: none !important;
+}
+
+/* Carta: deixar o envelope realmente reconhecível no fundo. */
+#carta {
+  min-height: 560px !important;
+}
+#carta .envelope {
+  transform: scale(1.05);
+  transform-origin: center;
+}
+
+/* Surpresa: mostrar a estrutura da surpresa atrás do bloqueio. */
+#surpresa {
+  min-height: 500px !important;
+}
+
+/* Galeria: manter os espaços das fotos visíveis, sem usar nenhuma foto nova. */
+#photoGridSection {
+  min-height: 430px !important;
+}
+
+@media (max-width: 700px) {
+  .preview-lock.is-locked .locked-overlay {
+    padding: 18px !important;
+  }
+  .preview-lock.is-locked .locked-box {
+    width: min(440px, calc(100% - 12px)) !important;
+    min-height: 205px !important;
+    padding: 25px 19px !important;
+  }
+  #storySection {
+    min-height: 520px !important;
+    padding: 30px 18px !important;
+  }
+  .preview-story-card {
+    grid-template-columns: 42px 1fr;
+    gap: 13px;
+    padding: 17px;
+  }
+  .preview-story-card > span {
+    width: 38px;
+    height: 38px;
+  }
+  .preview-story-card h3 {
+    font-size: 17px;
+  }
+  #motivos { min-height: 590px !important; }
+  #carta { min-height: 500px !important; }
+}
+</style>
+
+
+<style>
+/* Motivos: mostrar apenas um motivo por vez.
+   O botão "Revelar outro motivo" continua trocando o conteúdo. */
+#motivos .reason-grid{
+  display:none !important;
+}
+#motivos #reasonCounter{
+  display:block;
+  margin-top:14px;
+}
 </style>
 
 </head>
@@ -892,6 +1040,7 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
 </header>
 
 <main>
+<div class="standard-preview">
   <section class="hero" id="inicio">
     <div class="hero-glow"></div>
     <div class="hero-content hero-data">
@@ -910,7 +1059,20 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
   <section class="section" id="historia">
     <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
     <div class="timeline-preview preview-lock" id="storySection">
-      
+      <div class="preview-story-demo" aria-hidden="true">
+        <article class="preview-story-card">
+          <span>01</span>
+          <div><small>O COMEÇO</small><h3>Quando tudo começou</h3><p>Um primeiro encontro, uma conversa especial e uma história começando a nascer.</p></div>
+        </article>
+        <article class="preview-story-card">
+          <span>02</span>
+          <div><small>OS MOMENTOS</small><h3>Pequenas lembranças</h3><p>Risadas, abraços, passeios e todos aqueles momentos que ficaram na memória.</p></div>
+        </article>
+        <article class="preview-story-card">
+          <span>03</span>
+          <div><small>CONTINUAÇÃO</small><h3>E ainda tem muito pela frente</h3><p>Uma história feita para continuar sendo escrita por vocês.</p></div>
+        </article>
+      </div>
       <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
     </div>
   </section>
@@ -942,7 +1104,7 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
+    
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -961,6 +1123,8 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
   </section>
 
   <section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
+
+</div>
 
 <section class="premium-preview" id="premiumPreview">
   <section class="px-hero" id="premium-inicio">
@@ -1041,7 +1205,6 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
-    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
@@ -1139,38 +1302,6 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
   let plan=/premium/i.test(String(rawPlan))?"premium":(/essencial/i.test(String(rawPlan))?"essencial":"romantico");
   document.body.classList.toggle("premium-mode",plan==="premium");
 
-  // Aplica as escolhas feitas na personalização Premium.
-  function applyPremiumCustomization(options){
-    if(plan!=="premium") return;
-
-    const c=options||{};
-    const root=document.body;
-
-    const classes=[
-      "px-theme-rose","px-theme-noite","px-theme-creme","px-theme-lavanda",
-      "px-photo-natural","px-photo-brilho","px-photo-vintage","px-photo-pb",
-      "px-layout-coracao","px-layout-coracao-grande","px-layout-colagem","px-layout-polaroid",
-      "px-heart-classico","px-heart-duplo","px-heart-colagem","px-heart-moldura",
-      "px-animation-suave","px-animation-coracoes","px-animation-cinematic","px-animation-romantica",
-      "px-font-elegante","px-font-romantica","px-font-moderna","px-font-classica",
-      "px-effects-essencial","px-effects-brilhos","px-effects-bokeh","px-effects-coracoes"
-    ];
-    root.classList.remove(...classes);
-
-    root.classList.add(`px-theme-${c.theme||"rose"}`);
-    root.classList.add(`px-photo-${c.photoStyle||"natural"}`);
-    root.classList.add(`px-layout-${c.photoLayout||"coracao"}`);
-    root.classList.add(`px-heart-${c.heartStyle||"classico"}`);
-    root.classList.add(`px-animation-${c.animation||"suave"}`);
-    root.classList.add(`px-font-${c.fontStyle||"elegante"}`);
-    root.classList.add(`px-effects-${c.effects||"essencial"}`);
-
-    // O Premium usa exclusivamente sua própria experiência.
-    root.classList.add("premium-mode");
-  }
-
-  applyPremiumCustomization(current.customization);
-
   // Evita que testes antigos com apenas "e"/"E" apareçam como conteúdo real na prévia.
   // Textos maiores continuam exatamente como foram preenchidos pelo cliente.
   const cleanPreviewText=(value,fallback)=>{
@@ -1194,7 +1325,13 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
   set("loveMessage",current.loveMessage);
   set("musicName",current.loveMusic||"Nossa música");
   set("loveStory",current.loveStory);
-  if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
+  const previewDateFallback = current.loveDate || sessionStorage.getItem("amorEmSitePreviewDate") || "";
+  if(previewDateFallback){
+    const d=new Date(previewDateFallback+"T00:00:00");
+    if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));
+  }else{
+    set("loveDate","Nossa data especial");
+  }
   set("surpriseText",current.loveSurprise);
   set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
@@ -1215,7 +1352,7 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
 
   set("reasonText",lines[0]);
   set("reasonCounter",`Motivo 1 de 100`);
-  $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
+  if($("reasonGrid")) $("reasonGrid").innerHTML="";
 
   let reasonIndex=0;
   $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
@@ -1276,9 +1413,7 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
   $("premiumLetter").innerHTML=esc(letter).replace(/\n/g,"<br>");
   set("premiumSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
-  if($("premiumReasonGrid")){
-    $("premiumReasonGrid").innerHTML=lines.map((r,i)=>`<div class="px-reason-item"><b>${String(i+1).padStart(2,"0")}</b><span>${esc(r)}</span></div>`).join("");
-  }
+  if($("premiumReasonGrid")) $("premiumReasonGrid").innerHTML="";
 
   let premiumReasonIndex=0;
   const showPremiumReason=()=>{
@@ -1322,5 +1457,16 @@ body.premium-mode.px-effects-essencial .premium-preview::before{
 
 })();
 </script>
+
+<style id="single-reason-only">
+/* Apenas um motivo visível por vez. A lista completa continua existindo nos dados
+   para o botão "Revelar outro motivo", mas não é exibida como uma grade. */
+#motivos .reason-grid,
+#premium-motivos .px-reason-grid,
+#premiumReasonGrid {
+  display: none !important;
+}
+</style>
+
 </body>
 </html>
