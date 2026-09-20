@@ -698,11 +698,12 @@ body.premium-mode main > .standard-preview{display:none !important}
    a foto é enquadrada inteira, sem crop/corte.
    O Premium mantém o layout próprio. */
 body.preview-mode:not(.premium-mode) .hero-photo{
+  width:min(380px,86vw) !important;
   aspect-ratio:auto !important;
   height:auto !important;
   min-height:0 !important;
   max-height:none !important;
-  padding:8px !important;
+  padding:0 !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -713,7 +714,7 @@ body.preview-mode:not(.premium-mode) .hero-photo img{
   width:auto !important;
   height:auto !important;
   max-width:100% !important;
-  max-height:520px !important;
+  max-height:580px !important;
   object-fit:contain !important;
   object-position:center center !important;
   transform:none !important;
@@ -752,8 +753,12 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
 }
 
 @media(max-width:600px){
+  body.preview-mode:not(.premium-mode) .hero-photo{
+    width:min(335px,88vw) !important;
+  }
+
   body.preview-mode:not(.premium-mode) .hero-photo img{
-    max-height:430px !important;
+    max-height:500px !important;
   }
   body.preview-mode:not(.premium-mode) .preview-date{
     gap:8px !important;
