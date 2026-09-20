@@ -926,6 +926,263 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
+
+<style>
+/* =========================================================
+   BLOQUEIOS DO ESSENCIAL — REFINAMENTO FINAL
+   Visual único para História, Momentos, Motivos, Carta e Surpresa.
+   ========================================================= */
+
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked{
+  position:relative !important;
+  overflow:hidden !important;
+  border:1px solid rgba(255,49,88,.22) !important;
+  border-radius:32px !important;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,49,88,.16),transparent 48%),
+    linear-gradient(145deg,#13070c,#050305 72%) !important;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.025) !important;
+}
+
+/* Cada bloqueio ganha altura suficiente para nunca cortar o conteúdo. */
+body.preview-mode:not(.premium-mode) #storySection.preview-lock.is-locked{
+  min-height:480px !important;
+  height:480px !important;
+  max-width:920px !important;
+  margin:48px auto 0 !important;
+}
+
+body.preview-mode:not(.premium-mode) #momentsSection.preview-lock.is-locked{
+  min-height:600px !important;
+  height:600px !important;
+  max-width:980px !important;
+  margin:35px auto 0 !important;
+}
+
+body.preview-mode:not(.premium-mode) #photoGridSection.preview-lock.is-locked{
+  min-height:520px !important;
+  height:520px !important;
+  max-width:1050px !important;
+  margin:35px auto 0 !important;
+}
+
+body.preview-mode:not(.premium-mode) #motivos.preview-lock.is-locked{
+  min-height:560px !important;
+  height:560px !important;
+  max-width:1050px !important;
+  margin:35px auto 0 !important;
+}
+
+body.preview-mode:not(.premium-mode) #carta.preview-lock.is-locked{
+  min-height:620px !important;
+  height:620px !important;
+  max-width:1050px !important;
+  margin:35px auto 0 !important;
+}
+
+body.preview-mode:not(.premium-mode) #surpresa.preview-lock.is-locked{
+  min-height:560px !important;
+  height:560px !important;
+  max-width:1050px !important;
+  margin:35px auto 0 !important;
+}
+
+/* Camada escura ocupa TODA a área da seção. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
+  display:flex !important;
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  padding:40px !important;
+  border-radius:inherit !important;
+  background:
+    linear-gradient(rgba(3,2,3,.70),rgba(3,2,3,.78)),
+    radial-gradient(circle at 50% 45%,rgba(255,49,88,.13),transparent 58%) !important;
+  backdrop-filter:blur(10px) !important;
+  -webkit-backdrop-filter:blur(10px) !important;
+  z-index:100 !important;
+}
+
+/* O conteúdo bloqueado fica apagado/desfocado por baixo. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked > *:not(.locked-overlay){
+  opacity:.16 !important;
+  filter:blur(7px) !important;
+  transform:scale(1.02) !important;
+}
+
+/* Caixa central: grande, elegante e com borda real. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
+  position:relative !important;
+  z-index:101 !important;
+  width:min(590px,88%) !important;
+  min-height:285px !important;
+  height:auto !important;
+  max-height:none !important;
+  padding:42px 42px 38px !important;
+  margin:auto !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  box-sizing:border-box !important;
+  border:1px solid rgba(255,49,88,.58) !important;
+  border-radius:30px !important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(255,49,88,.18),transparent 62%),
+    linear-gradient(145deg,rgba(30,6,13,.97),rgba(8,3,6,.985)) !important;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.68),
+    0 0 65px rgba(255,49,88,.13),
+    inset 0 1px 0 rgba(255,255,255,.055) !important;
+}
+
+/* Ícone do cadeado. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box .lock-icon{
+  width:58px !important;
+  height:58px !important;
+  min-width:58px !important;
+  margin:0 0 18px !important;
+  display:grid !important;
+  place-items:center !important;
+  border-radius:50% !important;
+  border:1px solid rgba(255,49,88,.42) !important;
+  background:rgba(255,49,88,.09) !important;
+  font-size:27px !important;
+  box-shadow:0 0 30px rgba(255,49,88,.10) !important;
+}
+
+/* Título. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
+  margin:0 0 10px !important;
+  color:#fff !important;
+  font-size:22px !important;
+  line-height:1.2 !important;
+  font-weight:800 !important;
+}
+
+/* Texto. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box p{
+  width:100% !important;
+  max-width:470px !important;
+  margin:0 auto 24px !important;
+  color:rgba(255,255,255,.68) !important;
+  font-size:14px !important;
+  line-height:1.6 !important;
+  white-space:normal !important;
+}
+
+/* Botão nunca mais corta o texto. */
+body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button{
+  width:auto !important;
+  max-width:100% !important;
+  min-height:48px !important;
+  height:auto !important;
+  padding:14px 26px !important;
+  margin:0 !important;
+  border:0 !important;
+  border-radius:999px !important;
+  background:linear-gradient(135deg,#ff3158,#bd003c) !important;
+  color:#fff !important;
+  font-size:13px !important;
+  line-height:1.3 !important;
+  font-weight:800 !important;
+  white-space:normal !important;
+  text-align:center !important;
+  box-shadow:0 14px 38px rgba(255,49,88,.24) !important;
+}
+
+/* A História estava vazia e por isso parecia uma caixa pequena.
+   Criamos profundidade visual sem inserir nenhuma foto. */
+body.preview-mode:not(.premium-mode) #storySection.preview-lock.is-locked::before{
+  content:"" !important;
+  position:absolute !important;
+  inset:55px 8% !important;
+  border:1px solid rgba(255,49,88,.10) !important;
+  border-radius:26px !important;
+  background:
+    linear-gradient(90deg,rgba(255,49,88,.04),rgba(255,255,255,.018),rgba(255,49,88,.04)) !important;
+  filter:blur(7px) !important;
+  opacity:.9 !important;
+  pointer-events:none !important;
+}
+
+/* A Carta continua reconhecível atrás do bloqueio, sem desaparecer. */
+body.preview-mode:not(.premium-mode) #carta.preview-lock.is-locked .envelope{
+  opacity:.24 !important;
+  filter:blur(6px) !important;
+  transform:scale(.92) !important;
+}
+
+body.preview-mode:not(.premium-mode) #carta.preview-lock.is-locked .letter-paper{
+  opacity:.20 !important;
+  filter:blur(7px) !important;
+  transform:scale(.96) !important;
+}
+
+/* No celular, reduzimos apenas o necessário. */
+@media(max-width:700px){
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
+    padding:24px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #storySection.preview-lock.is-locked{
+    min-height:430px !important;
+    height:430px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #momentsSection.preview-lock.is-locked{
+    min-height:500px !important;
+    height:500px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #photoGridSection.preview-lock.is-locked{
+    min-height:450px !important;
+    height:450px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #motivos.preview-lock.is-locked{
+    min-height:480px !important;
+    height:480px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #carta.preview-lock.is-locked{
+    min-height:520px !important;
+    height:520px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) #surpresa.preview-lock.is-locked{
+    min-height:480px !important;
+    height:480px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
+    width:min(520px,94%) !important;
+    min-height:255px !important;
+    padding:30px 22px 28px !important;
+    border-radius:26px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
+    font-size:19px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box p{
+    font-size:12px !important;
+    max-width:360px !important;
+    margin-bottom:20px !important;
+  }
+
+  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button{
+    font-size:11px !important;
+    padding:13px 20px !important;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
