@@ -774,6 +774,15 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
 }
 </style>
 
+
+<style>
+/* Os motivos individuais não ficam listados na tela.
+   O usuário navega por eles apenas pelo botão "Revelar outro motivo". */
+#motivos .reason-grid {
+  display: none !important;
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -838,7 +847,6 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
