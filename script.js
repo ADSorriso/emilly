@@ -1622,29 +1622,18 @@ planButtons.forEach((button) => {
 function updateCheckoutButton() {
   if (!checkoutButton) return;
 
-  if (selectedPlan) {
-    const planName =
-      selectedPlan.split(" — ")[0];
+  // Este botão pertence à seção final da página inicial.
+  // Ele serve apenas para levar o visitante aos planos.
+  checkoutButton.textContent = "Escolher meu plano ❤️";
+  checkoutButton.classList.remove("selected");
 
-    checkoutButton.textContent =
-      `Continuar com ${planName} ❤️`;
-
-    checkoutButton.classList.add("selected");
-
-    if (generatePreviewButton) {
-      generatePreviewButton.textContent =
-        `❤️ Abrir prévia — ${planName}`;
+  if (generatePreviewButton) {
+    if (selectedPlan) {
+      const planName = selectedPlan.split(" — ")[0];
+      generatePreviewButton.textContent = `❤️ Abrir prévia — ${planName}`;
       generatePreviewButton.classList.add("selected");
-    }
-  } else {
-    checkoutButton.textContent =
-      "Escolher meu plano ❤️";
-
-    checkoutButton.classList.remove("selected");
-
-    if (generatePreviewButton) {
-      generatePreviewButton.textContent =
-        "✨ Abrir minha prévia";
+    } else {
+      generatePreviewButton.textContent = "✨ Abrir minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }
@@ -1744,10 +1733,13 @@ async function startCheckout() {
   }
 }
 
-checkoutButton?.addEventListener(
-  "click",
-  () => startCheckout()
-);
+checkoutButton?.addEventListener("click", (event) => {
+  event.preventDefault();
+  document.getElementById("planos")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
 
 
 function restorePreviewForEditing() {
