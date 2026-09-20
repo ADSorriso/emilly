@@ -1234,89 +1234,103 @@ Seu jeito de me apoiar"></textarea>
     }
 
     const reader = new FileReader();
+
     reader.onload = async (e) => {
       const originalUrl = e.target.result;
-      const img = new Image();
+      let finalized = false;
+      let fallbackTimer = null;
 
-      img.onload = async () => {
-        const max = 900;
-        const scale = Math.min(1, max / Math.max(img.width, img.height));
-        const canvas = document.createElement("canvas");
-        canvas.width = Math.max(1, Math.round(img.width * scale));
-        canvas.height = Math.max(1, Math.round(img.height * scale));
-        const ctx = canvas.getContext("2d");
-
-        if (!ctx) {
-          alert("Não foi possível preparar a foto.");
-          if (submit) {
-            submit.disabled = false;
-            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
-          }
-          return;
-        }
-
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        photoData = canvas.toDataURL("image/jpeg", 0.75);
-
-        // Preenche o formulário original para reaproveitar a prévia,
-        // validações e checkout existentes.
-        applyPlanRules();
-
-        nameInput.value = modalLoveName.value.trim();
-        yourNameInput.value = modalYourName.value.trim();
-        messageInput.value = modalMessage.value.trim();
-        dateInput.value = modalDate.value || "";
-        musicInput.value = modalMusic.value || "";
-        storyInput.value = modalStory.value.trim();
-        const loveLetter = document.getElementById("loveLetter");
-        const loveSurprise = document.getElementById("loveSurprise");
-        if (loveLetter) loveLetter.value = modalLetter.value.trim();
-        if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
-
-        // Guarda as opções Premium para o checkout e para a próxima etapa de geração.
-        window.amorEmSiteCustomization = premiumOptions;
-
-        updatePreview();
-
-        const previewData = {
-          planKey: key,
-          plan: selectedPlan,
-          loveName: modalLoveName.value.trim(),
-          yourName: modalYourName.value.trim(),
-          loveMessage: modalMessage.value.trim(),
-          loveDate: modalDate.value || "",
-          loveMusic: modalMusic.value || "",
-          loveStory: modalStory.value.trim(),
-          reasons100: "",
-          loveLetter: modalLetter.value.trim(),
-          loveSurprise: modalSurprise.value.trim(),
-          photoData: photoData || "",
-          customization: premiumOptions
-        };
+      const finishPreview = () => {
+        if (finalized) return;
+        finalized = true;
+        if (fallbackTimer) clearTimeout(fallbackTimer);
 
         try {
+          applyPlanRules();
+
+          nameInput.value = modalLoveName.value.trim();
+          yourNameInput.value = modalYourName.value.trim();
+          messageInput.value = modalMessage.value.trim();
+          dateInput.value = modalDate.value || "";
+          musicInput.value = modalMusic.value || "";
+          storyInput.value = modalStory.value.trim();
+
+          const loveLetter = document.getElementById("loveLetter");
+          const loveSurprise = document.getElementById("loveSurprise");
+          if (loveLetter) loveLetter.value = modalLetter.value.trim();
+          if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
+
+          window.amorEmSiteCustomization = premiumOptions;
+          updatePreview();
+
+          const previewData = {
+            planKey: key,
+            plan: selectedPlan,
+            loveName: modalLoveName.value.trim(),
+            yourName: modalYourName.value.trim(),
+            loveMessage: modalMessage.value.trim(),
+            loveDate: modalDate.value || "",
+            loveMusic: modalMusic.value || "",
+            loveStory: modalStory.value.trim(),
+            reasons100: "",
+            loveLetter: modalLetter.value.trim(),
+            loveSurprise: modalSurprise.value.trim(),
+            photoData: photoData || originalUrl || "",
+            customization: premiumOptions
+          };
+
           sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
-        } catch (storageError) {
-          console.error("Não foi possível guardar a prévia:", storageError);
-          alert("A foto ficou grande demais para a prévia. Escolha uma foto menor e tente novamente.");
+
+          close();
+          window.location.href = "site.html?preview=1";
+        } catch (error) {
+          console.error("Erro ao gerar a prévia:", error);
+          alert("Não foi possível gerar a prévia. Tente novamente com uma foto JPG ou PNG menor.");
           if (submit) {
             submit.disabled = false;
             submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
           }
-          return;
+        }
+      };
+
+      const img = new Image();
+
+      img.onload = () => {
+        try {
+          const max = 900;
+          const scale = Math.min(1, max / Math.max(img.width, img.height));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.max(1, Math.round(img.width * scale));
+          canvas.height = Math.max(1, Math.round(img.height * scale));
+          const ctx = canvas.getContext("2d");
+
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            photoData = canvas.toDataURL("image/jpeg", 0.75);
+          } else {
+            photoData = originalUrl;
+          }
+        } catch (error) {
+          console.warn("Não foi possível redimensionar a foto; usando a original.", error);
+          photoData = originalUrl;
         }
 
-        close();
-        window.location.href = "site.html?preview=1";
+        finishPreview();
       };
 
       img.onerror = () => {
-        alert("Não foi possível ler a imagem escolhida.");
-        if (submit) {
-          submit.disabled = false;
-          submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
-        }
+        console.warn("O navegador não conseguiu decodificar a imagem. Usando o arquivo original.");
+        photoData = originalUrl;
+        finishPreview();
       };
+
+      // Evita ficar eternamente em “Preparando seu site...” em imagens que
+      // o navegador demora ou não consegue decodificar.
+      fallbackTimer = setTimeout(() => {
+        console.warn("Tempo de leitura da imagem excedido; usando o arquivo original.");
+        photoData = originalUrl;
+        finishPreview();
+      }, 4000);
 
       img.src = originalUrl;
     };
