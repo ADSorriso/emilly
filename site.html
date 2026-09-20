@@ -711,9 +711,9 @@ body.preview-mode:not(.premium-mode) .hero-photo{
 }
 
 body.preview-mode:not(.premium-mode) .hero-photo img{
-  width:auto !important;
+  width:100% !important;
   height:auto !important;
-  max-width:100% !important;
+  max-width:none !important;
   max-height:580px !important;
   object-fit:contain !important;
   object-position:center center !important;
@@ -758,6 +758,7 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
   }
 
   body.preview-mode:not(.premium-mode) .hero-photo img{
+    width:100% !important;
     max-height:500px !important;
   }
   body.preview-mode:not(.premium-mode) .preview-date{
