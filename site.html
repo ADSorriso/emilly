@@ -692,6 +692,82 @@ body.premium-mode main > .standard-preview{display:none !important}
 }
 </style>
 
+
+<style id="standard-photo-date-fix">
+/* ESSENCIAL + ROMÂNTICO:
+   a foto é enquadrada inteira, sem crop/corte.
+   O Premium mantém o layout próprio. */
+body.preview-mode:not(.premium-mode) .hero-photo{
+  aspect-ratio:auto !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  padding:8px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+}
+
+body.preview-mode:not(.premium-mode) .hero-photo img{
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:520px !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:none !important;
+}
+
+/* A data sempre ocupa um espaço visível e legível nos planos básicos. */
+body.preview-mode:not(.premium-mode) .preview-date{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:14px !important;
+  min-height:18px !important;
+  margin:14px auto 0 !important;
+  padding:6px 12px !important;
+  color:rgba(255,255,255,.62) !important;
+  font-size:10px !important;
+  font-weight:700 !important;
+  letter-spacing:2.5px !important;
+  line-height:1 !important;
+  text-align:center !important;
+  visibility:visible !important;
+  opacity:1 !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-date::before,
+body.preview-mode:not(.premium-mode) .preview-date::after{
+  content:"" !important;
+  width:25px !important;
+  height:1px !important;
+  flex:0 0 25px !important;
+  background:linear-gradient(90deg,transparent,rgba(255,49,88,.78)) !important;
+}
+
+body.preview-mode:not(.premium-mode) .preview-date::after{
+  background:linear-gradient(90deg,rgba(255,49,88,.78),transparent) !important;
+}
+
+@media(max-width:600px){
+  body.preview-mode:not(.premium-mode) .hero-photo img{
+    max-height:430px !important;
+  }
+  body.preview-mode:not(.premium-mode) .preview-date{
+    gap:8px !important;
+    font-size:8px !important;
+    letter-spacing:2px !important;
+  }
+  body.preview-mode:not(.premium-mode) .preview-date::before,
+  body.preview-mode:not(.premium-mode) .preview-date::after{
+    width:16px !important;
+    flex-basis:16px !important;
+  }
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -976,7 +1052,13 @@ body.premium-mode main > .standard-preview{display:none !important}
   set("loveMessage",current.loveMessage);
   set("musicName",current.loveMusic||"Nossa música");
   set("loveStory",current.loveStory);
-  if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
+  const previewDateFallback = current.loveDate || sessionStorage.getItem("amorEmSitePreviewDate") || "";
+  if(previewDateFallback){
+    const d=new Date(previewDateFallback+"T00:00:00");
+    if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));
+  }else{
+    set("loveDate","Nossa data especial");
+  }
   set("surpriseText",current.loveSurprise);
   set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
