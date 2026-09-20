@@ -898,12 +898,56 @@ function ensurePlanPersonalizationModal() {
     .pem-primary { background:#e51d4f; color:#fff; }
     .pem-primary:disabled { opacity:.65; cursor:wait; }
     @media (max-width: 650px) {
-      #planPersonalizationModal { padding:12px; }
-      .pem-card { padding:22px; max-height:calc(100vh - 24px); border-radius:20px; }
+      /* Modal mobile: começa abaixo da barra do navegador e mantém bordas visíveis */
+      #planPersonalizationModal {
+        align-items:flex-start;
+        justify-content:center;
+        padding:18px 12px calc(18px + env(safe-area-inset-bottom));
+        box-sizing:border-box;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+      }
+
+      .pem-card {
+        width:100%;
+        max-width:100%;
+        max-height:calc(100vh - 36px);
+        margin:0 auto;
+        padding:22px 18px;
+        border:1px solid #eadfe3;
+        border-radius:22px;
+        box-sizing:border-box;
+        overflow-y:auto;
+        box-shadow:0 18px 55px rgba(0,0,0,.28);
+      }
+
+      .pem-head {
+        gap:12px;
+        margin-bottom:20px;
+      }
+
+      .pem-title { font-size:25px; }
+      .pem-plan { font-size:13px; }
+      .pem-close { width:42px; height:42px; }
+
       .pem-grid { grid-template-columns:1fr; }
       .pem-field.full, .pem-section, .pem-premium { grid-column:auto; }
-      .pem-title { font-size:25px; }
-      .pem-actions { flex-direction:column-reverse; }
+
+      .pem-field input,
+      .pem-field textarea,
+      .pem-field select {
+        min-width:0;
+        font-size:16px;
+      }
+
+      .pem-actions {
+        flex-direction:column-reverse;
+        position:sticky;
+        bottom:0;
+        padding-top:10px;
+        background:#fff;
+      }
+
       .pem-secondary, .pem-primary { width:100%; }
     }
   `;
@@ -1163,13 +1207,7 @@ Seu jeito de me apoiar"></textarea>
       return;
     }
 
-    const savedPreview = (() => {
-      try { return JSON.parse(sessionStorage.getItem("amorEmSitePreview") || "null"); }
-      catch (e) { return null; }
-    })();
-    const existingPhotoData = savedPreview?.photoData || photoData || "";
-
-    if (!modalPhoto.files?.length && !existingPhotoData) {
+    if (!modalPhoto.files?.length) {
       alert("Escolha a foto principal.");
       return;
     }
@@ -1209,8 +1247,8 @@ Seu jeito de me apoiar"></textarea>
       }
     }
 
-    const file = modalPhoto.files?.[0] || null;
-    if (file && (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024)) {
+    const file = modalPhoto.files[0];
+    if (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) {
       alert("Escolha uma imagem válida de até 10 MB.");
       return;
     }
@@ -1232,7 +1270,10 @@ Seu jeito de me apoiar"></textarea>
       submit.textContent = "Preparando seu site...";
     }
 
-    const finishPreviewGeneration = (originalUrl) => {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const originalUrl = e.target?.result;
       if (!originalUrl) {
         if (submit) {
           submit.disabled = false;
@@ -1242,7 +1283,8 @@ Seu jeito de me apoiar"></textarea>
         return;
       }
 
-      // Usa a foto escolhida ou a foto já salva quando o cliente voltou para editar.
+      // Não dependemos mais de Image/canvas para gerar a prévia.
+      // A foto escolhida já é um Data URL válido para o preview.
       photoData = originalUrl;
 
       try {
@@ -1349,20 +1391,15 @@ Seu jeito de me apoiar"></textarea>
       }
     };
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => finishPreviewGeneration(e.target?.result);
-      reader.onerror = () => {
-        alert("Não foi possível preparar a foto.");
-        if (submit) {
-          submit.disabled = false;
-          submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
-        }
-      };
-      reader.readAsDataURL(file);
-    } else {
-      finishPreviewGeneration(existingPhotoData);
-    }
+    reader.onerror = () => {
+      alert("Não foi possível preparar a foto.");
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
+      }
+    };
+
+    reader.readAsDataURL(file);
   });
 }
 
@@ -1622,18 +1659,29 @@ planButtons.forEach((button) => {
 function updateCheckoutButton() {
   if (!checkoutButton) return;
 
-  // Este botão pertence à seção final da página inicial.
-  // Ele serve apenas para levar o visitante aos planos.
-  checkoutButton.textContent = "Escolher meu plano ❤️";
-  checkoutButton.classList.remove("selected");
+  if (selectedPlan) {
+    const planName =
+      selectedPlan.split(" — ")[0];
 
-  if (generatePreviewButton) {
-    if (selectedPlan) {
-      const planName = selectedPlan.split(" — ")[0];
-      generatePreviewButton.textContent = `❤️ Abrir prévia — ${planName}`;
+    checkoutButton.textContent =
+      `Continuar com ${planName} ❤️`;
+
+    checkoutButton.classList.add("selected");
+
+    if (generatePreviewButton) {
+      generatePreviewButton.textContent =
+        `❤️ Abrir prévia — ${planName}`;
       generatePreviewButton.classList.add("selected");
-    } else {
-      generatePreviewButton.textContent = "✨ Abrir minha prévia";
+    }
+  } else {
+    checkoutButton.textContent =
+      "Escolher meu plano ❤️";
+
+    checkoutButton.classList.remove("selected");
+
+    if (generatePreviewButton) {
+      generatePreviewButton.textContent =
+        "✨ Abrir minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }
@@ -1733,57 +1781,11 @@ async function startCheckout() {
   }
 }
 
-checkoutButton?.addEventListener("click", (event) => {
-  event.preventDefault();
-  document.getElementById("planos")?.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-});
+checkoutButton?.addEventListener(
+  "click",
+  () => startCheckout()
+);
 
-
-function restorePreviewForEditing() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("editar") !== "1") return;
-
-  let saved = null;
-  try {
-    saved = JSON.parse(sessionStorage.getItem("amorEmSitePreview") || "null");
-  } catch (error) {
-    console.error("Não foi possível recuperar a prévia para edição:", error);
-  }
-
-  if (!saved?.planKey || !PLAN_RULES[saved.planKey]) return;
-
-  openPlanPersonalization(saved.planKey);
-
-  const setValue = (id, value) => {
-    const el = document.getElementById(id);
-    if (el && value !== undefined && value !== null) el.value = value;
-  };
-
-  setValue("pemLoveName", saved.loveName || "");
-  setValue("pemYourName", saved.yourName || "");
-  setValue("pemMessage", saved.loveMessage || "");
-  setValue("pemDate", saved.loveDate || "");
-  setValue("pemStory", saved.loveStory || "");
-  setValue("pemReasons", saved.reasons100 || "");
-  setValue("pemLetter", saved.loveLetter || "");
-  setValue("pemSurprise", saved.loveSurprise || "");
-  setValue("pemMusic", saved.loveMusic || "");
-
-  const customization = saved.customization || {};
-  setValue("pemHeartStyle", customization.heartStyle || "classico");
-  setValue("pemPhotoStyle", customization.photoStyle || "natural");
-  setValue("pemPhotoLayout", customization.photoLayout || "coracao");
-  setValue("pemAnimation", customization.animation || "suave");
-  setValue("pemFont", customization.fontStyle || "elegante");
-  setValue("pemTheme", customization.theme || "rose");
-  setValue("pemEffects", customization.effects || "essencial");
-
-  photoData = saved.photoData || "";
-  window.amorEmSiteCustomization = customization;
-}
 
 // ==========================================
 // INICIALIZAÇÃO
@@ -1792,7 +1794,6 @@ function restorePreviewForEditing() {
 updatePreview();
 applyPlanRules();
 updateCheckoutButton();
-restorePreviewForEditing();
 
 console.log("❤️ Amor em Site iniciado");
 console.log("Backend:", API_URL);
