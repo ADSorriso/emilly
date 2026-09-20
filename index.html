@@ -875,26 +875,6 @@
 
 <script src="script.js?v=7"></script>
 
-<script id="preview-date-memory-fix">
-/* Guarda a data escolhida antes da navegação para site.html.
-   Assim, se o objeto principal da prévia não trouxer a data,
-   a página final ainda consegue exibi-la. */
-(function(){
-  const dateInput = document.getElementById("loveDate");
-  const previewButton = document.getElementById("generatePreviewButton");
-
-  function rememberPreviewDate(){
-    if(dateInput && dateInput.value){
-      sessionStorage.setItem("amorEmSitePreviewDate", dateInput.value);
-    }
-  }
-
-  dateInput?.addEventListener("change", rememberPreviewDate);
-  previewButton?.addEventListener("click", rememberPreviewDate, true);
-})();
-</script>
-
-
 <script>
 (function () {
   const API_URL = "https://amor-em-site-backend.vercel.app";
@@ -956,19 +936,22 @@
 })();
 </script>
 
-<script id="preview-history-fix">
+
+
+<script id="preview-date-memory-fix">
 (function () {
-  window.addEventListener("pageshow", function () {
-    try {
-      const navigation = performance.getEntriesByType("navigation")[0];
-      if (navigation && navigation.type === "back_forward") {
-        // Evita voltar para a versão congelada da página/modal.
-        window.location.reload();
-      }
-    } catch (_) {
-      // Navegadores antigos: não interfere no funcionamento normal.
+  const dateInput = document.getElementById("loveDate");
+  const previewButton = document.getElementById("generatePreviewButton");
+
+  function rememberDate() {
+    const value = dateInput?.value;
+    if (value) {
+      sessionStorage.setItem("amorEmSitePreviewDate", value);
     }
-  });
+  }
+
+  dateInput?.addEventListener("change", rememberDate);
+  previewButton?.addEventListener("click", rememberDate, true);
 })();
 </script>
 
