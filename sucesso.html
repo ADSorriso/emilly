@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#070506">
+  <title>Seu site está pronto ❤️</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#050304;color:#fff}
+    body{display:grid;place-items:center;padding:28px;overflow-x:hidden;background:radial-gradient(circle at 50% 20%,rgba(255,49,88,.18),transparent 34%),#050304}
+    .wrap{width:min(720px,100%)}
+    .card{position:relative;padding:42px 34px;border:1px solid rgba(255,49,88,.25);border-radius:30px;background:linear-gradient(145deg,rgba(29,7,13,.97),rgba(8,4,6,.98));box-shadow:0 30px 100px rgba(0,0,0,.55);text-align:center;overflow:hidden}
+    .glow{position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,49,88,.13);filter:blur(60px);left:50%;top:-120px;transform:translateX(-50%);pointer-events:none}
+    .icon{position:relative;width:76px;height:76px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,49,88,.10);border:1px solid rgba(255,49,88,.4);font-size:34px;box-shadow:0 0 50px rgba(255,49,88,.16)}
+    .eyebrow{position:relative;color:#ff7188;font-size:10px;font-weight:800;letter-spacing:4px}
+    h1{position:relative;margin:13px 0 10px;font-size:clamp(34px,7vw,58px);line-height:1.02;letter-spacing:-2px}
+    h1 em{font-family:"Georgia",serif;color:#ff5574;font-style:italic;font-weight:400}
+    .lead{position:relative;margin:0 auto;max-width:560px;color:#a99ca0;line-height:1.7;font-size:15px}
+    .status{position:relative;margin:28px auto 18px;width:min(560px,100%);padding:20px;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:rgba(255,255,255,.025);text-align:left}
+    .row{display:flex;justify-content:space-between;gap:20px;padding:9px 0;color:#91858a;font-size:13px;border-bottom:1px solid rgba(255,255,255,.06)}
+    .row:last-child{border-bottom:0;padding-bottom:0}
+    .row:first-child{padding-top:0}
+    .row strong{color:#fff;text-align:right;max-width:65%;word-break:break-word}
+    .linkbox{position:relative;margin:20px auto 0;width:min(560px,100%);padding:17px;border:1px solid rgba(255,49,88,.28);border-radius:18px;background:rgba(255,49,88,.055);text-align:left}
+    .linkbox small{display:block;color:#ff7188;font-weight:800;letter-spacing:2px;font-size:9px;margin-bottom:8px}
+    .linkbox code{display:block;color:#f7e9ed;font-size:12px;line-height:1.55;word-break:break-all}
+    .actions{position:relative;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+    button,a{border:0;text-decoration:none;cursor:pointer;border-radius:999px;padding:14px 22px;font-weight:800;font-size:13px}
+    .primary{color:#fff;background:linear-gradient(135deg,#ff3158,#ad0035);box-shadow:0 14px 35px rgba(255,49,88,.2)}
+    .secondary{color:#fff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+    .muted{position:relative;margin:18px 0 0;color:#6f6469;font-size:11px;line-height:1.6}
+    .spinner{width:26px;height:26px;border:2px solid rgba(255,255,255,.15);border-top-color:#ff5574;border-radius:50%;animation:spin .8s linear infinite;margin:20px auto 0}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .error{color:#ff9aaa}
+    .hidden{display:none!important}
+    @media(max-width:600px){.card{padding:34px 20px;border-radius:24px}.row{display:block}.row strong{display:block;text-align:left;max-width:none;margin-top:4px}.actions>*{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card">
+      <div class="glow"></div>
+      <div class="icon" id="icon">♥</div>
+      <div class="eyebrow" id="eyebrow">PAGAMENTO</div>
+      <h1 id="title">Estamos preparando <em>seu site.</em></h1>
+      <p class="lead" id="lead">Estamos confirmando o pagamento e buscando os dados da sua compra.</p>
+      <div class="spinner" id="spinner"></div>
+
+      <div class="status hidden" id="statusBox">
+        <div class="row"><span>Plano</span><strong id="plan">—</strong></div>
+        <div class="row"><span>Para</span><strong id="loveName">—</strong></div>
+        <div class="row"><span>Valor</span><strong id="amount">—</strong></div>
+        <div class="row"><span>Status</span><strong id="statusText">—</strong></div>
+      </div>
+
+      <div class="linkbox hidden" id="linkBox">
+        <small>SEU SITE ESTÁ PRONTO ❤️</small>
+        <code id="siteLink">—</code>
+      </div>
+
+      <div class="actions hidden" id="successActions">
+        <a class="primary" id="openSite" href="#">ABRIR MEU SITE ♥</a>
+        <button class="secondary" id="copyLink" type="button">COPIAR LINK</button>
+      </div>
+
+      <div class="actions hidden" id="retryActions">
+        <button class="secondary" id="retry" type="button">VERIFICAR NOVAMENTE</button>
+      </div>
+
+      <p class="muted" id="muted">Não feche esta página enquanto confirmamos o pagamento.</p>
+    </section>
+  </main>
+
+<script>
+(function(){
+  const API_URL="https://amor-em-site-backend.vercel.app";
+  const params=new URLSearchParams(location.search);
+  const order=params.get("order")||"";
+  const forcedStatus=params.get("status")||"success";
+  const $=id=>document.getElementById(id);
+
+  const names={essencial:"Essencial",romantico:"Romântico",premium:"Premium"};
+  const money=v=>typeof v==="number"?v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"}):String(v||"—");
+
+  let timer=null;
+  let attempts=0;
+  const maxAttempts=30;
+
+  function setLoading(title,lead){
+    $("title").innerHTML=title;
+    $("lead").textContent=lead;
+    $("spinner").classList.remove("hidden");
+  }
+
+  function showFinal(o){
+    const siteUrl=o.site_url || `${location.origin}${location.pathname.replace(/sucesso\.html$/,"site.html")}?pedido=${encodeURIComponent(o.site_slug||"")}`;
+    $("icon").textContent="✓";
+    $("eyebrow").textContent="PAGAMENTO CONFIRMADO";
+    $("title").innerHTML="Seu site está <em>pronto.</em> ❤️";
+    $("lead").textContent="Tudo certo. Este é o link do site que você acabou de comprar.";
+    $("spinner").classList.add("hidden");
+    $("statusBox").classList.remove("hidden");
+    $("linkBox").classList.remove("hidden");
+    $("successActions").classList.remove("hidden");
+    $("plan").textContent=names[o.plan]||o.plan||"—";
+    $("loveName").textContent=o.love_name||"—";
+    $("amount").textContent=money(o.amount);
+    $("statusText").textContent="Site liberado ❤️";
+    $("siteLink").textContent=siteUrl;
+    $("openSite").href=siteUrl;
+    $("muted").textContent="Guarde este link. Você pode enviar para quem quiser e abrir em qualquer dispositivo.";
+    $("copyLink").onclick=async()=>{
+      try{await navigator.clipboard.writeText(siteUrl);$("copyLink").textContent="LINK COPIADO ✓";setTimeout(()=>$("copyLink").textContent="COPIAR LINK",1800)}
+      catch(e){alert(siteUrl)}
+    };
+    if(timer)clearTimeout(timer);
+  }
+
+  function showWaiting(){
+    $("eyebrow").textContent="PAGAMENTO RECEBIDO";
+    $("title").innerHTML="Quase tudo <em>pronto.</em>";
+    $("lead").textContent="O pagamento ainda está sendo confirmado pelo Asaas. Vamos verificar novamente automaticamente.";
+    $("spinner").classList.remove("hidden");
+    $("retryActions").classList.remove("hidden");
+    $("muted").textContent="Se o pagamento acabou de ser aprovado, essa confirmação pode levar alguns segundos.";
+  }
+
+  function showFailure(message){
+    $("icon").textContent="!";
+    $("eyebrow").textContent="NÃO FOI POSSÍVEL FINALIZAR";
+    $("title").innerHTML="Vamos <em>verificar isso.</em>";
+    $("lead").textContent=message;
+    $("spinner").classList.add("hidden");
+    $("retryActions").classList.remove("hidden");
+    $("muted").textContent="Se você acredita que o pagamento foi concluído, aguarde alguns segundos e tente novamente.";
+  }
+
+  async function check(){
+    if(!order){showFailure("O identificador do pedido não foi encontrado nesta página.");return}
+    if(forcedStatus==="cancelled"){showFailure("O checkout foi cancelado. Nenhum site foi liberado.");return}
+    if(forcedStatus==="expired"){showFailure("O checkout expirou. Nenhum site foi liberado.");return}
+
+    attempts++;
+    try{
+      const r=await fetch(`${API_URL}/api/get-order?order=${encodeURIComponent(order)}`,{cache:"no-store"});
+      const j=await r.json().catch(()=>({}));
+      if(r.ok&&j.ok&&j.order&&j.order.status==="PAID"&&j.order.site_slug){showFinal(j.order);return}
+    }catch(e){console.error(e)}
+
+    if(attempts>=maxAttempts){
+      showWaiting();
+      $("muted").textContent="Ainda não recebemos a confirmação final. Você pode verificar novamente agora ou voltar depois usando o mesmo pedido.";
+      return;
+    }
+
+    showWaiting();
+    timer=setTimeout(check,2000);
+  }
+
+  $("retry").onclick=()=>{attempts=0;$("retryActions").classList.add("hidden");setLoading("Estamos preparando <em>seu site.</em>","Estamos confirmando o pagamento e buscando os dados da sua compra.");check()};
+  check();
+})();
+</script>
+</body>
+</html>

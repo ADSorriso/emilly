@@ -12,6 +12,26 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css?v=4">
+
+  <script>
+  // Compatibilidade: pagamentos criados antes da nova tela de sucesso
+  // ainda podem retornar para index.html?checkout=success&order=...
+  // Redirecionamos imediatamente para a nova experiência pós-pagamento.
+  (function () {
+    const p = new URLSearchParams(window.location.search);
+    const order = p.get("order");
+    const pedido = p.get("pedido");
+    const checkout = p.get("checkout");
+    if (pedido && !checkout) {
+      window.location.replace(`site.html?pedido=${encodeURIComponent(pedido)}`);
+      return;
+    }
+    if (order && checkout) {
+      const status = checkout === "cancelled" ? "cancelled" : checkout === "expired" ? "expired" : "success";
+      window.location.replace(`sucesso.html?status=${status}&order=${encodeURIComponent(order)}`);
+    }
+  })();
+  </script>
 </head>
 
 <body>
@@ -25,7 +45,7 @@
     <a href="#planos">Planos</a>
   </nav>
 
-  <a class="navcta" href="#planos">Testar agora ♥</a>
+  <a class="navcta" href="#teste">Testar agora ♥</a>
 </header>
 
 <main>
@@ -874,68 +894,7 @@
 
 </footer>
 
-<script src="script.js?v=7"></script>
-<script>
-(function () {
-  const API_URL = "https://amor-em-site-backend.vercel.app";
-  const params = new URLSearchParams(window.location.search);
-  const pedido = params.get("pedido");
-  const order = params.get("order");
-
-  if (!pedido && !order) return;
-
-  const setText = (id, value) => {
-    const el = document.getElementById(id);
-    if (el && value != null && String(value).trim()) {
-      el.textContent = String(value);
-    }
-  };
-
-  async function loadPaidOrder() {
-    try {
-      const query = pedido
-        ? `?pedido=${encodeURIComponent(pedido)}`
-        : `?order=${encodeURIComponent(order)}`;
-
-      const response = await fetch(`${API_URL}/api/get-order${query}`, {
-        cache: "no-store"
-      });
-
-      if (!response.ok) {
-        console.error("Não foi possível carregar o pedido.");
-        return;
-      }
-
-      const result = await response.json();
-
-      if (!result.ok || !result.order) return;
-
-      const o = result.order;
-
-      setText("previewName", o.love_name || "meu amor");
-      setText("previewMessage", o.love_message);
-      setText("previewStory", o.love_story);
-      setText("previewReason1", o.reason_1);
-      setText("previewReason2", o.reason_2);
-      setText("previewReason3", o.reason_3);
-
-      // Se o pedido veio por ?order=AES-..., troca o endereço
-      // pelo slug definitivo depois que o backend retornar.
-      if (order && o.site_slug) {
-        const finalUrl =
-          `${window.location.origin}${window.location.pathname}?pedido=${encodeURIComponent(o.site_slug)}`;
-
-        window.history.replaceState({}, "", finalUrl);
-      }
-    } catch (error) {
-      console.error("Erro ao carregar pedido:", error);
-    }
-  }
-
-  loadPaidOrder();
-})();
-</script>
-
+<script src="script.js?v=8"></script>
 
 </body>
 </html>

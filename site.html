@@ -10,8 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site-preview.css">
 <style>
-.preview-back-button{position:fixed;top:92px;left:22px;z-index:9999;border:1px solid rgba(255,49,88,.45);background:rgba(10,5,8,.88);color:#fff;padding:10px 16px;border-radius:999px;font:700 13px/1 Arial,sans-serif;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 8px 30px rgba(0,0,0,.3);transition:transform .2s ease,background .2s ease,border-color .2s ease}.preview-back-button:hover{transform:translateY(-1px);background:rgba(255,49,88,.16);border-color:rgba(255,49,88,.8)}@media (max-width:700px){.preview-back-button{top:78px;left:12px;padding:9px 12px;font-size:12px}}
-
 /* Camada exclusiva da prévia comercial — visual integrado ao site original. */
 :root{
   --preview-red:#ff3158;
@@ -109,6 +107,10 @@
 .timeline-item p{white-space:pre-wrap}
 .heart-section .section-heading{margin-bottom:48px}
 .heart-gallery img{cursor:zoom-in}
+.reason-grid{
+  max-width:900px;margin:36px auto 0;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
 .reason-item{
   padding:16px 17px;
   border:1px solid rgba(255,49,88,.16);
@@ -152,6 +154,7 @@
 section[id],.checkout-final{scroll-margin-top:92px}
 @media(max-width:800px){
   .preview-plan-chip{font-size:8px;padding:7px 11px}
+  .reason-grid{grid-template-columns:1fr}
   .preview-photo-grid{grid-template-columns:repeat(2,1fr)}
   .preview-photo-grid .photo-card{height:230px}
   .hero-photo{width:min(310px,82vw)}
@@ -197,6 +200,7 @@ section[id],.checkout-final{scroll-margin-top:92px}
 .reason-number{font-size:96px !important}
 .reason-card{width:min(720px,100%) !important;min-height:125px !important;padding:28px 34px !important;margin-bottom:22px !important}
 .reason-card p{font-size:36px !important;line-height:1.15 !important}
+.reason-grid{margin-top:30px !important}
 
 /* Navegação e âncoras */
 .navbar{height:68px !important}
@@ -325,6 +329,10 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   letter-spacing:1.5px;
 }
 
+#motivos .reason-grid{
+  width:min(900px,100%);
+  margin:34px auto 0 !important;
+}
 
 @media(max-width:600px){
   #motivos h2{
@@ -382,6 +390,11 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 #motivos .reason-card{
   margin-top:0 !important;
 }
+#motivos .reason-grid .reason-item{
+  display:flex;
+  align-items:center;
+  min-height:54px;
+}
 @media(max-width:600px){
   .hero .preview-date{
     gap:9px;
@@ -417,6 +430,20 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   text-align:left;
 }
 
+#motivos .reason-grid .reason-item{
+  min-height:52px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  border:1px solid rgba(255,49,88,.13);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  color:rgba(255,255,255,.78);
+  font-size:12px;
+  line-height:1.45;
+  transition:.25s ease;
+}
 
 #motivos .reason-grid .reason-item:hover{
   border-color:rgba(255,49,88,.35);
@@ -1028,88 +1055,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
-
-<style>
-/* Ajustes finais para celular: mensagem completa e botão de música sempre visível. */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden !important;
-}
-
-.hero .preview-message {
-  width: min(620px, calc(100% - 32px)) !important;
-  max-width: calc(100% - 32px) !important;
-  margin: 0 auto !important;
-  padding: 0 4px !important;
-  box-sizing: border-box !important;
-  min-height: 0 !important;
-  height: auto !important;
-  overflow: visible !important;
-  white-space: pre-wrap !important;
-  overflow-wrap: anywhere !important;
-  word-break: break-word !important;
-  text-align: center !important;
-}
-
-.music-button {
-  position: fixed !important;
-  right: 18px !important;
-  bottom: 18px !important;
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  z-index: 10050 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 50% !important;
-  box-sizing: border-box !important;
-  line-height: 1 !important;
-}
-
-@media (max-width: 600px) {
-  .hero {
-    width: 100% !important;
-    max-width: 100% !important;
-    overflow: visible !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero-content {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding-left: 12px !important;
-    padding-right: 12px !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero h1 {
-    max-width: 100% !important;
-    overflow: visible !important;
-    word-break: normal !important;
-  }
-
-  .hero .preview-message {
-    font-size: 16px !important;
-    line-height: 1.7 !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-  }
-
-  .music-button {
-    right: 14px !important;
-    bottom: calc(14px + env(safe-area-inset-bottom)) !important;
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    min-height: 50px !important;
-  }
-}
-</style>
-
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -1122,8 +1067,6 @@ html, body {
   </nav>
   <button class="love-pill" id="lovePill">♥ Eu te amo</button>
 </header>
-
-<button class="preview-back-button" id="previewBackButton" type="button" aria-label="Voltar para personalização">← Voltar para personalização</button>
 
 <main>
 <div class="standard-preview">
@@ -1472,9 +1415,50 @@ html, body {
   // Modal de fotos
   const modal=$("photoModal"),modalImage=$("modalImage");document.querySelectorAll(".heart-photo img,.photo-card img").forEach(img=>img.onclick=()=>{if(!img.src)return;modalImage.src=img.src;modal.classList.add("open")});$("closeModal").onclick=()=>modal.classList.remove("open");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("open")};
 
-  // Se veio de um pedido pago, carrega os dados reais e transforma a página em site final.
+  // Link final: busca os dados persistidos no banco.
+  // Se este for o primeiro acesso neste navegador, guarda os dados em
+  // sessionStorage e recarrega para que toda a experiência use os dados comprados.
   if(paid){
-    (async()=>{try{const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});const j=await r.json();if(j.ok&&j.order){const o=j.order;set("loveName",o.love_name||"meu amor");set("loveMessage",o.love_message||"");set("loveStory",o.love_story||"");set("reasonText",o.reason_1||"");}}catch(e){console.error(e)}})();
+    (async()=>{
+      try{
+        const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;
+        const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});
+        const j=await r.json();
+        if(!j.ok||!j.order)return;
+
+        const o=j.order;
+        const key=o.site_slug||o.order_id||paid;
+        const loadedKey=sessionStorage.getItem("amorEmSiteLoadedOrder")||"";
+        const stored=o.site_data&&typeof o.site_data==="object"?o.site_data:{};
+        const merged={
+          ...stored,
+          plan:o.plan||stored.plan||"romantico",
+          planKey:o.plan||stored.planKey||"romantico",
+          loveName:o.love_name??stored.loveName??"",
+          yourName:o.your_name??stored.yourName??"",
+          loveMessage:o.love_message??stored.loveMessage??"",
+          loveDate:o.love_date??stored.loveDate??"",
+          loveMusic:o.love_music??stored.loveMusic??"",
+          loveStory:o.love_story??stored.loveStory??"",
+          photoData:stored.photoData||o.photo_data||"",
+          reason1:o.reason_1??stored.reason1??"",
+          reason2:o.reason_2??stored.reason2??"",
+          reason3:o.reason_3??stored.reason3??""
+        };
+
+        if(loadedKey!==key){
+          sessionStorage.setItem("amorEmSitePreview",JSON.stringify(merged));
+          sessionStorage.setItem("amorEmSiteLoadedOrder",key);
+          location.reload();
+          return;
+        }
+
+        set("loveName",merged.loveName||"meu amor");
+        set("loveMessage",merged.loveMessage||"");
+        set("loveStory",merged.loveStory||"");
+        set("reasonText",merged.reason1||"");
+      }catch(e){console.error("Erro ao carregar pedido pago:",e)}
+    })();
   }
 
   // Premium: conteúdo e interações do modelo exclusivo.
@@ -1554,5 +1538,5 @@ html, body {
 }
 </style>
 
-<script>(function(){const b=document.getElementById("previewBackButton");if(b)b.addEventListener("click",()=>{window.location.href="index.html?editar=1#planos"});})();</script></body>
+</body>
 </html>
