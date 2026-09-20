@@ -706,12 +706,14 @@ generatePreviewButton?.addEventListener(
   async (event) => {
     event.preventDefault();
 
-    // Este botão é SOMENTE para gerar a prévia.
-    // O checkout continua no botão de pagamento.
-    const key = getPlanKey() || "romantico";
+    // Sem plano selecionado, abre a prévia Romântica como padrão.
+    if (!selectedPlan) {
+      await openPreviewForPlan("romantico");
+      return;
+    }
 
-    if (!PLAN_RULES[key]) return;
-
+    // Com plano selecionado: valida as regras daquele plano,
+    // cria o pedido e leva o cliente ao pagamento.
     if (!validatePlanPersonalization()) return;
 
     if (form && !form.checkValidity()) {
@@ -719,7 +721,8 @@ generatePreviewButton?.addEventListener(
       return;
     }
 
-    await openPreviewForPlan(key);
+    updatePreview();
+    await startCheckout();
   }
 );
 
@@ -1072,17 +1075,11 @@ Seu jeito de me apoiar"></textarea>
   `;
   document.body.appendChild(modal);
 
-  const close = (resetSelection = false) => {
+  const close = () => {
     // Fecha de forma explícita para não depender apenas da classe CSS.
     modal.classList.remove("is-open");
     modal.style.display = "none";
     document.body.style.overflow = "";
-
-    if (resetSelection) {
-      selectedPlan = "";
-      window.amorEmSiteCustomization = {};
-      updateCheckoutButton();
-    }
   };
 
   const musicOptions = {
@@ -1126,7 +1123,7 @@ Seu jeito de me apoiar"></textarea>
   }
 
   document.getElementById("pemClose")?.addEventListener("click", close);
-  document.getElementById("pemCancel")?.addEventListener("click", () => close(true));
+  document.getElementById("pemCancel")?.addEventListener("click", close);
   modal.addEventListener("click", (event) => {
     if (event.target === modal) close();
   });
@@ -1137,16 +1134,10 @@ Seu jeito de me apoiar"></textarea>
     const target = event.target instanceof Element ? event.target : null;
     if (!target) return;
 
-    if (target.closest("#pemClose")) {
+    if (target.closest("#pemClose") || target.closest("#pemCancel")) {
       event.preventDefault();
       event.stopPropagation();
-      close(false);
-    }
-
-    if (target.closest("#pemCancel")) {
-      event.preventDefault();
-      event.stopPropagation();
-      close(true);
+      close();
     }
   }, true);
 
@@ -1172,7 +1163,13 @@ Seu jeito de me apoiar"></textarea>
       return;
     }
 
-    if (!modalPhoto.files?.length) {
+    const savedPreview = (() => {
+      try { return JSON.parse(sessionStorage.getItem("amorEmSitePreview") || "null"); }
+      catch (e) { return null; }
+    })();
+    const existingPhotoData = savedPreview?.photoData || photoData || "";
+
+    if (!modalPhoto.files?.length && !existingPhotoData) {
       alert("Escolha a foto principal.");
       return;
     }
@@ -1212,8 +1209,8 @@ Seu jeito de me apoiar"></textarea>
       }
     }
 
-    const file = modalPhoto.files[0];
-    if (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) {
+    const file = modalPhoto.files?.[0] || null;
+    if (file && (!file.type.startsWith("image/") || file.size > 10 * 1024 * 1024)) {
       alert("Escolha uma imagem válida de até 10 MB.");
       return;
     }
@@ -1235,10 +1232,7 @@ Seu jeito de me apoiar"></textarea>
       submit.textContent = "Preparando seu site...";
     }
 
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const originalUrl = e.target?.result;
+    const finishPreviewGeneration = (originalUrl) => {
       if (!originalUrl) {
         if (submit) {
           submit.disabled = false;
@@ -1248,8 +1242,7 @@ Seu jeito de me apoiar"></textarea>
         return;
       }
 
-      // Não dependemos mais de Image/canvas para gerar a prévia.
-      // A foto escolhida já é um Data URL válido para o preview.
+      // Usa a foto escolhida ou a foto já salva quando o cliente voltou para editar.
       photoData = originalUrl;
 
       try {
@@ -1356,15 +1349,20 @@ Seu jeito de me apoiar"></textarea>
       }
     };
 
-    reader.onerror = () => {
-      alert("Não foi possível preparar a foto.");
-      if (submit) {
-        submit.disabled = false;
-        submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
-      }
-    };
-
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => finishPreviewGeneration(e.target?.result);
+      reader.onerror = () => {
+        alert("Não foi possível preparar a foto.");
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      finishPreviewGeneration(existingPhotoData);
+    }
   });
 }
 
@@ -1621,27 +1619,6 @@ planButtons.forEach((button) => {
   });
 });
 
-// Quando o usuário volta da prévia usando a seta do navegador, o Firefox/Chrome
-// pode restaurar a página pelo bfcache. Nesse caso as variáveis JS podem voltar
-// vazias mesmo com o modal ainda aberto. Reconstruímos o plano pelo modal.
-window.addEventListener("pageshow", () => {
-  const modal = document.getElementById("planPersonalizationModal");
-  if (!modal || !modal.classList.contains("is-open")) return;
-
-  const key = modal.dataset.planKey || "";
-  if (!PLAN_RULES[key]) return;
-
-  selectedPlan = `${PLAN_NAMES[key]} — ${PLAN_PRICES[key]}`;
-  updateCheckoutButton();
-
-  const submit = document.getElementById("pemSubmit");
-  if (submit) {
-    submit.disabled = false;
-    submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key]}`;
-  }
-});
-
-
 function updateCheckoutButton() {
   if (!checkoutButton) return;
 
@@ -1773,6 +1750,49 @@ checkoutButton?.addEventListener(
 );
 
 
+function restorePreviewForEditing() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("editar") !== "1") return;
+
+  let saved = null;
+  try {
+    saved = JSON.parse(sessionStorage.getItem("amorEmSitePreview") || "null");
+  } catch (error) {
+    console.error("Não foi possível recuperar a prévia para edição:", error);
+  }
+
+  if (!saved?.planKey || !PLAN_RULES[saved.planKey]) return;
+
+  openPlanPersonalization(saved.planKey);
+
+  const setValue = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && value !== undefined && value !== null) el.value = value;
+  };
+
+  setValue("pemLoveName", saved.loveName || "");
+  setValue("pemYourName", saved.yourName || "");
+  setValue("pemMessage", saved.loveMessage || "");
+  setValue("pemDate", saved.loveDate || "");
+  setValue("pemStory", saved.loveStory || "");
+  setValue("pemReasons", saved.reasons100 || "");
+  setValue("pemLetter", saved.loveLetter || "");
+  setValue("pemSurprise", saved.loveSurprise || "");
+  setValue("pemMusic", saved.loveMusic || "");
+
+  const customization = saved.customization || {};
+  setValue("pemHeartStyle", customization.heartStyle || "classico");
+  setValue("pemPhotoStyle", customization.photoStyle || "natural");
+  setValue("pemPhotoLayout", customization.photoLayout || "coracao");
+  setValue("pemAnimation", customization.animation || "suave");
+  setValue("pemFont", customization.fontStyle || "elegante");
+  setValue("pemTheme", customization.theme || "rose");
+  setValue("pemEffects", customization.effects || "essencial");
+
+  photoData = saved.photoData || "";
+  window.amorEmSiteCustomization = customization;
+}
+
 // ==========================================
 // INICIALIZAÇÃO
 // ==========================================
@@ -1780,6 +1800,7 @@ checkoutButton?.addEventListener(
 updatePreview();
 applyPlanRules();
 updateCheckoutButton();
+restorePreviewForEditing();
 
 console.log("❤️ Amor em Site iniciado");
 console.log("Backend:", API_URL);

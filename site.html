@@ -10,6 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site-preview.css">
 <style>
+.preview-back-button{position:fixed;top:92px;left:22px;z-index:9999;border:1px solid rgba(255,49,88,.45);background:rgba(10,5,8,.88);color:#fff;padding:10px 16px;border-radius:999px;font:700 13px/1 Arial,sans-serif;cursor:pointer;backdrop-filter:blur(12px);box-shadow:0 8px 30px rgba(0,0,0,.3);transition:transform .2s ease,background .2s ease,border-color .2s ease}.preview-back-button:hover{transform:translateY(-1px);background:rgba(255,49,88,.16);border-color:rgba(255,49,88,.8)}@media (max-width:700px){.preview-back-button{top:78px;left:12px;padding:9px 12px;font-size:12px}}
+
 /* Camada exclusiva da prévia comercial — visual integrado ao site original. */
 :root{
   --preview-red:#ff3158;
@@ -1039,6 +1041,8 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   <button class="love-pill" id="lovePill">♥ Eu te amo</button>
 </header>
 
+<button class="preview-back-button" id="previewBackButton" type="button" aria-label="Voltar para personalização">← Voltar para personalização</button>
+
 <main>
 <div class="standard-preview">
   <section class="hero" id="inicio">
@@ -1468,5 +1472,5 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
-</body>
+<script>(function(){const b=document.getElementById("previewBackButton");if(b)b.addEventListener("click",()=>{window.location.href="index.html?editar=1#planos"});})();</script></body>
 </html>
