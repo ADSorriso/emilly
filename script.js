@@ -1271,7 +1271,7 @@ Seu jeito de me apoiar"></textarea>
           alert("Não foi possível preparar a foto.");
           if (submit) {
             submit.disabled = false;
-            submit.textContent = `✨ Ver minha prévia — ${PLAN_NAMES[key] || "Plano"}`;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
           }
           return;
         }
@@ -1333,7 +1333,7 @@ Seu jeito de me apoiar"></textarea>
           alert("A foto ficou grande demais para a prévia. Escolha uma foto menor e tente novamente.");
           if (submit) {
             submit.disabled = false;
-            submit.textContent = `✨ Ver minha prévia — ${PLAN_NAMES[key] || "Plano"}`;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
           }
           return;
         }
@@ -1346,7 +1346,7 @@ Seu jeito de me apoiar"></textarea>
         alert("Não foi possível ler a imagem escolhida.");
         if (submit) {
           submit.disabled = false;
-          submit.textContent = `✨ Ver minha prévia — ${PLAN_NAMES[key] || "Plano"}`;
+          submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
         }
       };
 
@@ -1357,7 +1357,7 @@ Seu jeito de me apoiar"></textarea>
       alert("Não foi possível preparar a foto.");
       if (submit) {
         submit.disabled = false;
-        submit.textContent = `✨ Ver minha prévia — ${PLAN_NAMES[key] || "Plano"}`;
+        submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
       }
     };
 
@@ -1460,7 +1460,7 @@ function openPlanPersonalization(planKey) {
   }
 
   document.getElementById("pemSubmit").textContent =
-    `✨ Ver minha prévia — ${planName}`;
+    `❤️ Abrir prévia — ${planName}`;
 
   modal.style.display = "flex";
   modal.classList.add("is-open");
@@ -1472,7 +1472,7 @@ function openPlanPersonalization(planKey) {
 }
 
 // ==========================================
-// CLIQUE NO PLANO → ABRE A PERSONALIZAÇÃO
+// CLIQUE NO PLANO → ABRE DIRETO A PRÉVIA
 // ==========================================
 
 function getPreviewFallbacks(planKey) {
@@ -1605,14 +1605,15 @@ async function openPreviewForPlan(planKey) {
 }
 
 planButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", async (event) => {
     event.preventDefault();
     event.stopImmediatePropagation();
 
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
 
-    // Primeiro escolhe o plano; só depois personaliza e abre a prévia.
+    // Primeiro abre a personalização nesta mesma página.
+    // A prévia só abre depois que o cliente preencher os dados.
     openPlanPersonalization(planKey);
   });
 });
@@ -1631,7 +1632,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        `✨ Ver minha prévia — ${planName}`;
+        `❤️ Abrir prévia — ${planName}`;
       generatePreviewButton.classList.add("selected");
     }
   } else {
@@ -1642,7 +1643,7 @@ function updateCheckoutButton() {
 
     if (generatePreviewButton) {
       generatePreviewButton.textContent =
-        "✨ Ver minha prévia";
+        "✨ Abrir minha prévia";
       generatePreviewButton.classList.remove("selected");
     }
   }
