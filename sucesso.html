@@ -96,13 +96,12 @@
   function buildSiteUrl(o){
     if(!o.site_slug) return "";
 
-    const basePath = location.pathname.replace(/sucesso\.html$/i, "");
-    return `${location.origin}${basePath}site.html?pedido=${encodeURIComponent(o.site_slug)}`;
+    return `${location.origin}/emilly/site.html?pedido=${encodeURIComponent(o.site_slug)}`;
   }
 
   function showFinal(o){
-    // Usa o endereço do GitHub Pages atual + site.html.
-    // Isso evita que um site_url antigo salvo no banco leve para /amor-em-site/.
+    // O site público deste projeto fica em /emilly/.
+    // Priorizamos esse endereço para não depender de um site_url antigo salvo no banco.
     const siteUrl=buildSiteUrl(o) || o.site_url || "";
 
     $("icon").textContent="✓";
