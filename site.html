@@ -1133,7 +1133,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
+    
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -1234,7 +1234,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
-    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
@@ -1382,7 +1381,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
   set("reasonText",lines[0]);
   set("reasonCounter",`Motivo 1 de 100`);
-  $("reasonGrid").innerHTML="";
+  if($("reasonGrid")) $("reasonGrid").innerHTML="";
 
   let reasonIndex=0;
   $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
@@ -1443,9 +1442,7 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
   $("premiumLetter").innerHTML=esc(letter).replace(/\n/g,"<br>");
   set("premiumSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
-  if($("premiumReasonGrid")){
-    $("premiumReasonGrid").innerHTML=lines.map((r,i)=>`<div class="px-reason-item"><b>${String(i+1).padStart(2,"0")}</b><span>${esc(r)}</span></div>`).join("");
-  }
+  if($("premiumReasonGrid")) $("premiumReasonGrid").innerHTML="";
 
   let premiumReasonIndex=0;
   const showPremiumReason=()=>{
@@ -1489,5 +1486,16 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 
 })();
 </script>
+
+<style id="single-reason-only">
+/* Apenas um motivo visível por vez. A lista completa continua existindo nos dados
+   para o botão "Revelar outro motivo", mas não é exibida como uma grade. */
+#motivos .reason-grid,
+#premium-motivos .px-reason-grid,
+#premiumReasonGrid {
+  display: none !important;
+}
+</style>
+
 </body>
 </html>
