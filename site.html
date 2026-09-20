@@ -775,39 +775,76 @@ body.preview-mode:not(.premium-mode) .preview-date::after{
 </style>
 
 
-<style id="premium-isolated-layout">
-/* PREMIUM = experiência visual própria.
-   Não mistura o layout Romântico com o layout Premium. */
-body.premium-mode main > :not(.premium-preview){
-  display:none !important;
-}
+<style id="romantic-functions-fix">
+/* CORREÇÃO — PLANO ROMÂNTICO
+   Os recursos ficam realmente visíveis e interativos na prévia. */
 
-body:not(.premium-mode) .premium-preview{
-  display:none !important;
-}
-
-/* A prévia Premium começa limpa, sem o hero/layout do Romântico. */
-body.premium-mode .navbar{
-  background:rgba(18,11,13,.88);
-  border-bottom-color:rgba(255,255,255,.08);
-}
-
-body.premium-mode .navbar .logo{
-  color:#fff;
-}
-
-body.premium-mode .premium-preview{
+/* História não pode ficar vazia quando ainda não existe texto/foto. */
+body.preview-mode:not(.premium-mode) #storySection{
+  min-height:150px !important;
   display:block !important;
-  padding-top:74px;
+}
+body.preview-mode:not(.premium-mode) #storySection .timeline-item{
+  opacity:1 !important;
+  filter:none !important;
 }
 
-body.premium-mode .px-checkout{
-  margin-bottom:0;
+/* Coração de fotos: placeholders elegantes até o cliente enviar a foto. */
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo{
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255,49,88,.28), rgba(255,49,88,.04) 48%, rgba(255,255,255,.025) 49%, rgba(0,0,0,0) 70%),
+    #16070c !important;
+  border:1px solid rgba(255,49,88,.20);
+  display:grid;
+  place-items:center;
 }
-
-/* Os motivos continuam sendo revelados pelo botão, sem grade de caixas. */
-body.premium-mode #premiumReasonGrid{
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo::after{
+  content:"♥";
+  color:rgba(255,79,112,.55);
+  font-size:28px;
+  text-shadow:0 0 25px rgba(255,49,88,.35);
+}
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img{
+  min-width:100%;
+  min-height:100%;
+  object-fit:cover;
+}
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo img[src=""]{
   display:none !important;
+}
+
+/* Galeria de momentos */
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card{
+  min-height:210px;
+  background:
+    radial-gradient(circle, rgba(255,49,88,.18), transparent 58%),
+    #12070b !important;
+  border:1px solid rgba(255,49,88,.18);
+  display:grid;
+  place-items:center;
+}
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card::after{
+  content:"♥";
+  color:rgba(255,79,112,.45);
+  font-size:32px;
+}
+
+/* A surpresa precisa aparecer na prévia Romântica. */
+body.preview-mode:not(.premium-mode) #surpresa #surpriseBefore{
+  opacity:1 !important;
+  visibility:visible !important;
+  transform:none !important;
+}
+body.preview-mode:not(.premium-mode) #surpresa #surpriseAfter.hidden{
+  display:none !important;
+}
+
+/* Quando o cliente tiver foto, ela continua prevalecendo sobre o placeholder. */
+body.preview-mode:not(.premium-mode) #momentsSection .heart-photo:has(img[src]:not([src=""])){
+  background:#16070c !important;
+}
+body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:not([src=""])){
+  background:#12070b !important;
 }
 </style>
 
@@ -861,7 +898,7 @@ body.premium-mode #premiumReasonGrid{
     <div class="section-heading reveal"><span class="eyebrow">FOTOS</span><h2>Momentos que <em>ficam.</em></h2></div>
     <div class="preview-photo-grid preview-lock" id="photoGridSection">
       <div class="photo-card"><img id="gridPhoto1" alt="Momento"></div><div class="photo-card"><img id="gridPhoto2" alt="Momento"></div><div class="photo-card"><img id="gridPhoto3" alt="Momento"></div>
-      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>A experiência Premium traz uma composição visual exclusiva para suas fotos.</p></div></div>
+      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>As opções completas de fotos fazem parte dos planos Romântico e Premium.</p><button data-upgrade="romantico">Ver plano Romântico</button></div></div>
     </div>
   </section>
 
@@ -875,6 +912,7 @@ body.premium-mode #premiumReasonGrid{
     </div>
     <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
     <small id="reasonCounter">Motivo 1 de 1</small>
+    <div class="reason-grid" id="reasonGrid"></div>
   </section>
 
   <section class="letter-section preview-lock" id="carta">
@@ -973,6 +1011,7 @@ body.premium-mode #premiumReasonGrid{
       <button class="px-primary" id="premiumRevealReason" type="button">Revelar outro motivo ♥</button>
       <small class="px-counter" id="premiumReasonCounter">Motivo 1 de 100</small>
     </div>
+    <div class="px-reason-grid" id="premiumReasonGrid"></div>
   </section>
 
   <section class="px-section px-letter" id="premium-carta">
