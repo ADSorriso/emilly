@@ -734,9 +734,9 @@ generatePreviewButton?.addEventListener(
   async (event) => {
     event.preventDefault();
 
-    // Sem plano selecionado: continua sendo apenas uma prévia gratuita.
+    // Sem plano selecionado, abre a prévia Romântica como padrão.
     if (!selectedPlan) {
-      generatePreview();
+      await openPreviewForPlan("romantico");
       return;
     }
 
@@ -1104,7 +1104,9 @@ Seu jeito de me apoiar"></textarea>
   document.body.appendChild(modal);
 
   const close = () => {
+    // Fecha de forma explícita para não depender apenas da classe CSS.
     modal.classList.remove("is-open");
+    modal.style.display = "none";
     document.body.style.overflow = "";
   };
 
@@ -1153,6 +1155,19 @@ Seu jeito de me apoiar"></textarea>
   modal.addEventListener("click", (event) => {
     if (event.target === modal) close();
   });
+
+  // Fallback por delegação: garante que X e Voltar fechem mesmo se
+  // outro código/estilo interferir nos listeners dos botões.
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+
+    if (target.closest("#pemClose") || target.closest("#pemCancel")) {
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    }
+  }, true);
 
   document.getElementById("pemForm")?.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -1350,25 +1365,6 @@ Seu jeito de me apoiar"></textarea>
   });
 }
 
-function resetPlanPersonalizationForm() {
-  const form = document.getElementById("pemForm");
-  if (form) form.reset();
-
-  // Limpa a foto e todos os dados temporários da personalização anterior.
-  photoData = "";
-  window.amorEmSiteCustomization = {};
-
-  const photoInput = document.getElementById("pemPhoto");
-  if (photoInput) photoInput.value = "";
-
-  // Remove estados de carregamento/erro de uma tentativa anterior.
-  const submit = document.getElementById("pemSubmit");
-  if (submit) {
-    submit.disabled = false;
-    submit.removeAttribute("aria-busy");
-  }
-}
-
 function openPlanPersonalization(planKey) {
   const planName = PLAN_NAMES[planKey];
   if (!planName) return;
@@ -1378,11 +1374,6 @@ function openPlanPersonalization(planKey) {
   ensurePlanPersonalizationModal();
 
   const modal = document.getElementById("planPersonalizationModal");
-
-  // Cada nova abertura começa limpa. Isso permite gerar outra prévia
-  // mesmo depois de voltar de site.html pelo botão Voltar do navegador.
-  resetPlanPersonalizationForm();
-
   modal.dataset.planKey = planKey;
 
   document.getElementById("pemPlanName").textContent =
@@ -1471,6 +1462,7 @@ function openPlanPersonalization(planKey) {
   document.getElementById("pemSubmit").textContent =
     `❤️ Abrir prévia — ${planName}`;
 
+  modal.style.display = "flex";
   modal.classList.add("is-open");
   document.body.style.overflow = "hidden";
 
@@ -1479,77 +1471,150 @@ function openPlanPersonalization(planKey) {
   }, 50);
 }
 
-// Ao retornar da prévia pelo histórico do navegador, limpa a personalização
-// antiga para que o próximo teste comece vazio.
-window.addEventListener("pageshow", () => {
-  const modal = document.getElementById("planPersonalizationModal");
-  if (modal) {
-    resetPlanPersonalizationForm();
-    modal.classList.remove("is-open");
-  }
-});
+// ==========================================
+// CLIQUE NO PLANO → ABRE DIRETO A PRÉVIA
+// ==========================================
 
-function startDirectPlanPreview(planKey) {
-  const rules = PLAN_RULES[planKey];
-  if (!rules) return;
+function getPreviewFallbacks(planKey) {
+  const romantic = planKey === "romantico" || planKey === "premium";
 
-  selectedPlan = `${PLAN_NAMES[planKey]} — ${PLAN_PRICES[planKey]}`;
+  return {
+    loveName: nameInput?.value.trim() || "meu amor",
+    yourName: yourNameInput?.value.trim() || "seu amor",
+    loveMessage:
+      messageInput?.value.trim() ||
+      "Eu fiz esse cantinho especialmente para você. ❤️",
+    loveDate: dateInput?.value || "",
+    loveMusic: musicInput?.value || MUSIC_LIBRARY[0].value,
+    loveStory:
+      storyInput?.value.trim() ||
+      (romantic
+        ? "Aqui começa uma história feita de encontros, carinho e muitos momentos especiais."
+        : ""),
+    reasons100:
+      document.getElementById("reasons100")?.value.trim() ||
+      [reason1Input?.value.trim(), reason2Input?.value.trim(), reason3Input?.value.trim()]
+        .filter(Boolean)
+        .join("\n"),
+    loveLetter:
+      document.getElementById("loveLetter")?.value.trim() ||
+      (romantic
+        ? "Algumas coisas são difíceis de explicar, mas fáceis de sentir. Eu amo você. ❤️"
+        : ""),
+    loveSurprise:
+      document.getElementById("loveSurprise")?.value.trim() ||
+      (romantic
+        ? "Minha maior surpresa é poder viver tudo isso ao seu lado. ❤️"
+        : "")
+  };
+}
 
-  // Se o visitante já preencheu algo no teste, aproveitamos os dados.
-  // Se ainda não preencheu, a prévia abre imediatamente com um exemplo elegante.
-  const defaultMusic = planKey === "essencial"
-    ? "Love Me Like You Do"
-    : "A Thousand Years";
+function readPhotoForPreview() {
+  if (photoData) return Promise.resolve(photoData);
+
+  const file = photoInput?.files?.[0];
+  if (!file) return Promise.resolve("");
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const originalUrl = event.target?.result;
+      if (!originalUrl) {
+        resolve("");
+        return;
+      }
+
+      const img = new Image();
+
+      img.onload = () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          resolve("");
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        photoData = canvas.toDataURL("image/jpeg", 0.75);
+        resolve(photoData);
+      };
+
+      img.onerror = () => resolve("");
+      img.src = originalUrl;
+    };
+
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
+async function openPreviewForPlan(planKey) {
+  if (!PLAN_RULES[planKey]) return;
+
+  const planName = PLAN_NAMES[planKey] || PLAN_RULES[planKey].label;
+  selectedPlan = `${planName} — ${PLAN_PRICES[planKey]}`;
+
+  applyPlanRules();
+
+  const data = getPreviewFallbacks(planKey);
+  const selectedMusic =
+    planKey === "essencial" &&
+    !MUSIC_LIBRARY.slice(0, 2).some(song => song.value === data.loveMusic)
+      ? MUSIC_LIBRARY[0].value
+      : data.loveMusic;
 
   const previewData = {
     planKey,
     plan: selectedPlan,
-    loveName: nameInput?.value.trim() || "Emilly",
-    yourName: yourNameInput?.value.trim() || "Ricael",
-    loveMessage: messageInput?.value.trim() ||
-      "Um cantinho especial feito com amor, com cada detalhe pensado para vocês dois.",
-    loveDate: dateInput?.value || "",
-    loveMusic: musicInput?.value || defaultMusic,
-    loveStory: storyInput?.value.trim() ||
-      "Foi assim que começou uma história que merece ser lembrada.",
-    reasons100: document.getElementById("reasons100")?.value.trim() ||
-      "Seu sorriso\nSeu carinho\nO jeito que você me faz feliz",
-    loveLetter: document.getElementById("loveLetter")?.value.trim() ||
-      "Talvez eu não consiga colocar em palavras tudo aquilo que sinto, mas cada detalhe deste site foi feito pensando em você.",
-    loveSurprise: document.getElementById("loveSurprise")?.value.trim() ||
-      "Eu escolheria você em todas as vidas. ❤️",
-    photoData: photoData || "",
-    customization: planKey === "premium"
-      ? (window.amorEmSiteCustomization || {
-          heartStyle: "classico",
-          photoStyle: "natural",
-          photoLayout: "coracao",
-          animation: "suave",
-          fontStyle: "elegante",
-          theme: "rose",
-          effects: "essencial"
-        })
-      : {}
+    loveName: data.loveName,
+    yourName: data.yourName,
+    loveMessage: data.loveMessage,
+    loveDate: data.loveDate,
+    loveMusic: selectedMusic,
+    loveStory: data.loveStory,
+    reasons100: data.reasons100,
+    loveLetter: data.loveLetter,
+    loveSurprise: data.loveSurprise,
+    photoData: await readPhotoForPreview(),
+    customization:
+      planKey === "premium"
+        ? (window.amorEmSiteCustomization || {})
+        : {}
   };
 
   try {
-    sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
-    window.location.href = "site.html?preview=1";
+    sessionStorage.setItem(
+      "amorEmSitePreview",
+      JSON.stringify(previewData)
+    );
   } catch (error) {
-    console.error("Não foi possível abrir a prévia:", error);
+    console.error("Não foi possível guardar a prévia:", error);
     alert("Não foi possível preparar a prévia. Tente novamente.");
+    return;
   }
+
+  window.location.href = "site.html?preview=1";
 }
 
 planButtons.forEach((button) => {
   button.addEventListener("click", (event) => {
     event.preventDefault();
-    event.stopPropagation();
+    event.stopImmediatePropagation();
 
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
 
-    startDirectPlanPreview(planKey);
+    // O botão "Quero esse" primeiro abre a personalização do plano.
+    // A prévia só é criada depois que o cliente terminar a personalização.
+    openPlanPersonalization(planKey);
   });
 });
 
