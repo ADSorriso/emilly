@@ -734,9 +734,9 @@ generatePreviewButton?.addEventListener(
   async (event) => {
     event.preventDefault();
 
-    // Sem plano selecionado: continua sendo apenas uma prévia gratuita.
+    // Sem plano selecionado, abre a prévia Romântica como padrão.
     if (!selectedPlan) {
-      generatePreview();
+      await openPreviewForPlan("romantico");
       return;
     }
 
@@ -1471,16 +1471,157 @@ function openPlanPersonalization(planKey) {
   }, 50);
 }
 
-// O clique nos planos SEMPRE abre primeiro a personalização.
+// ==========================================
+// CLIQUE NO PLANO → ABRE DIRETO A PRÉVIA
+// ==========================================
+
+function getPreviewFallbacks(planKey) {
+  const romantic = planKey === "romantico" || planKey === "premium";
+
+  return {
+    loveName: nameInput?.value.trim() || "meu amor",
+    yourName: yourNameInput?.value.trim() || "seu amor",
+    loveMessage:
+      messageInput?.value.trim() ||
+      "Eu fiz esse cantinho especialmente para você. ❤️",
+    loveDate: dateInput?.value || "",
+    loveMusic: musicInput?.value || MUSIC_LIBRARY[0].value,
+    loveStory:
+      storyInput?.value.trim() ||
+      (romantic
+        ? "Aqui começa uma história feita de encontros, carinho e muitos momentos especiais."
+        : ""),
+    reasons100:
+      document.getElementById("reasons100")?.value.trim() ||
+      [reason1Input?.value.trim(), reason2Input?.value.trim(), reason3Input?.value.trim()]
+        .filter(Boolean)
+        .join("\n"),
+    loveLetter:
+      document.getElementById("loveLetter")?.value.trim() ||
+      (romantic
+        ? "Algumas coisas são difíceis de explicar, mas fáceis de sentir. Eu amo você. ❤️"
+        : ""),
+    loveSurprise:
+      document.getElementById("loveSurprise")?.value.trim() ||
+      (romantic
+        ? "Minha maior surpresa é poder viver tudo isso ao seu lado. ❤️"
+        : "")
+  };
+}
+
+function readPhotoForPreview() {
+  if (photoData) return Promise.resolve(photoData);
+
+  const file = photoInput?.files?.[0];
+  if (!file) return Promise.resolve("");
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const originalUrl = event.target?.result;
+      if (!originalUrl) {
+        resolve("");
+        return;
+      }
+
+      const img = new Image();
+
+      img.onload = () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          resolve("");
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        photoData = canvas.toDataURL("image/jpeg", 0.75);
+        resolve(photoData);
+      };
+
+      img.onerror = () => resolve("");
+      img.src = originalUrl;
+    };
+
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
+async function openPreviewForPlan(planKey) {
+  if (!PLAN_RULES[planKey]) return;
+
+  const planName = PLAN_NAMES[planKey] || PLAN_RULES[planKey].label;
+  selectedPlan = `${planName} — ${PLAN_PRICES[planKey]}`;
+
+  applyPlanRules();
+
+  const data = getPreviewFallbacks(planKey);
+  const selectedMusic =
+    planKey === "essencial" &&
+    !MUSIC_LIBRARY.slice(0, 2).some(song => song.value === data.loveMusic)
+      ? MUSIC_LIBRARY[0].value
+      : data.loveMusic;
+
+  const previewData = {
+    planKey,
+    plan: selectedPlan,
+    loveName: data.loveName,
+    yourName: data.yourName,
+    loveMessage: data.loveMessage,
+    loveDate: data.loveDate,
+    loveMusic: selectedMusic,
+    loveStory: data.loveStory,
+    reasons100: data.reasons100,
+    loveLetter: data.loveLetter,
+    loveSurprise: data.loveSurprise,
+    photoData: await readPhotoForPreview(),
+    customization:
+      planKey === "premium"
+        ? (window.amorEmSiteCustomization || {})
+        : {}
+  };
+
+  try {
+    sessionStorage.setItem(
+      "amorEmSitePreview",
+      JSON.stringify(previewData)
+    );
+  } catch (error) {
+    console.error("Não foi possível guardar a prévia:", error);
+    alert("Não foi possível preparar a prévia. Tente novamente.");
+    return;
+  }
+
+  window.location.href = "site.html?preview=1";
+}
+
 planButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+  button.addEventListener("click", async (event) => {
     event.preventDefault();
     event.stopImmediatePropagation();
 
     const planKey = button.dataset.planId || "";
     if (!PLAN_RULES[planKey]) return;
 
-    openPlanPersonalization(planKey);
+    const originalText = button.textContent.trim();
+    button.disabled = true;
+    button.textContent = "Abrindo sua prévia...";
+
+    try {
+      await openPreviewForPlan(planKey);
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
   });
 });
 
