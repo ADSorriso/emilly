@@ -35,15 +35,24 @@
 .preview-lock{
   position:relative;
   overflow:hidden;
-  border-radius:24px;
+  border-radius:30px;
 }
+
+/* PADRÃO DE BLOQUEIO DO PLANO ESSENCIAL
+   Todas as áreas bloqueadas usam o mesmo tratamento visual. */
 .preview-lock.is-locked{
-  min-height:300px;
+  min-height:360px;
+  border:1px solid rgba(255,49,88,.12);
+  background:radial-gradient(circle at 50% 35%,rgba(255,49,88,.09),transparent 58%),#080406;
 }
+
 .preview-lock.is-locked>*:not(.locked-overlay){
-  opacity:.5;
-  filter:blur(1.5px);
+  opacity:.22;
+  filter:blur(5px);
+  transform:scale(1.015);
+  transition:filter .3s ease,opacity .3s ease;
 }
+
 .locked-overlay{
   display:none;
   position:absolute;
@@ -51,28 +60,96 @@
   z-index:30;
   align-items:center;
   justify-content:center;
-  padding:24px;
-  background:linear-gradient(180deg,rgba(4,2,4,.45),rgba(4,2,4,.82));
-  backdrop-filter:blur(4px);
+  padding:34px;
+  background:rgba(4,1,3,.64);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
 }
+
 .preview-lock.is-locked .locked-overlay{display:flex}
+
 .locked-box{
-  width:min(450px,92vw);
-  padding:28px 25px;
+  width:min(470px,92%);
+  min-height:225px;
+  padding:32px 30px 30px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  border:1px solid rgba(255,49,88,.28);
-  border-radius:22px;
-  background:linear-gradient(145deg,rgba(36,7,14,.96),rgba(10,4,7,.97));
-  box-shadow:0 24px 70px rgba(0,0,0,.48),0 0 45px rgba(255,49,88,.08);
+  border:1px solid rgba(255,49,88,.38);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(255,49,88,.12),transparent 58%),
+    linear-gradient(145deg,rgba(31,6,13,.96),rgba(9,3,6,.98));
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.58),
+    0 0 55px rgba(255,49,88,.10),
+    inset 0 1px 0 rgba(255,255,255,.035);
 }
-.locked-box .lock-icon{font-size:26px;margin-bottom:10px}
-.locked-box strong{display:block;font-size:18px;margin-bottom:7px}
-.locked-box p{color:#b8aaae;line-height:1.65;margin-bottom:16px;font-size:13px}
+
+.locked-box .lock-icon{
+  width:52px;
+  height:52px;
+  margin-bottom:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  border:1px solid rgba(255,49,88,.32);
+  background:rgba(255,49,88,.08);
+  font-size:24px;
+}
+
+.locked-box strong{
+  display:block;
+  font-size:19px;
+  margin-bottom:8px;
+}
+
+.locked-box p{
+  max-width:390px;
+  color:#b8aaae;
+  line-height:1.65;
+  margin:0 0 18px;
+  font-size:13px;
+}
+
 .locked-box button{
-  border:0;border-radius:999px;padding:12px 18px;
+  border:0;
+  border-radius:999px;
+  padding:13px 22px;
   background:linear-gradient(135deg,#ff3158,#a40032);
-  color:#fff;font-weight:800;font-size:12px;cursor:pointer;
-  box-shadow:0 10px 30px rgba(255,49,88,.18);
+  color:#fff;
+  font-weight:800;
+  font-size:12px;
+  cursor:pointer;
+  box-shadow:0 12px 32px rgba(255,49,88,.20);
+}
+
+/* Cada seção bloqueada mantém presença visual semelhante à Nossa História. */
+#storySection.preview-lock.is-locked{min-height:360px}
+#momentsSection.preview-lock.is-locked{min-height:430px}
+#photoGridSection.preview-lock.is-locked{min-height:390px}
+#motivos.preview-lock.is-locked{min-height:500px}
+#carta.preview-lock.is-locked{min-height:560px}
+#surpresa.preview-lock.is-locked{min-height:500px}
+
+/* A carta continua reconhecível atrás do bloqueio. */
+#carta.preview-lock.is-locked .envelope,
+#carta.preview-lock.is-locked .letter-paper{
+  opacity:.28;
+  filter:blur(5px);
+}
+
+@media(max-width:600px){
+  .locked-overlay{padding:22px}
+  .locked-box{min-height:205px;padding:27px 20px}
+  #momentsSection.preview-lock.is-locked{min-height:360px}
+  #photoGridSection.preview-lock.is-locked{min-height:340px}
+  #motivos.preview-lock.is-locked{min-height:430px}
+  #carta.preview-lock.is-locked{min-height:470px}
+  #surpresa.preview-lock.is-locked{min-height:430px}
 }
 .demo-note{
   max-width:760px;
@@ -846,257 +923,6 @@ body.preview-mode:not(.premium-mode) #momentsSection .heart-photo:has(img[src]:n
 }
 body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:not([src=""])){
   background:#12070b !important;
-}
-</style>
-
-
-<style id="essential-clean-locks">
-/* =========================================================
-   ESSENCIAL — bloqueios elegantes
-   O Essencial não deve parecer uma página quebrada.
-   Cada recurso bloqueado vira um card limpo e compacto.
-   ========================================================= */
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked{
-  min-height:360px !important;
-  border-radius:0 !important;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255,49,88,.075), transparent 48%),
-    linear-gradient(180deg, rgba(255,255,255,.012), rgba(255,49,88,.018));
-}
-
-/* Não mostrar o conteúdo bloqueado por baixo do card.
-   Isso elimina o efeito borrado que aparece no print. */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked > *:not(.locked-overlay){
-  opacity:0 !important;
-  visibility:hidden !important;
-  filter:none !important;
-  pointer-events:none !important;
-}
-
-/* Overlay ocupa a seção inteira, mas sem escurecer demais. */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-overlay{
-  display:flex !important;
-  position:absolute !important;
-  inset:0 !important;
-  padding:28px 20px !important;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(255,49,88,.08), transparent 55%),
-    rgba(3,2,3,.18) !important;
-  backdrop-filter:none !important;
-}
-
-/* Card de recurso bloqueado */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
-  width:min(520px,92vw) !important;
-  padding:34px 30px !important;
-  border:1px solid rgba(255,49,88,.22) !important;
-  border-radius:26px !important;
-  background:
-    linear-gradient(145deg, rgba(25,7,13,.97), rgba(8,4,6,.98)) !important;
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.45),
-    0 0 55px rgba(255,49,88,.07) !important;
-}
-
-/* Cadeado mais discreto */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box .lock-icon{
-  width:48px;
-  height:48px;
-  margin:0 auto 16px !important;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  font-size:21px !important;
-  background:rgba(255,49,88,.08);
-  border:1px solid rgba(255,49,88,.18);
-}
-
-/* Título */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
-  display:block;
-  margin:0 0 9px !important;
-  font-size:21px !important;
-  font-weight:700 !important;
-  letter-spacing:-.3px;
-}
-
-/* Texto */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box p{
-  max-width:390px;
-  margin:0 auto 21px !important;
-  color:rgba(255,255,255,.52) !important;
-  font-size:12px !important;
-  line-height:1.7 !important;
-}
-
-/* Botão */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button{
-  border:1px solid rgba(255,255,255,.08) !important;
-  padding:13px 21px !important;
-  background:linear-gradient(135deg,#ff3158,#b00035) !important;
-  box-shadow:0 12px 30px rgba(255,49,88,.16) !important;
-  font-size:11px !important;
-  transition:transform .2s ease, box-shadow .2s ease !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 16px 36px rgba(255,49,88,.24) !important;
-}
-
-/* História e Momentos continuam com seus títulos da seção,
-   mas o bloqueio fica visualmente menor. */
-body.preview-mode:not(.premium-mode) #storySection,
-body.preview-mode:not(.premium-mode) #momentsSection,
-body.preview-mode:not(.premium-mode) #photoGridSection{
-  min-height:330px !important;
-}
-
-/* Motivos: seção própria, sem deixar o título antigo borrado atrás. */
-body.preview-mode:not(.premium-mode) #motivos{
-  min-height:410px !important;
-  padding-top:70px !important;
-  padding-bottom:70px !important;
-}
-
-/* Carta */
-body.preview-mode:not(.premium-mode) #carta{
-  min-height:410px !important;
-}
-
-/* Surpresa */
-body.preview-mode:not(.premium-mode) #surpresa{
-  min-height:410px !important;
-}
-
-/* No Essencial, a seção "Ainda tem muito pela frente"
-   não precisa ocupar espaço como se fosse um recurso bloqueado. */
-body.preview-mode:not(.premium-mode) .future-section{
-  padding:95px 20px !important;
-}
-
-/* Mobile */
-@media(max-width:600px){
-  body.preview-mode:not(.premium-mode) .preview-lock.is-locked{
-    min-height:330px !important;
-  }
-
-  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
-    padding:28px 20px !important;
-    border-radius:22px !important;
-  }
-
-  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
-    font-size:18px !important;
-  }
-
-  body.preview-mode:not(.premium-mode) #motivos,
-  body.preview-mode:not(.premium-mode) #carta,
-  body.preview-mode:not(.premium-mode) #surpresa{
-    min-height:370px !important;
-  }
-}
-</style>
-
-
-<style id="essential-lock-polish-v3">
-/* BLOQUEIOS DO ESSENCIAL — visual uniforme e limpo */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked{
-  position:relative !important;
-  overflow:hidden !important;
-}
-
-/* Não deixa o conteúdo bloqueado aparecer/borrar atrás do card. */
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked > *:not(.locked-overlay){
-  visibility:hidden !important;
-  opacity:0 !important;
-  filter:none !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
-  visibility:visible !important;
-  opacity:1 !important;
-  filter:none !important;
-  display:flex !important;
-  position:absolute !important;
-  inset:0 !important;
-  padding:30px 22px !important;
-  background:rgba(5,2,4,.92) !important;
-  backdrop-filter:none !important;
-  -webkit-backdrop-filter:none !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
-  width:min(500px,92vw) !important;
-  min-height:220px !important;
-  padding:30px 28px !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:center !important;
-  border:1px solid rgba(255,49,88,.42) !important;
-  border-radius:24px !important;
-  background:linear-gradient(145deg,rgba(31,7,14,.98),rgba(10,3,7,.98)) !important;
-  box-shadow:0 24px 70px rgba(0,0,0,.52),0 0 45px rgba(255,49,88,.08) !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box .lock-icon{
-  font-size:28px !important;
-  line-height:1 !important;
-  margin-bottom:13px !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box strong{
-  font-size:20px !important;
-  line-height:1.2 !important;
-  margin-bottom:10px !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box p{
-  max-width:390px !important;
-  margin:0 0 20px !important;
-  color:rgba(255,255,255,.62) !important;
-  font-size:13px !important;
-  line-height:1.6 !important;
-}
-
-body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box button{
-  padding:13px 21px !important;
-  border-radius:999px !important;
-  font-size:12px !important;
-}
-
-/* História: card com presença, sem ficar pequeno. */
-body.preview-mode:not(.premium-mode) #storySection{
-  min-height:330px !important;
-  border:1px solid rgba(255,49,88,.18) !important;
-  border-radius:26px !important;
-  background:rgba(12,4,8,.72) !important;
-}
-
-/* Motivos: mantém a seção elegante, mas sem deixar o título antigo aparecendo. */
-body.preview-mode:not(.premium-mode) #motivos{
-  min-height:500px !important;
-  border-top:1px solid rgba(255,49,88,.06) !important;
-  border-bottom:1px solid rgba(255,49,88,.06) !important;
-}
-
-@media(max-width:600px){
-  body.preview-mode:not(.premium-mode) .preview-lock.is-locked > .locked-overlay{
-    padding:22px 16px !important;
-  }
-  body.preview-mode:not(.premium-mode) .preview-lock.is-locked .locked-box{
-    min-height:205px !important;
-    padding:25px 19px !important;
-    border-radius:21px !important;
-  }
-  body.preview-mode:not(.premium-mode) #storySection{
-    min-height:300px !important;
-  }
-  body.preview-mode:not(.premium-mode) #motivos{
-    min-height:430px !important;
-  }
 }
 </style>
 
