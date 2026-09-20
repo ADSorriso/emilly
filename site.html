@@ -467,6 +467,556 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 }
 </style>
 
+
+<style>
+/* =========================================================
+   NOVO MODELO — COLAGEM CINEMATOGRÁFICA
+   ========================================================= */
+
+body.preview-mode{
+  background:
+    radial-gradient(circle at 50% 10%, rgba(120,0,30,.17), transparent 30%),
+    radial-gradient(circle at 80% 65%, rgba(255,49,88,.08), transparent 28%),
+    #030303 !important;
+  color:#fff;
+}
+
+.preview-mode main{
+  position:relative;
+  z-index:1;
+}
+
+.preview-mode .navbar{
+  background:rgba(4,2,3,.78) !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+  backdrop-filter:blur(18px);
+}
+
+.preview-mode .navbar nav{
+  gap:28px !important;
+}
+
+.preview-mode .navbar nav a{
+  color:rgba(255,255,255,.65) !important;
+  font-size:12px !important;
+}
+
+.premium-collage-hero{
+  min-height:830px !important;
+  padding:120px 5vw 75px !important;
+  display:grid !important;
+  grid-template-columns:minmax(290px,.78fr) minmax(500px,1.22fr) !important;
+  grid-template-rows:auto 1fr !important;
+  align-items:center !important;
+  gap:22px 55px !important;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 62% 35%,rgba(110,0,35,.28),transparent 28%),
+    linear-gradient(120deg,#030203 0%,#0d0508 48%,#050203 100%) !important;
+}
+
+.premium-collage-hero .hero-glow{
+  position:absolute !important;
+  inset:0 !important;
+  background:
+    radial-gradient(circle at 70% 45%,rgba(255,49,88,.12),transparent 24%),
+    radial-gradient(circle at 20% 75%,rgba(255,49,88,.08),transparent 22%);
+  pointer-events:none;
+}
+
+.hero-copy{
+  position:relative;
+  z-index:4;
+  max-width:530px;
+  text-align:left;
+  align-self:center;
+}
+
+.hero-copy .eyebrow{
+  display:block;
+  margin-bottom:18px;
+  color:#ff7188;
+  letter-spacing:5px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.hero-copy h1{
+  margin:0 0 24px !important;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(54px,6vw,88px) !important;
+  line-height:.95 !important;
+  letter-spacing:-2px;
+  font-weight:700;
+}
+
+.hero-copy h1 em{
+  font-family:"Great Vibes",cursive;
+  color:#ff3158;
+  font-weight:400;
+  font-size:1.05em;
+}
+
+.hero-copy .preview-message{
+  margin:0 0 28px;
+  color:rgba(255,255,255,.74);
+  max-width:410px;
+  line-height:1.7;
+  font-size:17px;
+}
+
+.hero-mini-note{
+  margin-top:28px;
+  color:rgba(255,255,255,.40);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  line-height:2;
+}
+
+.hero-collage{
+  position:relative;
+  min-height:560px;
+  z-index:3;
+}
+
+.photo-frame{
+  --frame-bg:#f2ece6;
+  display:flex;
+  flex-direction:column;
+  width:max-content;
+  max-width:min(100%,360px);
+  padding:10px 10px 18px;
+  background:var(--frame-bg);
+  border:1px solid rgba(255,255,255,.58);
+  box-shadow:0 24px 55px rgba(0,0,0,.55),0 0 0 1px rgba(0,0,0,.24);
+  transform-origin:center;
+  color:#25191a;
+}
+
+.photo-frame img{
+  display:block;
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  object-fit:contain !important;
+  background:#151015;
+}
+
+.photo-frame figcaption{
+  padding:10px 8px 0;
+  font-family:"Great Vibes",cursive;
+  font-size:23px;
+  line-height:1;
+  color:#311c20;
+  text-align:center;
+}
+
+.frame-a{position:absolute;left:4%;top:8%;transform:rotate(-5deg);z-index:4}
+.frame-b{position:absolute;right:7%;top:2%;transform:rotate(4deg);z-index:3}
+.frame-c{position:absolute;left:30%;bottom:0;transform:rotate(-2deg);z-index:5}
+.frame-d{position:absolute;right:4%;bottom:10%;transform:rotate(7deg);z-index:4}
+
+.frame-a img,.frame-b img,.frame-c img,.frame-d img{
+  max-height:355px !important;
+}
+
+.frame-c{
+  padding-bottom:22px;
+}
+
+.scrap-note{
+  position:absolute;
+  z-index:6;
+  padding:12px 17px;
+  color:#f6eee9;
+  font-family:"Great Vibes",cursive;
+  font-size:25px;
+  line-height:1;
+  background:rgba(10,7,8,.72);
+  border:1px solid rgba(255,255,255,.13);
+  box-shadow:0 18px 40px rgba(0,0,0,.32);
+}
+
+.note-a{right:23%;top:26%;transform:rotate(-3deg)}
+.note-b{right:-1%;bottom:3%;transform:rotate(4deg);max-width:210px}
+
+.hero-name{
+  grid-column:1 / -1;
+  position:relative;
+  z-index:4;
+  text-align:center;
+  margin-top:-5px;
+}
+
+.hero-name > span{
+  display:block;
+  color:rgba(255,255,255,.48);
+  font-size:9px;
+  letter-spacing:4px;
+  margin-bottom:10px;
+}
+
+.hero-name > strong{
+  font-size:clamp(36px,4vw,58px);
+  font-weight:600;
+}
+
+.hero-name > strong em{
+  font-family:"Great Vibes",cursive;
+  color:#ff3158;
+  font-weight:400;
+}
+
+.hero-name .preview-date{
+  display:flex !important;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  width:max-content;
+  max-width:100%;
+  margin:13px auto 0 !important;
+  color:rgba(255,255,255,.47) !important;
+  font-size:9px !important;
+  letter-spacing:3px !important;
+  text-transform:uppercase;
+}
+
+.hero-name .preview-date::before,
+.hero-name .preview-date::after{
+  content:"";
+  width:34px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,49,88,.8));
+}
+.hero-name .preview-date::after{
+  background:linear-gradient(90deg,rgba(255,49,88,.8),transparent);
+}
+
+.stats-strip{
+  width:min(1080px,92vw);
+  margin:-20px auto 0;
+  position:relative;
+  z-index:8;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border:1px solid rgba(255,49,88,.20);
+  border-radius:22px;
+  background:rgba(14,7,10,.88);
+  box-shadow:0 20px 60px rgba(0,0,0,.38);
+  backdrop-filter:blur(15px);
+  overflow:hidden;
+}
+
+.stats-strip > div{
+  min-height:92px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  border-right:1px solid rgba(255,255,255,.08);
+}
+
+.stats-strip > div:last-child{border-right:0}
+.stats-strip b{color:#ff4b6b;font-size:26px;font-weight:800}
+.stats-strip span{color:rgba(255,255,255,.45);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
+
+.collage-story-section,
+.moments-collage-section,
+.premium-reasons,
+.letter-section,
+.future-section,
+.surprise-section{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,49,88,.08),transparent 32%),
+    #030303 !important;
+}
+
+.collage-story-section{
+  padding-top:150px !important;
+  padding-bottom:140px !important;
+}
+
+.collage-story-section .section-heading,
+.moments-collage-section .section-heading{
+  max-width:900px;
+}
+
+.section-heading h2{
+  font-family:Georgia,"Times New Roman",serif !important;
+  font-size:clamp(46px,6vw,76px) !important;
+  letter-spacing:-1.7px !important;
+}
+
+.section-heading h2 em{
+  font-family:"Great Vibes",cursive !important;
+  color:#ff3158 !important;
+  font-weight:400 !important;
+}
+
+.story-collage{
+  width:min(1080px,92vw);
+  min-height:620px;
+  margin:50px auto 0;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.story-collage .photo-frame{
+  position:absolute;
+}
+
+.story-main{left:9%;top:7%;transform:rotate(-4deg);z-index:3}
+.story-side-a{right:8%;top:13%;transform:rotate(5deg);z-index:2}
+.story-side-b{right:25%;bottom:2%;transform:rotate(-5deg);z-index:4}
+
+.story-main img,.story-side img{max-height:390px !important}
+
+.story-text{
+  position:absolute;
+  left:34%;
+  top:28%;
+  z-index:5;
+  width:min(370px,40%);
+  padding:30px 28px;
+  background:rgba(8,5,6,.83);
+  border:1px solid rgba(255,49,88,.19);
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 22px 70px rgba(0,0,0,.45);
+}
+
+.story-text h3{
+  margin:12px 0 12px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:28px;
+  line-height:1.15;
+}
+
+.story-text p{
+  color:rgba(255,255,255,.66);
+  line-height:1.75;
+  white-space:pre-wrap;
+}
+
+.moments-collage-section{
+  padding-top:145px !important;
+  padding-bottom:150px !important;
+}
+
+.memory-wall{
+  position:relative;
+  width:min(1120px,94vw);
+  min-height:560px;
+  margin:44px auto 0;
+}
+
+.memory-wall .photo-frame{position:absolute}
+.memory-1{left:2%;top:9%;transform:rotate(-5deg);z-index:2}
+.memory-2{left:23%;top:3%;transform:rotate(3deg);z-index:4}
+.memory-3{left:44%;top:11%;transform:rotate(-2deg);z-index:5}
+.memory-4{right:22%;top:1%;transform:rotate(5deg);z-index:3}
+.memory-5{right:1%;top:14%;transform:rotate(-4deg);z-index:2}
+.memory-wall .photo-frame img{max-height:350px !important}
+
+.premium-reasons{
+  min-height:900px !important;
+  padding:145px 5vw 150px !important;
+  position:relative;
+}
+
+.reason-stage{
+  width:min(1040px,94vw);
+  margin:44px auto 22px;
+  display:grid;
+  grid-template-columns:72px minmax(0,1fr) 72px;
+  align-items:center;
+  gap:18px;
+}
+
+.reason-card{
+  width:100% !important;
+  min-height:180px !important;
+  margin:0 !important;
+  padding:38px 48px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:18px;
+  border:1px solid rgba(255,49,88,.22) !important;
+  border-radius:25px !important;
+  background:linear-gradient(145deg,rgba(255,49,88,.08),rgba(255,255,255,.025)) !important;
+  box-shadow:0 30px 80px rgba(0,0,0,.38),0 0 65px rgba(255,49,88,.06) !important;
+}
+
+.reason-card > span{
+  flex:0 0 46px;
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#ff3158;
+  background:rgba(255,49,88,.10);
+}
+
+.reason-card p{
+  margin:0 !important;
+  color:#fff !important;
+  font-size:clamp(24px,3.1vw,36px) !important;
+  line-height:1.25 !important;
+  text-align:center;
+}
+
+.reason-arrow{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:1px solid rgba(255,49,88,.45);
+  background:rgba(255,49,88,.08);
+  color:#ff5c78;
+  font-size:42px;
+  line-height:1;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.reason-arrow:hover{transform:scale(1.06);background:rgba(255,49,88,.15)}
+
+.premium-reasons > .primary-btn{
+  margin-top:10px;
+}
+
+#reasonCounter{
+  display:block;
+  margin-top:14px;
+  color:rgba(255,255,255,.40);
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.reason-grid{
+  width:min(1000px,94vw);
+  margin:48px auto 0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+
+.reason-grid .reason-item{
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  border:1px solid rgba(255,49,88,.12);
+  border-radius:14px;
+  background:rgba(255,255,255,.025);
+  color:rgba(255,255,255,.72);
+}
+
+.reason-grid .reason-item span{
+  color:#ff3158;
+  font-size:10px;
+  font-weight:800;
+  min-width:25px;
+}
+
+.premium-invite{
+  width:min(1120px,92vw);
+  margin:40px auto;
+  padding:28px 32px;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:30px;
+  align-items:center;
+  border:1px solid rgba(255,49,88,.24);
+  border-radius:24px;
+  background:linear-gradient(115deg,rgba(26,6,11,.94),rgba(8,4,5,.94));
+  box-shadow:0 24px 60px rgba(0,0,0,.38);
+}
+
+.premium-invite-copy h2{
+  margin:10px 0;
+  max-width:700px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(28px,4vw,46px);
+  line-height:1.03;
+}
+.premium-invite-copy h2 em{font-family:"Great Vibes",cursive;color:#ff3158;font-weight:400}
+.premium-invite-copy p{margin:0;color:rgba(255,255,255,.55);line-height:1.6}
+.premium-invite-action{text-align:center;min-width:230px}
+.premium-invite-action strong{display:block;color:#ff7188;font-size:10px;letter-spacing:4px}
+.premium-invite-action span{display:block;margin:8px 0 12px;font-size:34px;font-weight:800}
+
+@media(max-width:900px){
+  .premium-collage-hero{
+    min-height:auto !important;
+    padding-top:110px !important;
+    grid-template-columns:1fr !important;
+    grid-template-rows:auto auto auto !important;
+    gap:35px !important;
+  }
+  .hero-copy{max-width:650px;text-align:center;margin:0 auto}
+  .hero-copy .preview-message{margin-left:auto;margin-right:auto}
+  .hero-collage{min-height:540px;width:min(680px,94vw);margin:0 auto}
+  .hero-name{grid-column:auto}
+  .stats-strip{margin:0 auto}
+  .story-collage{min-height:760px}
+  .story-text{left:50%;top:42%;transform:translateX(-50%);width:min(520px,82vw)}
+  .story-main{left:5%;top:3%}
+  .story-side-a{right:3%;top:7%}
+  .story-side-b{right:12%;bottom:1%}
+  .memory-wall{min-height:760px}
+  .memory-1{left:5%;top:7%}
+  .memory-2{left:34%;top:1%}
+  .memory-3{left:30%;top:37%}
+  .memory-4{right:3%;top:35%}
+  .memory-5{left:14%;bottom:2%;top:auto;right:auto}
+  .premium-invite{grid-template-columns:1fr;text-align:center}
+  .premium-invite-action{min-width:0}
+}
+
+@media(max-width:600px){
+  .premium-collage-hero{padding-left:20px !important;padding-right:20px !important}
+  .hero-copy h1{font-size:52px !important}
+  .hero-collage{min-height:440px}
+  .photo-frame{padding:7px 7px 12px;max-width:230px}
+  .photo-frame img{max-height:220px !important}
+  .photo-frame figcaption{font-size:18px}
+  .frame-a{left:0;top:4%}
+  .frame-b{right:0;top:0}
+  .frame-c{left:22%;bottom:0}
+  .frame-d{right:0;bottom:8%}
+  .scrap-note{display:none}
+  .stats-strip{grid-template-columns:1fr}
+  .stats-strip > div{border-right:0;border-bottom:1px solid rgba(255,255,255,.07)}
+  .stats-strip > div:last-child{border-bottom:0}
+  .story-collage{min-height:650px}
+  .story-main{left:2%;top:2%}
+  .story-side-a{right:0;top:7%}
+  .story-side-b{right:8%;bottom:0}
+  .story-text{top:34%;width:88%}
+  .memory-wall{min-height:950px}
+  .memory-wall .photo-frame{max-width:200px}
+  .memory-1{left:0;top:0}
+  .memory-2{right:0;left:auto;top:4%}
+  .memory-3{left:20%;top:29%}
+  .memory-4{right:0;top:50%}
+  .memory-5{left:2%;top:72%}
+  .reason-stage{grid-template-columns:1fr;gap:10px}
+  .reason-arrow{display:none}
+  .reason-card{min-height:150px !important;padding:28px 20px !important}
+  .reason-card p{font-size:23px !important}
+  .reason-grid{grid-template-columns:1fr}
+  .premium-invite{padding:26px 20px}
+}
+</style>
+
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -481,58 +1031,171 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 </header>
 
 <main>
-  <section class="hero" id="inicio">
-    <div class="hero-glow"></div>
-    <div class="hero-content hero-data">
-      <span class="eyebrow">PARA O MEU AMOR</span>
-      <h1>Oi, <em id="loveName">meu amor.</em></h1>
-      <p class="preview-message" id="loveMessage">Um cantinho feito especialmente para vocês.</p>
-      <div class="hero-photo empty" id="heroPhoto"><span>♥</span></div>
-      <div class="preview-date" id="loveDate"></div>
-      <button class="primary-btn" id="openMusic">Entrar no nosso mundo ♥</button>
-      <div class="scroll-hint"><i></i>deslize</div>
+  
+<section class="hero premium-collage-hero" id="inicio">
+  <div class="hero-glow"></div>
+
+  <div class="hero-copy">
+    <span class="eyebrow">NOSSA HISTÓRIA</span>
+    <h1>Feita de momentos <em>reais.</em></h1>
+    <p class="preview-message" id="loveMessage">Você transforma o comum em algo extraordinário.</p>
+
+    <button class="primary-btn" id="openMusic">Entrar no nosso mundo ♥</button>
+
+    <div class="hero-mini-note">
+      Cada foto, um sentimento.<br>
+      Cada momento, um motivo.
     </div>
-  </section>
+  </div>
 
-  <div class="demo-note"><strong>Prévia interativa</strong><span> • Recursos liberados de acordo com o plano escolhido.</span></div>
+  <div class="hero-collage" aria-label="Mural de fotos">
+    <figure class="photo-frame frame-a">
+      <img id="heartPhoto1" alt="Foto de vocês">
+      <figcaption>Meu lugar favorito é com você. ♥</figcaption>
+    </figure>
 
-  <section class="section" id="historia">
-    <div class="section-heading reveal"><span class="eyebrow">NOSSA HISTÓRIA</span><h2>Como tudo <em>começou.</em></h2><p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p></div>
-    <div class="timeline-preview preview-lock" id="storySection">
-      
-      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Nossa História</strong><p>Esse recurso faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
+    <figure class="photo-frame frame-b">
+      <img id="heartPhoto2" alt="Foto de vocês">
+    </figure>
+
+    <figure class="photo-frame frame-c">
+      <img id="heroPhotoImage" alt="Foto principal">
+      <figcaption>Você torna tudo mais leve. ♥</figcaption>
+    </figure>
+
+    <figure class="photo-frame frame-d">
+      <img id="heartPhoto3" alt="Foto de vocês">
+    </figure>
+
+    <div class="scrap-note note-a">Contigo,<br>tudo faz sentido.</div>
+    <div class="scrap-note note-b">Você é a melhor parte da minha vida. ♡</div>
+  </div>
+
+  <div class="hero-name">
+    <span>PARA O MEU AMOR</span>
+    <strong>Oi, <em id="loveName">meu amor.</em></strong>
+    <div class="preview-date" id="loveDate"></div>
+  </div>
+</section>
+
+<section class="stats-strip" aria-label="Resumo do relacionamento">
+  <div><b id="daysTogether">+365</b><span>dias de história</span></div>
+  <div><b>100</b><span>motivos para te amar</span></div>
+  <div><b>∞</b><span>momentos ao seu lado</span></div>
+</section>
+
+
+  
+
+  
+<section class="section collage-story-section" id="historia">
+  <div class="section-heading reveal">
+    <span class="eyebrow">NOSSA HISTÓRIA</span>
+    <h2>Como tudo <em>começou.</em></h2>
+    <p>Uma história feita de pequenos momentos que se tornaram algo enorme.</p>
+  </div>
+
+  <div class="story-collage preview-lock" id="storySection">
+    <figure class="photo-frame story-main">
+      <img id="gridPhoto1" alt="Momento de vocês">
+    </figure>
+    <figure class="photo-frame story-side story-side-a">
+      <img id="gridPhoto2" alt="Momento de vocês">
+    </figure>
+    <figure class="photo-frame story-side story-side-b">
+      <img id="gridPhoto3" alt="Momento de vocês">
+    </figure>
+
+    <div class="story-text">
+      <span class="eyebrow">O COMEÇO DE VOCÊS</span>
+      <h3>Uma história que merece ser lembrada.</h3>
+      <p id="loveStory">Conte aqui a história de vocês.</p>
     </div>
-  </section>
 
-  <section class="heart-section" id="momentos">
-    <div class="section-heading reveal"><span class="eyebrow">MOMENTOS</span><h2>Um pedacinho de <em>vocês.</em></h2><p>As fotos de vocês formando um coração interativo.</p></div>
-    <div class="heart-gallery preview-lock" id="momentsSection">
-      <div class="heart-photo p1"><img id="heartPhoto1" alt="Foto do casal"></div><div class="heart-photo p2"><img id="heartPhoto2" alt="Foto do casal"></div><div class="heart-photo p3"><img id="heartPhoto3" alt="Foto do casal"></div><div class="heart-photo p4"><img id="heartPhoto4" alt="Foto do casal"></div><div class="heart-photo p5"><img id="heartPhoto5" alt="Foto do casal"></div><div class="heart-photo p6"><img id="heartPhoto6" alt="Foto do casal"></div><div class="heart-photo p7"><img id="heartPhoto7" alt="Foto do casal"></div><div class="heart-photo p8"><img id="heartPhoto8" alt="Foto do casal"></div>
-      <div class="heart-center"><strong id="heartName">Vocês</strong><small>para sempre</small><span>♥</span></div>
-      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Coração com fotos</strong><p>O coração de fotos faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
+    <div class="locked-overlay">
+      <div class="locked-box">
+        <div class="lock-icon">🔒</div>
+        <strong>Nossa História</strong>
+        <p>Esse recurso faz parte do plano Romântico.</p>
+        <button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section" id="momentos-grid">
-    <div class="section-heading reveal"><span class="eyebrow">FOTOS</span><h2>Momentos que <em>ficam.</em></h2></div>
-    <div class="preview-photo-grid preview-lock" id="photoGridSection">
-      <div class="photo-card"><img id="gridPhoto1" alt="Momento"></div><div class="photo-card"><img id="gridPhoto2" alt="Momento"></div><div class="photo-card"><img id="gridPhoto3" alt="Momento"></div>
-      <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Galeria completa</strong><p>As opções completas de fotos fazem parte dos planos Romântico e Premium.</p><button data-upgrade="romantico">Ver plano Romântico</button></div></div>
+
+  
+<section class="section moments-collage-section" id="momentos">
+  <div class="section-heading reveal">
+    <span class="eyebrow">NOSSOS MOMENTOS</span>
+    <h2>Cada foto, uma <em>lembrança.</em></h2>
+    <p>Fotos com molduras que acompanham o tamanho da imagem, sem cortes.</p>
+  </div>
+
+  <div class="memory-wall preview-lock" id="momentsSection">
+    <figure class="photo-frame memory-1">
+      <img id="heartPhoto4" alt="Momento especial">
+      <figcaption>Juntos sempre. ♥</figcaption>
+    </figure>
+    <figure class="photo-frame memory-2">
+      <img id="heartPhoto5" alt="Momento especial">
+    </figure>
+    <figure class="photo-frame memory-3">
+      <img id="heartPhoto6" alt="Momento especial">
+      <figcaption>Você e eu. ♥</figcaption>
+    </figure>
+    <figure class="photo-frame memory-4">
+      <img id="heartPhoto7" alt="Momento especial">
+    </figure>
+    <figure class="photo-frame memory-5">
+      <img id="heartPhoto8" alt="Momento especial">
+      <figcaption>Para sempre nós. ♥</figcaption>
+    </figure>
+
+    <div class="locked-overlay">
+      <div class="locked-box">
+        <div class="lock-icon">🔒</div>
+        <strong>Coração com fotos</strong>
+        <p>O coração de fotos faz parte do plano Romântico.</p>
+        <button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="reasons-section preview-lock" id="motivos">
-    <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>100 Motivos</strong><p>Os 100 motivos fazem parte do plano Romântico.</p><button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button></div></div>
+
+  
+<section class="reasons-section premium-reasons preview-lock" id="motivos">
+  <div class="locked-overlay">
+    <div class="locked-box">
+      <div class="lock-icon">🔒</div>
+      <strong>100 Motivos</strong>
+      <p>Os 100 motivos fazem parte do plano Romântico.</p>
+      <button data-upgrade="romantico">Desbloquear no Romântico — R$ 39,90</button>
+    </div>
+  </div>
+
+  <div class="section-heading reveal">
     <span class="eyebrow">MOTIVOS PARA TE AMAR</span>
     <h2>Por que eu <em>te amo?</em></h2>
+  </div>
+
+  <div class="reason-stage">
+    <button class="reason-arrow" id="prevReason" type="button" aria-label="Motivo anterior">‹</button>
+
     <div class="reason-card">
       <span>♥</span>
       <p id="reasonText">Seu sorriso.</p>
     </div>
-    <button class="primary-btn" id="nextReason">Revelar outro motivo ♥</button>
-    <small id="reasonCounter">Motivo 1 de 1</small>
-    <div class="reason-grid" id="reasonGrid"></div>
-  </section>
+
+    <button class="reason-arrow" id="nextReason" type="button" aria-label="Próximo motivo">›</button>
+  </div>
+
+  <button class="primary-btn" id="revealReasonButton" type="button">Revelar outro motivo ♥</button>
+  <small id="reasonCounter">Motivo 1 de 100</small>
+  <div class="reason-grid" id="reasonGrid"></div>
+</section>
+
 
   <section class="letter-section preview-lock" id="carta">
     <div class="locked-overlay"><div class="locked-box"><div class="lock-icon">🔒</div><strong>Carta interativa</strong><p>A carta interativa faz parte do plano Romântico.</p><button data-upgrade="romantico">Conhecer Romântico — R$ 39,90</button></div></div>
@@ -549,7 +1212,21 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
     <div id="surpriseAfter" class="final-message hidden"><div class="big-heart">♥</div><span>PARA SEMPRE</span><h2>Eu escolheria você<br><em>em todas as vidas.</em></h2><p id="surpriseText">Te amo. ❤️</p></div>
   </section>
 
-  <section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
+  
+<section class="premium-invite">
+  <div class="premium-invite-copy">
+    <span class="eyebrow">QUER ALGO AINDA MAIS ESPECIAL?</span>
+    <h2>Mais temas, mais fotos, mais efeitos e <em>mais vocês.</em></h2>
+    <p>No Premium, você ganha ainda mais opções para personalizar cada detalhe.</p>
+  </div>
+  <div class="premium-invite-action">
+    <strong>PLANO PREMIUM</strong>
+    <span>R$ 59,90</span>
+    <button class="primary-btn" type="button" data-premium-scroll>Conhecer o Premium ♥</button>
+  </div>
+</section>
+
+<section class="checkout-final" id="checkout"><span class="eyebrow">GOSTOU DA PRÉVIA?</span><h2>Agora transforme isso em<br><em>um site de vocês.</em></h2><p id="checkoutDescription">Desbloqueie o conteúdo do plano escolhido e receba seu link exclusivo depois do pagamento.</p><button id="checkoutButtonFinal">Continuar para pagamento ❤️</button><small id="checkoutPrice">Pagamento seguro • Link exclusivo</small></section>
 </main>
 
 <footer><strong>Para o meu amor ♥</strong><p>Feito com amor, especialmente para vocês.</p></footer>
@@ -592,9 +1269,15 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   set("loveName",current.loveName||"meu amor");
   set("heartName",current.loveName||"Vocês");
   set("loveMessage",current.loveMessage);
-  set("musicName",current.loveMusic||"Nossa música");
   set("loveStory",current.loveStory);
-  if(current.loveDate){const d=new Date(current.loveDate+"T00:00:00");if(!isNaN(d))set("loveDate",d.toLocaleDateString("pt-BR"));}
+  if(current.loveDate){
+    const d=new Date(current.loveDate+"T00:00:00");
+    if(!isNaN(d)){
+      set("loveDate",d.toLocaleDateString("pt-BR"));
+      const days=Math.max(1,Math.floor((Date.now()-d.getTime())/86400000)+1);
+      set("daysTogether","+"+days);
+    }
+  }
   set("surpriseText",current.loveSurprise);
   set("letterSignature",current.yourName?`Com todo meu amor,\n${current.yourName} ♥`:"Com todo meu amor, ♥");
 
@@ -603,9 +1286,10 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
 
   const photo=current.photoData||"";
   if(photo){
-    $("heroPhoto").classList.remove("empty");$("heroPhoto").innerHTML=`<img src="${photo}" alt="Foto de vocês">`;
-    for(let i=1;i<=8;i++)$("heartPhoto"+i).src=photo;
-    for(let i=1;i<=3;i++)$("gridPhoto"+i).src=photo;
+    const heroImg=$("heroPhotoImage");
+    if(heroImg){heroImg.src=photo}
+    for(let i=1;i<=8;i++){const e=$("heartPhoto"+i);if(e)e.src=photo}
+    for(let i=1;i<=3;i++){const e=$("gridPhoto"+i);if(e)e.src=photo}
   }
 
   // Essencial mantém a experiência inicial e deixa os recursos avançados visivelmente bloqueados.
@@ -618,7 +1302,13 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   $("reasonGrid").innerHTML=lines.map((r,i)=>`<div class="reason-item"><span>${String(i+1).padStart(2,"0")}</span>${esc(r)}</div>`).join("");
 
   let reasonIndex=0;
-  $("nextReason").onclick=()=>{if(!romantic||!lines.length)return;reasonIndex=(reasonIndex+1)%100;set("reasonText",lines[reasonIndex]);set("reasonCounter",`Motivo ${reasonIndex+1} de 100`)};
+  const showReason=()=>{
+    set("reasonText",lines[reasonIndex]);
+    set("reasonCounter",`Motivo ${reasonIndex+1} de 100`);
+  };
+  $("nextReason").onclick=()=>{if(!romantic)return;reasonIndex=(reasonIndex+1)%100;showReason()};
+  $("prevReason")?.addEventListener("click",()=>{if(!romantic)return;reasonIndex=(reasonIndex-1+100)%100;showReason()});
+  $("revealReasonButton")?.addEventListener("click",()=>{if(!romantic)return;reasonIndex=(reasonIndex+1)%100;showReason()});
   $("envelope").onclick=()=>{if(!romantic)return;$("envelope").classList.toggle("opened");$("letterPaper").classList.toggle("open")};
   $("surpriseButton").onclick=()=>{if(!romantic)return;$("surpriseBefore").style.display="none";$("surpriseAfter").classList.remove("hidden");burst(28)};
 
@@ -628,6 +1318,7 @@ section[id],.checkout-final{scroll-margin-top:88px !important}
   $("musicButton").onclick=async()=>{if(!audio.src)return;if(audio.paused)await playMusic();else{audio.pause();$("musicButton").textContent="♫"}};
 
   document.querySelectorAll("[data-upgrade]").forEach(btn=>btn.onclick=()=>$("checkout").scrollIntoView({behavior:"smooth"}));
+  document.querySelector("[data-premium-scroll]")?.addEventListener("click",()=>$("checkout").scrollIntoView({behavior:"smooth"}));
   $("lovePill").onclick=()=>{const t=$("toast");t.textContent="Feito com amor ❤️";t.classList.add("show");burst(10);setTimeout(()=>t.classList.remove("show"),1800)};
 
   $("checkoutDescription").textContent=`Você está testando o plano ${names[plan]||"Romântico"}. Continue para o pagamento e libere o site completo por ${prices[plan]||"R$ 39,90"}.`;
