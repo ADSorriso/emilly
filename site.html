@@ -1055,20 +1055,6 @@ body.preview-mode:not(.premium-mode) #photoGridSection .photo-card:has(img[src]:
 }
 </style>
 
-<style id="paid-site-mode-css">
-/* Depois do pagamento, a página deixa de ser uma página de venda/prévia.
-   O cliente vê somente o site que comprou. */
-body.paid-pending .standard-preview,
-body.paid-pending .premium-preview{display:none !important;}
-
-body.paid-mode .checkout-final,
-body.paid-mode .px-checkout,
-body.paid-mode .px-features,
-body.paid-mode .locked-overlay,
-body.paid-mode [data-upgrade]{display:none !important;}
-
-body.paid-mode .preview-lock.is-locked{min-height:0 !important;}
-</style>
 </head>
 <body class="preview-mode">
 <div id="hearts" aria-hidden="true"></div>
@@ -1328,7 +1314,7 @@ body.paid-mode .preview-lock.is-locked{min-height:0 !important;}
 <div class="modal" id="photoModal" aria-hidden="true"><button id="closeModal" aria-label="Fechar">×</button><img id="modalImage" src="" alt="Foto ampliada"></div>
 <div class="preview-toast" id="toast">Feito com amor ❤️</div>
 <button class="music-button" id="musicButton" title="Música">♫</button>
-<audio id="music" loop preload="none"></audio>
+<audio id="music" loop preload="auto"></audio>
 
 <script>
 (function(){
@@ -1336,7 +1322,6 @@ body.paid-mode .preview-lock.is-locked{min-height:0 !important;}
   const data=(()=>{try{return JSON.parse(sessionStorage.getItem("amorEmSitePreview")||"null")}catch(e){return null}})();
   const params=new URLSearchParams(location.search);
   const paid=params.get("pedido")||params.get("order");
-  if(paid) document.body.classList.add("paid-pending");
   if(!data && !paid){ location.href="index.html#planos"; return; }
   const prices={essencial:"R$ 10,90",romantico:"R$ 39,90",premium:"R$ 59,90"};
   const names={essencial:"Essencial",romantico:"Romântico",premium:"Premium"};
@@ -1403,8 +1388,27 @@ body.paid-mode .preview-lock.is-locked{min-height:0 !important;}
   $("envelope").onclick=()=>{if(!romantic)return;$("envelope").classList.toggle("opened");$("letterPaper").classList.toggle("open")};
   $("surpriseButton").onclick=()=>{if(!romantic)return;$("surpriseBefore").style.display="none";$("surpriseAfter").classList.remove("hidden");burst(28)};
 
-  const audio=$("music");const musicFile=musicFiles[current.loveMusic]||"";if(musicFile){audio.src=musicFile}
-  async function playMusic(){if(!audio.src)return;try{await audio.play();$("musicButton").textContent="❚❚"}catch(e){}}
+  const audio=$("music");const musicFile=musicFiles[current.loveMusic]||"";if(musicFile){audio.src=musicFile;audio.load()}
+  async function playMusic(){
+    if(!audio.src)return false;
+    try{
+      await audio.play();
+      $("musicButton").textContent="❚❚";
+      return true;
+    }catch(e){
+      $("musicButton").textContent="♫";
+      return false;
+    }
+  }
+
+  // Tenta iniciar a música automaticamente na prévia e no site já pago.
+  // Se o navegador bloquear autoplay, o botão ♫ continua disponível.
+  const shouldAutoplayMusic = !!data || !!paid || sessionStorage.getItem("amorEmSiteAutoplayMusic")==="1";
+  if(shouldAutoplayMusic){
+    sessionStorage.removeItem("amorEmSiteAutoplayMusic");
+    setTimeout(()=>playMusic(),120);
+  }
+
   $("openMusic").onclick=async()=>{await playMusic();$("inicio").scrollIntoView({behavior:"smooth"})};
   $("musicButton").onclick=async()=>{if(!audio.src)return;if(audio.paused)await playMusic();else{audio.pause();$("musicButton").textContent="♫"}};
 
@@ -1430,71 +1434,9 @@ body.paid-mode .preview-lock.is-locked{min-height:0 !important;}
   // Modal de fotos
   const modal=$("photoModal"),modalImage=$("modalImage");document.querySelectorAll(".heart-photo img,.photo-card img").forEach(img=>img.onclick=()=>{if(!img.src)return;modalImage.src=img.src;modal.classList.add("open")});$("closeModal").onclick=()=>modal.classList.remove("open");modal.onclick=e=>{if(e.target===modal)modal.classList.remove("open")};
 
-  // Se veio de um pedido pago, confirma no backend e transforma a página no site comprado.
+  // Se veio de um pedido pago, carrega os dados reais e transforma a página em site final.
   if(paid){
-    (async()=>{
-      try{
-        const q=params.get("pedido")
-          ? `?pedido=${encodeURIComponent(params.get("pedido"))}`
-          : `?order=${encodeURIComponent(params.get("order"))}`;
-        const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});
-        const j=await r.json();
-
-        if(!j.ok || !j.order || String(j.order.status).toUpperCase()!=="PAID"){
-          document.body.classList.remove("paid-pending");
-          return;
-        }
-
-        const o=j.order;
-        const saved=o.site_data && typeof o.site_data === "object" ? o.site_data : {};
-        current={...current,...saved};
-        current.loveName=o.love_name||current.loveName||"meu amor";
-        current.loveMessage=o.love_message||current.loveMessage||"";
-        current.loveStory=o.love_story||current.loveStory||"";
-        current.loveSurprise=o.love_surprise||current.loveSurprise||"Te amo. ❤️";
-        current.loveLetter=o.love_letter||current.loveLetter||"";
-        current.photoData=o.photo_data||current.photoData||"";
-
-        const paidPlan=String(o.plan||current.planKey||current.plan||"romantico").toLowerCase();
-        plan=/premium/i.test(paidPlan)?"premium":(/essencial/i.test(paidPlan)?"essencial":"romantico");
-        document.body.classList.remove("paid-pending");
-        document.body.classList.add("paid-mode");
-        document.body.classList.toggle("premium-mode",plan==="premium");
-
-        // Remove qualquer trava/upgrade da prévia: o cliente já comprou o plano.
-        document.querySelectorAll(".is-locked").forEach(el=>el.classList.remove("is-locked"));
-        document.querySelectorAll(".locked-overlay").forEach(el=>el.remove());
-        document.querySelectorAll("[data-upgrade]").forEach(el=>el.remove());
-
-        set("loveName",current.loveName);
-        set("heartName",current.loveName||"Vocês");
-        set("loveMessage",current.loveMessage);
-        set("loveStory",current.loveStory);
-        set("reasonText",current.reason_1||o.reason_1||lines[0]);
-        set("surpriseText",current.loveSurprise);
-        set("premiumName",current.loveName||"meu amor.");
-        set("premiumMessage",current.loveMessage||"Você transforma o comum em algo extraordinário.");
-        set("premiumStory",current.loveStory);
-        set("premiumSurpriseText",current.loveSurprise);
-
-        const paidPhoto=current.photoData||"";
-        if(paidPhoto){
-          const ids=["heroPhoto","heartPhoto1","heartPhoto2","heartPhoto3","heartPhoto4","heartPhoto5","heartPhoto6","heartPhoto7","heartPhoto8","gridPhoto1","gridPhoto2","gridPhoto3","premiumPhoto1","premiumPhoto2","premiumPhoto3","premiumPhoto4","premiumStory1","premiumStory2","premiumStory3","premiumMemory1","premiumMemory2","premiumMemory3","premiumMemory4","premiumMemory5"];
-          const hero=$("heroPhoto");
-          if(hero){hero.classList.remove("empty");hero.innerHTML=`<img src="${paidPhoto}" alt="Foto de vocês">`;}
-          ids.forEach(id=>{const e=$(id);if(e&&id!=="heroPhoto")e.src=paidPhoto;});
-        }
-
-        if(plan==="premium"){
-          const premiumNav={"Início":"#premium-inicio","Nossa História":"#premium-historia","Momentos":"#premium-momentos","Motivos":"#premium-motivos","Carta":"#premium-carta","Surpresa":"#premium-surpresa"};
-          document.querySelectorAll(".navbar nav a").forEach(a=>{const label=a.textContent.trim();if(premiumNav[label])a.href=premiumNav[label]});
-          document.querySelector(".navbar .logo")?.setAttribute("href","#premium-inicio");
-        }
-      }catch(e){
-        console.error("Erro ao validar pedido pago:",e);
-        document.body.classList.remove("paid-pending");
-      }
-    })();
+    (async()=>{try{const q=params.get("pedido")?`?pedido=${encodeURIComponent(params.get("pedido"))}`:`?order=${encodeURIComponent(params.get("order"))}`;const r=await fetch(`${API_URL}/api/get-order${q}`,{cache:"no-store"});const j=await r.json();if(j.ok&&j.order){const o=j.order;set("loveName",o.love_name||"meu amor");set("loveMessage",o.love_message||"");set("loveStory",o.love_story||"");set("reasonText",o.reason_1||"");}}catch(e){console.error(e)}})();
   }
 
   // Premium: conteúdo e interações do modelo exclusivo.

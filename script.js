@@ -262,7 +262,7 @@ function applyPlanRules() {
 
   if (letter) letter.required = isRomanticOrPremium;
   if (surprise) surprise.required = isRomanticOrPremium;
-  if (reasons100) reasons100.required = false;
+  if (reasons100) reasons100.required = isRomanticOrPremium;
   if (premiumNote) premiumNote.style.display = getPlanKey() === "premium" ? "" : "none";
 }
 
@@ -303,11 +303,39 @@ function validatePlanPersonalization() {
     return false;
   }
 
-  if (rules?.extras) {
+  if (rules.reasons > 0) {
+    const reasons100 = document.getElementById("reasons100");
+    const reasons = (reasons100?.value || "")
+      .split("\\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (reasons.length < 1) {
+      alert("Digite pelo menos 1 motivo. Você pode cadastrar até 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
+    if (reasons.length > 100) {
+      alert("O limite deste plano é de 100 motivos.");
+      reasons100?.focus();
+      return false;
+    }
+
     const letter = document.getElementById("loveLetter");
     const surprise = document.getElementById("loveSurprise");
-    if (!letter?.value.trim()) { alert("Preencha a carta interativa."); letter?.focus(); return false; }
-    if (!surprise?.value.trim()) { alert("Preencha a surpresa final."); surprise?.focus(); return false; }
+
+    if (!letter?.value.trim()) {
+      alert("Preencha a carta interativa.");
+      letter?.focus();
+      return false;
+    }
+
+    if (!surprise?.value.trim()) {
+      alert("Preencha a surpresa final.");
+      surprise?.focus();
+      return false;
+    }
   }
 
   return true;
@@ -898,56 +926,12 @@ function ensurePlanPersonalizationModal() {
     .pem-primary { background:#e51d4f; color:#fff; }
     .pem-primary:disabled { opacity:.65; cursor:wait; }
     @media (max-width: 650px) {
-      /* Modal mobile: começa abaixo da barra do navegador e mantém bordas visíveis */
-      #planPersonalizationModal {
-        align-items:flex-start;
-        justify-content:center;
-        padding:18px 12px calc(18px + env(safe-area-inset-bottom));
-        box-sizing:border-box;
-        overflow-y:auto;
-        -webkit-overflow-scrolling:touch;
-      }
-
-      .pem-card {
-        width:100%;
-        max-width:100%;
-        max-height:calc(100vh - 36px);
-        margin:0 auto;
-        padding:22px 18px;
-        border:1px solid #eadfe3;
-        border-radius:22px;
-        box-sizing:border-box;
-        overflow-y:auto;
-        box-shadow:0 18px 55px rgba(0,0,0,.28);
-      }
-
-      .pem-head {
-        gap:12px;
-        margin-bottom:20px;
-      }
-
-      .pem-title { font-size:25px; }
-      .pem-plan { font-size:13px; }
-      .pem-close { width:42px; height:42px; }
-
+      #planPersonalizationModal { padding:12px; }
+      .pem-card { padding:22px; max-height:calc(100vh - 24px); border-radius:20px; }
       .pem-grid { grid-template-columns:1fr; }
       .pem-field.full, .pem-section, .pem-premium { grid-column:auto; }
-
-      .pem-field input,
-      .pem-field textarea,
-      .pem-field select {
-        min-width:0;
-        font-size:16px;
-      }
-
-      .pem-actions {
-        flex-direction:column-reverse;
-        position:sticky;
-        bottom:0;
-        padding-top:10px;
-        background:#fff;
-      }
-
+      .pem-title { font-size:25px; }
+      .pem-actions { flex-direction:column-reverse; }
       .pem-secondary, .pem-primary { width:100%; }
     }
   `;
@@ -1007,7 +991,7 @@ function ensurePlanPersonalizationModal() {
           </div>
 
           <div class="pem-section" data-pem="romantic">
-            <strong>👑 Recursos do Premium</strong>
+            <strong>💕 Recursos do Romântico/Premium</strong>
           </div>
 
           <div class="pem-field full" data-pem="romantic">
@@ -1033,7 +1017,7 @@ Seu jeito de me apoiar"></textarea>
           <div class="pem-premium" id="pemPremiumFields" style="display:none;">
             <div class="pem-premium-title">👑 Personalização Premium</div>
             <div class="pem-premium-subtitle">
-              O Premium reúne recursos exclusivos para deixar o site do jeito de vocês.
+              O Premium tem tudo do Romântico + mais opções para deixar o site do jeito de vocês.
             </div>
 
             <div class="pem-grid">
@@ -1271,23 +1255,32 @@ Seu jeito de me apoiar"></textarea>
     }
 
     const reader = new FileReader();
+    reader.onload = async (e) => {
+      const originalUrl = e.target.result;
+      const img = new Image();
 
-    reader.onload = (e) => {
-      const originalUrl = e.target?.result;
-      if (!originalUrl) {
-        if (submit) {
-          submit.disabled = false;
-          submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
+      img.onload = async () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          alert("Não foi possível preparar a foto.");
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
+          }
+          return;
         }
-        alert("Não foi possível ler a foto. Escolha outra imagem.");
-        return;
-      }
 
-      // Não dependemos mais de Image/canvas para gerar a prévia.
-      // A foto escolhida já é um Data URL válido para o preview.
-      photoData = originalUrl;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        photoData = canvas.toDataURL("image/jpeg", 0.75);
 
-      try {
+        // Preenche o formulário original para reaproveitar a prévia,
+        // validações e checkout existentes.
         applyPlanRules();
 
         nameInput.value = modalLoveName.value.trim();
@@ -1297,12 +1290,25 @@ Seu jeito de me apoiar"></textarea>
         musicInput.value = modalMusic.value || "";
         storyInput.value = modalStory.value.trim();
 
+        const r1 = document.getElementById("reason1");
+        const r2 = document.getElementById("reason2");
+        const r3 = document.getElementById("reason3");
+        const reasonLines = modalReasons.value.split("\\n").map(x => x.trim()).filter(Boolean);
+        if (r1) r1.value = reasonLines[0] || "";
+        if (r2) r2.value = reasonLines[1] || "";
+        if (r3) r3.value = reasonLines[2] || "";
+
+        const reasons100 = document.getElementById("reasons100");
         const loveLetter = document.getElementById("loveLetter");
         const loveSurprise = document.getElementById("loveSurprise");
+        if (reasons100) reasons100.value = modalReasons.value.trim();
         if (loveLetter) loveLetter.value = modalLetter.value.trim();
         if (loveSurprise) loveSurprise.value = modalSurprise.value.trim();
 
+        // Guarda as opções Premium para o checkout e para a próxima etapa de geração.
         window.amorEmSiteCustomization = premiumOptions;
+
+        updatePreview();
 
         const previewData = {
           planKey: key,
@@ -1313,89 +1319,45 @@ Seu jeito de me apoiar"></textarea>
           loveDate: modalDate.value || "",
           loveMusic: modalMusic.value || "",
           loveStory: modalStory.value.trim(),
-          reasons100: "",
+          reasons100: modalReasons.value.trim(),
           loveLetter: modalLetter.value.trim(),
           loveSurprise: modalSurprise.value.trim(),
-          photoData: photoData,
+          photoData: photoData || "",
           customization: premiumOptions
         };
 
-        const serialized = JSON.stringify(previewData);
-
         try {
-          sessionStorage.setItem("amorEmSitePreview", serialized);
+          sessionStorage.setItem("amorEmSitePreview", JSON.stringify(previewData));
         } catch (storageError) {
-          console.error("Erro ao salvar a prévia:", storageError);
-
-          // Se a foto original for grande demais para sessionStorage,
-          // tenta uma versão comprimida antes de desistir.
-          try {
-            const img = new Image();
-            img.onload = () => {
-              try {
-                const max = 700;
-                const scale = Math.min(1, max / Math.max(img.width, img.height));
-                const canvas = document.createElement("canvas");
-                canvas.width = Math.max(1, Math.round(img.width * scale));
-                canvas.height = Math.max(1, Math.round(img.height * scale));
-                const ctx = canvas.getContext("2d");
-
-                if (!ctx) throw new Error("Canvas indisponível.");
-
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                previewData.photoData = canvas.toDataURL("image/jpeg", 0.6);
-                sessionStorage.setItem(
-                  "amorEmSitePreview",
-                  JSON.stringify(previewData)
-                );
-
-                close();
-                window.location.href = "site.html?preview=1";
-              } catch (retryError) {
-                console.error("Falha na compressão da foto:", retryError);
-                alert("A foto é grande demais para a prévia. Escolha uma foto menor.");
-                if (submit) {
-                  submit.disabled = false;
-                  submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
-                }
-              }
-            };
-            img.onerror = () => {
-              alert("A foto é grande demais para a prévia. Escolha uma foto menor.");
-              if (submit) {
-                submit.disabled = false;
-                submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
-              }
-            };
-            img.src = originalUrl;
-          } catch (retrySetupError) {
-            console.error(retrySetupError);
-            alert("Não foi possível salvar a prévia. Escolha uma foto menor.");
-            if (submit) {
-              submit.disabled = false;
-              submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
-            }
+          console.error("Não foi possível guardar a prévia:", storageError);
+          alert("A foto ficou grande demais para a prévia. Escolha uma foto menor e tente novamente.");
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
           }
           return;
         }
 
         close();
         window.location.href = "site.html?preview=1";
-      } catch (error) {
-        console.error("Erro ao gerar a prévia:", error);
-        alert("Não foi possível gerar a prévia. Tente novamente.");
+      };
+
+      img.onerror = () => {
+        alert("Não foi possível ler a imagem escolhida.");
         if (submit) {
           submit.disabled = false;
-          submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
+          submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
         }
-      }
+      };
+
+      img.src = originalUrl;
     };
 
     reader.onerror = () => {
       alert("Não foi possível preparar a foto.");
       if (submit) {
         submit.disabled = false;
-        submit.textContent = `❤️ Abrir prévia — ${PLAN_NAMES[key] || "Plano"}`;
+        submit.textContent = `❤️ Criar meu site — ${PLAN_NAMES[key] || "Plano"}`;
       }
     };
 
@@ -1639,6 +1601,9 @@ async function openPreviewForPlan(planKey) {
     return;
   }
 
+  // Marca que a abertura da prévia veio de uma ação do usuário.
+  // A página da prévia tentará iniciar a música assim que carregar.
+  sessionStorage.setItem("amorEmSiteAutoplayMusic", "1");
   window.location.href = "site.html?preview=1";
 }
 
