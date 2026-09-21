@@ -172,19 +172,20 @@ a{
   border:8px solid #292024;
   border-radius:40px;
   transform:rotate(3deg);
-  animation:phoneFloat 6s ease-in-out infinite;
   box-shadow:
     0 35px 100px #000c,
     0 0 80px #ff31581f;
   position:relative;
+  left:0;
+  animation:phoneSideToSide 5s ease-in-out infinite;
 }
 
-@keyframes phoneFloat{
+@keyframes phoneSideToSide{
   0%,100%{
-    transform:translateX(-18px) rotate(3deg);
+    left:-22px;
   }
   50%{
-    transform:translateX(18px) rotate(3deg);
+    left:22px;
   }
 }
 
