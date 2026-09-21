@@ -171,21 +171,22 @@ a{
   padding:8px;
   border:8px solid #292024;
   border-radius:40px;
-  transform:rotate(3deg);
   box-shadow:
     0 35px 100px #000c,
     0 0 80px #ff31581f;
   position:relative;
   left:0;
-  animation:phoneSideToSide 5s ease-in-out infinite;
+  transform:translate3d(-45px,0,0) rotate(3deg);
+  animation:phoneSideToSide 6s ease-in-out infinite;
+  will-change:transform;
 }
 
 @keyframes phoneSideToSide{
   0%,100%{
-    left:-22px;
+    transform:translate3d(-45px,0,0) rotate(3deg);
   }
   50%{
-    left:22px;
+    transform:translate3d(45px,0,0) rotate(3deg);
   }
 }
 
